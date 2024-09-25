@@ -1,6 +1,6 @@
 # IPARO Implementation with IPFS
 
-This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs with two variations of linkages:
+This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS based on a [proposal](https://github.com/johnnguyenn77/iparo/blob/main/proposal.pdf) by Dr. Sawood Alam. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs with two variations of linkages:
 
 1. Each node links to all preceding nodes.
 2. Each node only links to the prior node.
@@ -52,7 +52,7 @@ Open the `iparo.ipynb` notebook and follow the instructions to run the cells
 ## Contributors
 
 Professor Mat Kelly [@machawk1](https://github.com/machawk1)\
-Professor Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
+Dr Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
 John Nguyen [@johnnguyenn77](https://github.com/johnnguyenn77)
 
 ## License
