@@ -1,22 +1,18 @@
 # IPARO Implementation with IPFS
 
-This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS based on a [proposal](https://github.com/johnnguyenn77/iparo/blob/main/proposal.pdf) by Dr. Sawood Alam. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs with two variations of linkages:
-
-1. Each node links to all preceding nodes.
-2. Each node only links to the prior node.
+This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS based on a [proposal](https://github.com/johnnguyenn77/iparo/blob/main/proposal.pdf) by Dr. Sawood Alam. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs
 
 ## Prerequisites
 
-1. **IPFS**: Install IPFS and ensure it's running on your system. Follow the [IPFS installation guide](https://docs.ipfs.io/install/) for instructions (we recommend [IPFS Kubo](https://docs.ipfs.tech/install/command-line/)).
-2. **Python**: Ensure Python is installed on your system. This repository uses Python 3.
-3. **Virtual Environment**: Create a virtual environment and activate it
+1. **Python**: Ensure Python is installed on your system. This repository uses Python 3.
+2. **Virtual Environment**: Create a virtual environment and activate it
 
     ```bash
     python -m venv venv
     ./venv/Scripts/activate
     ```
 
-4. **Requests Library**: Install the prerequisites listed in the `requirements.txt` file.
+3. **Prerequisites**: Install the prerequisites listed in the `requirements.txt` file.
 
    ```bash
    pip install -r requirements.txt
