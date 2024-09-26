@@ -48,7 +48,7 @@ Open the `iparo.ipynb` notebook and follow the instructions to run the cells
 ## Contributors
 
 Professor Mat Kelly [@machawk1](https://github.com/machawk1)\
-Dr Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
+Dr. Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
 John Nguyen [@johnnguyenn77](https://github.com/johnnguyenn77)
 
 ## License
