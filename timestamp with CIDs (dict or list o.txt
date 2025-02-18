@@ -1,0 +1,13 @@
+linked cids as a dict or list of tuples
+
+add a sequence number property to iparo
+
+make it so that dont have to run all everytime
+
+maybe wrap creating the first and second node to the loop?
+
+choose whether to hide certain properties of IPARO
+
+create separate packages for the classes
+
+content property of IPARO to byte string
