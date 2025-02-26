@@ -1,6 +1,18 @@
 .home-page {
-    text-align: center;
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .home-page .sidebar {
+    flex: 0 0 200px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ccc;
+  }
+  
+  .home-page .home-content {
+    flex: 1;
     padding: 20px;
+    text-align: center;
   }
   
   .home-page h1 {
