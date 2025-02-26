@@ -1,0 +1,28 @@
+.submit-url-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .submit-url-form input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .submit-url-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .submit-url-form button:hover {
+    background-color: #0056b3;
+  }

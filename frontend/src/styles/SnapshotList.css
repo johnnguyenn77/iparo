@@ -1,0 +1,27 @@
+.snapshot-list {
+    margin: 20px;
+  }
+  
+  .snapshot-list h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .snapshot-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .snapshot-list ul li {
+    margin: 10px 0;
+  }
+  
+  .snapshot-list ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+  }
+  
+  .snapshot-list ul li a:hover {
+    text-decoration: underline;
+  }

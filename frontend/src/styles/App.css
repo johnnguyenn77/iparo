@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+}
+
+.header, .footer {
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+}
+
+.header nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.header nav ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+.header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

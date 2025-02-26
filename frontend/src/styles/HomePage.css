@@ -1,0 +1,23 @@
+.home-page {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .home-page h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .home-page p {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .home-page a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .home-page a:hover {
+    text-decoration: underline;
+  }
