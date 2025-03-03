@@ -12,3 +12,14 @@ class IPARODateConverter:
     @classmethod
     def datetime_to_str(cls, timestamp: datetime):
         return timestamp.strftime("%Y%m%d%H%M%S")
+
+    @classmethod
+    def diff(cls, timestamp1: str, timestamp2: str):
+        """
+        Calculates the difference between two timestamps. The result is
+        equal to ``str_to_datetime(timestamp1) - str_to_datetime(timestamp2)``.
+        :param timestamp1: The first timestamp
+        :param timestamp2: The second timestamp
+        :return:
+        """
+        return IPARODateConverter.str_to_datetime(timestamp1) - IPARODateConverter.str_to_datetime(timestamp2)
