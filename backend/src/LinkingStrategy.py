@@ -172,7 +172,7 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
 
         return links
 
-class SequentialExponentialSMaxGapStrategy(LinkingStrategy):
+class SequentialSMaxGapStrategy(LinkingStrategy):
 
     # s: the number of hops allowed between linked nodes.
     def __init__(self, s: int):
