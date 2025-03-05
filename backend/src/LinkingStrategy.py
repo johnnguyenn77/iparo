@@ -172,6 +172,48 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
 
         return links
 
+class SequentialExponentialSMaxGapStrategy(LinkingStrategy):
+
+    # s: the number of hops allowed between linked nodes.
+    def __init__(self, s: int):
+        self.s = s
+
+    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+        latest_cid = ipns.get_latest_cid(url)
+        if latest_cid is None:
+            return set()
+
+        latest_node = ipfs.retrieve(latest_cid)
+        latest_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_node)
+        links = {latest_link}
+
+        if latest_node.seq_num == 0:
+            return links
+
+        # Add first version if exists
+        first_cid = ipfs.retrieve_by_number(url, 0)
+        first_link = IPAROLinkFactory.from_cid(first_cid)
+        links.add(first_link)
+
+        # Add the immediate previous version
+        previous_cid = ipfs.retrieve_by_number(url, latest_node.seq_num - 1)
+        previous_link = IPAROLinkFactory.from_cid(previous_cid)
+        links.add(previous_link)
+
+        # Sequentially add nodes with no more than S hops between them
+        current_seq_num = latest_node.seq_num - 1
+        while current_seq_num > 0:
+            next_seq_num = max(current_seq_num - self.s, 0)
+            if next_seq_num == current_seq_num:
+                break
+
+            next_cid = ipfs.retrieve_by_number(url, next_seq_num)
+            next_link = IPAROLinkFactory.from_cid(next_cid)
+            links.add(next_link)
+
+            current_seq_num = next_seq_num
+
+        return links
 
 class TemporallyUniformStrategy(LinkingStrategy):
     def __init__(self, n: int):

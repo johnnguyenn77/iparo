@@ -95,6 +95,30 @@ class IPAROStrategyTest(unittest.TestCase):
 
         self.assertListEqual(lengths, expected_lengths)
 
+    def test_sequential_exponential_s_max_gap_strategy_should_respect_s_max_gap(self):
+        s = 3 
+        strategy = SequentialExponentialSMaxGapStrategy(s=s)
+
+        lengths, cids, iparos = test_strategy_verbose(strategy)
+
+        expected_lengths = []
+        for i in range(100):
+            if i == 0:
+                expected_lengths.append(1)
+            else:
+                additional_links = max(0, (i - 1) // s)
+                expected_lengths.append(2 + additional_links)
+
+        self.assertListEqual(lengths, expected_lengths)
+
+        for i in range(1, 100):
+            linked_seq_nums = sorted(link.seq_num for link in iparos[i].linked_iparos)
+            self.assertIn(0, linked_seq_nums)
+            self.assertIn(i - 1, linked_seq_nums)
+            for j in range(1, len(linked_seq_nums)):
+                gap = linked_seq_nums[j] - linked_seq_nums[j - 1]
+                self.assertLessEqual(gap, s)
+
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
         # 0, 10, 11, ..., 44, 50
         relative_times = [(i * 10 + j) for i in range(5) for j in range(i+1)]
