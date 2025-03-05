@@ -41,7 +41,7 @@ class VersionDensityTestCase(unittest.TestCase):
             idx = min(9, int(frequency * 10))
             frequencies[idx] += 1
 
-        # The first time interval should be at least 0.2
+        # The first time interval should have at least 20% of the nodes.
         self.assertGreaterEqual(frequencies[0] / VersionVolume.LARGE, 0.2)
         # The tail should be long (decay factor should be greater than 0.8)
         self.assertGreaterEqual(frequencies[9] / frequencies[8], 0.8)
@@ -50,8 +50,8 @@ class VersionDensityTestCase(unittest.TestCase):
         # For reproducibility
         random.seed(100)
 
-        big_head_long_tail = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
-        nodes = big_head_long_tail.get_nodes(VersionVolume.LARGE)
+        multipeak = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
+        nodes = multipeak.get_nodes(VersionVolume.LARGE)
         interval = IPARODateConverter.diff(nodes[-1].timestamp, nodes[0].timestamp)
         frac_intervals = [IPARODateConverter.diff(node.timestamp, nodes[0].timestamp) / interval for node in nodes]
         frequencies = [0] * 10
@@ -63,7 +63,6 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertGreater(frequencies[0], frequencies[1])
         # The 10th time interval should have more nodes than the 9th time interval
         self.assertGreater(frequencies[9], frequencies[8])
-
 
 
 if __name__ == '__main__':

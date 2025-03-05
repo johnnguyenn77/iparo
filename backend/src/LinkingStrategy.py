@@ -22,8 +22,6 @@ class LinkingStrategy(ABC):
         pass
 
 
-    
-
 class SingleStrategy(LinkingStrategy):
 
     def get_linked_nodes(self, url: str) -> set[IPAROLink]:
@@ -78,6 +76,7 @@ class KPreviousStrategy(LinkingStrategy):
             iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
 
         return linked_iparos
+
 
 class PreviousStrategy(KPreviousStrategy):
 
@@ -267,10 +266,8 @@ class TemporallyExponentialStrategy(LinkingStrategy):
 
         # Exponential time gaps
         current_time = IPARODateConverter.str_to_datetime(latest_node.timestamp)
-        first_time = IPARODateConverter.str_to_datetime(first_link.timestamp)
 
         power = 0
-        gap = self.time_unit
 
         # Our stop condition is when the gap exceeds the time gap between the first and latest nodes,
         # by at least a factor of the base.
