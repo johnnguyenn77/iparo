@@ -1,19 +1,19 @@
 import random
 
-from IPARODateConverter import IPARODateConverter
+from IPAROFactory import IPAROFactory
 from IPAROTestConstants import *
 from IPFS import ipfs
 from IPNS import ipns
 from LinkingStrategy import LinkingStrategy, SingleStrategy
-from IPAROFactory import IPAROFactory
+
 
 def add_nodes(num_nodes: int):
     iparos = []
     for i in range(num_nodes):
         content = generate_random_content_string()
         linked_iparos = SingleStrategy().get_linked_nodes(URL)
-        timestamp = time1 + timedelta(seconds=10*i)
-        iparo = IPARO(content=content, timestamp=timestamp.strftime("%Y%m%d%H%M%S"),
+        timestamp = time1 + timedelta(seconds=10 * i)
+        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(timestamp),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         iparos.append(iparo)
         cid = ipfs.store(iparo)
@@ -34,7 +34,7 @@ def test_strategy(strategy: LinkingStrategy) -> list[int]:
         content = generate_random_content_string()
         linked_iparos = strategy.get_linked_nodes(URL)
         lengths.append(len(linked_iparos))
-        iparo = IPARO(content=content, timestamp=(time1 + timedelta(seconds=i)).strftime("%Y%m%d%H%M%S"),
+        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         cid = ipfs.store(iparo)
         ipns.update(URL, cid)
@@ -48,7 +48,7 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
     for i in range(100):
         content = generate_random_content_string()
         linked_iparos = strategy.get_linked_nodes(URL)
-        iparo = IPARO(content=content, timestamp=(time1 + timedelta(seconds=i)).strftime("%Y%m%d%H%M%S"),
+        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         cid = ipfs.store(iparo)
         ipns.update(URL, cid)
@@ -64,10 +64,9 @@ def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_tim
     :param relative_times: The times relative to the first node in seconds.
     :return: A list of timestamps that are connected to the latest node by the linking strategy.
     """
-    timestamps: list[datetime] = []
     for i, dt in enumerate(relative_times):
         content = generate_random_content_string()
-        timestamp = (time1 + timedelta(seconds=dt)).strftime("%Y%m%d%H%M%S")
+        timestamp = IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=dt))
         iparo = IPAROFactory.create_node(URL, content)
         iparo.timestamp = timestamp
         iparo.seq_num = i
