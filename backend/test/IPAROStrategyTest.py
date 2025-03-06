@@ -95,9 +95,9 @@ class IPAROStrategyTest(unittest.TestCase):
 
         self.assertListEqual(lengths, expected_lengths)
 
-    def test_sequential_exponential_s_max_gap_strategy_should_respect_s_max_gap(self):
+    def test_sequential_s_max_gap_strategy_should_respect_s_max_gap(self):
         s = 3 
-        strategy = SequentialExponentialSMaxGapStrategy(s=s)
+        strategy = SequentialSMaxGapStrategy(s=s)
 
         lengths, cids, iparos = test_strategy_verbose(strategy)
 
