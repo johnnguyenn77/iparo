@@ -78,7 +78,7 @@ class IPAROStrategyTest(unittest.TestCase):
         for i in range(100):
             content = generate_random_content_string()
             linked_iparos = strategy.get_linked_nodes(URL)
-            iparo = IPARO(content=content, timestamp=(time1 + timedelta(seconds=i)).strftime("%Y%m%d%H%M%S"),
+            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
             cid = ipfs.store(iparo)
             current_numbers = sorted(link.seq_num for link in linked_iparos)
@@ -118,6 +118,34 @@ class IPAROStrategyTest(unittest.TestCase):
             for j in range(1, len(linked_seq_nums)):
                 gap = linked_seq_nums[j] - linked_seq_nums[j - 1]
                 self.assertLessEqual(gap, s)
+
+    def test_sequential_s_max_gap_strategy_should_be_at_most_s_hops_away(self):
+        strategy = SequentialSMaxGapStrategy(5)
+
+        # Get 100 nodes.
+        for i in range(100):
+            content = generate_random_content_string()
+            linked_iparos = strategy.get_linked_nodes(URL)
+            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
+                          url=URL, linked_iparos=linked_iparos, seq_num=i)
+            cid = ipfs.store(iparo)
+            ipns.update(URL, cid)
+
+        # Now use BFS
+        latest_cid = ipns.get_latest_cid(URL)
+        frontier = [latest_cid]
+        bfs_values = {latest_cid: 0}
+        while frontier:
+            curr_cid = frontier.pop(0)
+            curr = ipfs.retrieve(curr_cid)
+
+            for iparo_link in curr.linked_iparos:
+                if iparo_link.cid not in bfs_values:
+                    bfs_values[iparo_link.cid] = bfs_values[curr_cid] + 1
+
+        # Iterate over BFS values
+        self.assertLessEqual(max(bfs_values.values()), 5)
+
 
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
         # 0, 10, 11, ..., 44, 50
