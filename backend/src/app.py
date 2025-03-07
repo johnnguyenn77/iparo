@@ -1,87 +1,88 @@
-from flask import Flask, request, jsonify
 import requests
-from warcio.warcwriter import WARCWriter
-from warcio.recordloader import ArcWarcRecord
-from io import BytesIO
-import datetime
-import os
+from flask import Flask, request, jsonify
 from IPARO import IPARO
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
+from io import BytesIO
+from warcio.archiveiterator import ArchiveIterator
+from warcio.recordloader import ArchiveLoadFailed
+from collections import defaultdict
 
 app = Flask(__name__)
 
 IPFS_API_URL = "http://127.0.0.1:5001/api/v0"
-TARGET_DIR = "../data/"
 
-os.makedirs(TARGET_DIR, exist_ok=True)
+# Dictionary to track sequence numbers per URL
+url_sequence_counter = defaultdict(int)
 
-def inspect_response_and_create_iparo_object(url):
-    headers = {"User-Agent": "Mozilla/5.0"}
+def push_to_ipfs():
+    """Processes WARC file, creates IPARO objects, and pushes them to IPFS and IPNS."""
     
-    # Fetch the webpage
-    response = requests.get(url, headers=headers)
-    
-    # Print Response Headers
-    logging.debug("\nHeaders:")
-    for key, value in response.headers.items():
-        logging.debug(f"{key}: {value}")
-        
-    logging.debug("\Content:")
-    logging.debug(response.content.body)
-            
-       # Print Cookies (if any)
-    logging.debug("\nCookies:")
-    for key, value in response.cookies.items():
-        logging.debug(f"{key}: {value}")
-            
-    iparo_object = IPARO(
-        url = url,
-        timestamp= response.headers.get("Date"),
-        seq_num=0,
-        linked_iparos=(),
-        content= response.content
-    )
-    
-    return str(iparo_object)
+    with open('../samples/warcs/mkelly2.warc', 'rb') as stream:
+        for record in ArchiveIterator(stream):
+            if record.rec_type == 'response':
+                url = record.rec_headers.get_header('WARC-Target-URI')
+                timestamp = record.rec_headers.get_header('WARC-Date')
+                content = record.content_stream().read()
 
-def archive(iparo):
-    
-    # Generate a timestamped filename and path for archive file
-    warc_filename = f"web_archive_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.warc.gz"
-    warc_path = os.path.join(TARGET_DIR, warc_filename)
+                # Get the current sequence number for the URL
+                seq_num = url_sequence_counter[url]
+                
+                # Increment the counter for the next occurrence
+                url_sequence_counter[url] += 1
+
+                # Create an IPARO object
+                iparo_object = IPARO(
+                    url=url,
+                    timestamp=timestamp,
+                    seq_num=seq_num,
+                    linked_iparos=set(),
+                    content=content
+                )
+
+                # Convert IPARO object to string (uses IPARO.__str__())
+                iparo_string = str(iparo_object)
+
+                # Push to IPFS
+                ipfs_hash = add_to_ipfs(iparo_string)
+                print(f"Stored IPARO for {url} at {ipfs_hash}")
+
+                # Update IPNS with new hash
+                ipns_name = update_ipns(ipfs_hash)
+                print(f"Updated IPNS name: {ipns_name} → {ipfs_hash}")
 
 
-    # Create a WARC file and write the response
-    with open(warc_path, "wb") as warc_file:
-        warc_writer = WARCWriter(warc_file, gzip=True)
+def add_to_ipfs(data):
+    """Uploads data to IPFS using HTTP API."""
+    response = requests.post(f"{IPFS_API_URL}/add", files={"file": data.encode()})
+    return response.json()["Hash"]  # Returns the IPFS CID
 
-        # Create a valid WARC record
-        
-    return warc_path
 
-# Example Usage
-#warc_filename = f"web_archive_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.warc.gz"
+def update_ipns(ipfs_hash):
+    """Pins an IPFS hash to IPNS using HTTP API."""
+    response = requests.post(f"{IPFS_API_URL}/name/publish", params={"arg": f"/ipfs/{ipfs_hash}"})
+    return response.json().get("Name", "Unknown IPNS Name")  # Returns the IPNS name
 
-@app.route("/get/<cid>", methods=["GET"])
-def get_file(cid):
-    return jsonify({"url": f"https://ipfs.io/ipfs/{cid}"})
+def fetch_ipfs_data(ipfs_hash):
+    """Fetches data from IPFS."""
+    response = requests.get(f"https://ipfs.io/ipfs/{ipfs_hash}")
+    return response.text  # Returns the stored IPARO object as a string
 
-@app.route('/archive_url', methods=['POST'])
-def archive_url():
-    """
-    Fetch a web page, archive it in WARC format, store in IPFS, and return the CID.
-    """
-    data = request.json
-    if 'url' not in data:
-        return jsonify({"error": "No URL provided"}), 400
-    
-    url = data['url']
-    iparo_object = inspect_response_and_create_iparo_object(url)
-    
-    return jsonify({"message": "URL processed", "iparo_object": iparo_object}), 200
+def fetch_ipns_data(ipns_name):
+    """Fetches the latest IPFS hash from IPNS."""
+    response = requests.get(f"https://ipfs.io/ipns/{ipns_name}")
+    return response.text
 
+# Example: Fetch data from IPFS
+ipfs_hash = "QmbaEwpvQzv2YxHbhZuHx21mHi7f9Z41UjWZVbQ62Qcawe"
+data = fetch_ipfs_data(ipfs_hash)
+print("Fetched Data from IPFS:", data)
+
+# Example: Fetch latest data from IPNS
+ipns_name = "k51qzi5uqu5dkhyhede38jkwerpjr225c5wasm97ixvc3avgs1bbb6lao875k5"
+latest_data = fetch_ipns_data(ipns_name)
+print("Fetched Latest Data from IPNS:", latest_data)
+
+# Run the function to push WARC data to IPFS/IPNS
+push_to_ipfs()
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
