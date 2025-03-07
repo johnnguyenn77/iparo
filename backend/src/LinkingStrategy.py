@@ -10,6 +10,8 @@ from IPFS import ipfs, Mode
 from IPNS import ipns
 
 
+# Make package/renaming with __init__ file
+
 class LinkingStrategy(ABC):
     """
     The linking strategy determines how the new IPARO is to be linked. The IPARO
@@ -18,13 +20,13 @@ class LinkingStrategy(ABC):
     """
 
     @abstractmethod
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         pass
 
 
 class SingleStrategy(LinkingStrategy):
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -33,22 +35,17 @@ class SingleStrategy(LinkingStrategy):
 
 class ComprehensiveStrategy(LinkingStrategy):
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             # First link
             return set()
+
         latest_iparo = ipfs.retrieve(latest_cid)
-        linked_iparos = {IPAROLinkFactory.from_cid_iparo(latest_cid, latest_iparo)}
-        iparo = latest_iparo
-        iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
-        while len(iparo_links) > 0:
-            # TODO: Optimize
-            link = iparo_links[0]
-            linked_iparos.add(link)
-            latest_cid = link.cid
-            iparo = ipfs.retrieve(latest_cid)
-            iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
+        linked_iparos = latest_iparo.linked_iparos
+        latest_iparo_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_iparo)
+        if latest_iparo_link is not None:
+            linked_iparos.add(latest_iparo_link)
 
         return linked_iparos
 
@@ -58,22 +55,33 @@ class KPreviousStrategy(LinkingStrategy):
     def __init__(self, k: int):
         self.k = k
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         cid = ipns.get_latest_cid(url)
         if cid is None:
             # First link
             return set()
         latest_iparo = ipfs.retrieve(cid)
         linked_iparos = {IPAROLinkFactory.from_cid_iparo(cid, latest_iparo)}
-        iparo = latest_iparo
-        iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
-        while len(iparo_links) > 0 and len(linked_iparos) < self.k + 1:
-            # TODO: Optimize
-            link = iparo_links[0]
-            linked_iparos.add(link)
-            cid = link.cid
-            iparo = ipfs.retrieve(cid)
-            iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
+        # Drop 1 node and add the latest node when... length is k+1?
+        # max(0, Length of linked iparos - k), only if positive.
+        latest_iparo_links = latest_iparo.linked_iparos
+
+        if len(latest_iparo_links) == self.k + 1:
+
+            seq_num_to_drop = max(latest_iparo.seq_num - self.k, 0)
+            if seq_num_to_drop > 0:
+                # Ensure not none.
+                node = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1][0]
+
+
+        # iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
+        # while len(iparo_links) > 0 and len(linked_iparos) < self.k + 1:
+        #     # TODO: Optimize
+        #     link = iparo_links[0]
+        #     linked_iparos.add(link)
+        #     cid = link.cid
+        #     iparo = ipfs.retrieve(cid)
+        #     iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
 
         return linked_iparos
 
@@ -90,31 +98,34 @@ class KRandomStrategy(LinkingStrategy):
         self.k_min = k_min
         self.k_max = k_max
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         k = random.randint(self.k_min, self.k_max)
         # Check if the number of linked CIDs is greater than K and add K-1 random linked CIDs
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
+
         latest_node = ipfs.retrieve(latest_cid)
         latest_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_node)
 
-        first_cid = ipfs.retrieve_by_number(url, 0)
-        first_link = IPAROLinkFactory.from_cid(first_cid)
+        # First link is present from latest note links
         latest_node_links = latest_node.linked_iparos
+        first_link = [link for link in latest_node_links if link.seq_num == 0][0]
 
         links = {first_link, latest_link}
-        if len(latest_node_links) > k:
-            for link in random.sample(list(latest_node.linked_iparos), k - 1):
-                links.add(link)
-        # If the number of linked CIDs is less than K add all the linked CIDs
-        else:
-            for link in latest_node_links:
-                links.add(link)
-        if latest_link is not None:
-            links.add(latest_link)
+        num_nodes = latest_node.seq_num
+        if num_nodes <= k:
+            links = links.union(latest_node_links)
+            return links
 
-        return set(links)
+        # K random sequence numbers from 1 to n-1, n = latest sequence number
+        candidate_seq_nums = random.sample(range(1, num_nodes-1), k)  # To sort in reverse?
+
+        # (iparo: IPARO, seq_num: int) -> set[IPAROLink]?
+        links = links.union({ipfs.retrieve_by_number(url, seq_num) for seq_num in candidate_seq_nums})
+        # If the number of linked CIDs is less than K add all the linked CIDs
+
+        return links
 
 
 class SequentialExponentialStrategy(LinkingStrategy):
@@ -122,7 +133,7 @@ class SequentialExponentialStrategy(LinkingStrategy):
     def __init__(self, k: float):
         self.k = k
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -153,7 +164,7 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
     def __init__(self, n: int):
         self.n = n
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         # Special case: No nodes in collection
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
@@ -179,7 +190,7 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
     def __init__(self, s: int):
         self.s = s
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -221,7 +232,7 @@ class TemporallyUniformStrategy(LinkingStrategy):
     def __init__(self, n: int):
         self.n = n  # Number of uniformly distributed links to create
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -255,7 +266,7 @@ class TemporallyMaxGapStrategy(LinkingStrategy):
     def __init__(self, max_gap: timedelta):
         self.max_gap = max_gap
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -292,7 +303,7 @@ class TemporallyExponentialStrategy(LinkingStrategy):
         self.base = base
         self.time_unit = time_unit
 
-    def get_linked_nodes(self, url: str) -> set[IPAROLink]:
+    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()

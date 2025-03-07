@@ -11,7 +11,7 @@ def add_nodes(num_nodes: int):
     iparos = []
     for i in range(num_nodes):
         content = generate_random_content_string()
-        linked_iparos = SingleStrategy().get_linked_nodes(URL)
+        linked_iparos = SingleStrategy().get_candidate_nodes(URL)
         timestamp = time1 + timedelta(seconds=10 * i)
         iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(timestamp),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
@@ -32,7 +32,7 @@ def test_strategy(strategy: LinkingStrategy) -> list[int]:
     lengths = []
     for i in range(100):
         content = generate_random_content_string()
-        linked_iparos = strategy.get_linked_nodes(URL)
+        linked_iparos = strategy.get_candidate_nodes(URL)
         lengths.append(len(linked_iparos))
         iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
@@ -47,7 +47,7 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
     iparos = []
     for i in range(100):
         content = generate_random_content_string()
-        linked_iparos = strategy.get_linked_nodes(URL)
+        linked_iparos = strategy.get_candidate_nodes(URL)
         iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         cid = ipfs.store(iparo)
@@ -70,11 +70,11 @@ def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_tim
         iparo = IPAROFactory.create_node(URL, content)
         iparo.timestamp = timestamp
         iparo.seq_num = i
-        iparo.linked_iparos = strategy.get_linked_nodes(URL)
+        iparo.linked_iparos = strategy.get_candidate_nodes(URL)
         cid = ipfs.store(iparo)
         ipns.update(URL, cid)
 
     # Where would the next link go?
-    links = strategy.get_linked_nodes(URL)
+    links = strategy.get_candidate_nodes(URL)
 
     return sorted((IPARODateConverter.str_to_datetime(link.timestamp) - time1) / timedelta(seconds=1) for link in links)

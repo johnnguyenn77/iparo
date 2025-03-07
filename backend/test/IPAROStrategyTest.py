@@ -77,7 +77,7 @@ class IPAROStrategyTest(unittest.TestCase):
         expected_sequence_numbers = [get_sequence_numbers(i) for i in range(100)]
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_linked_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(URL)
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
             cid = ipfs.store(iparo)
@@ -125,7 +125,7 @@ class IPAROStrategyTest(unittest.TestCase):
         # Get 100 nodes.
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_linked_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(URL)
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, linked_iparos=linked_iparos, seq_num=i)
             cid = ipfs.store(iparo)
