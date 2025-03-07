@@ -10,7 +10,7 @@ class IPARODateConverter:
 
 
     """
-    DATE_FORMAT = "%Y-%m-%dT%H%M%S.%fZ"
+    DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
     @classmethod
     def str_to_datetime(cls, timestamp: str):
