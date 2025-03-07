@@ -1,0 +1,174 @@
+WARC/1.0
+WARC-Type: warcinfo
+Content-Type: application/warc-fields
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-Record-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Filename: salam-home-2.warc.gz
+WARC-Block-Digest: sha1:M3NMC5WGCYZK4VPJRWJDMOTCXOEUBTYJ
+Content-Length: 240
+
+software: Wget/1.16.1 (linux-gnu)
+format: WARC File Format 1.0
+conformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf
+robots: classic
+wget-arguments: "--warc-file=salam-home-2" "http://www.cs.odu.edu/~salam/" 
+
+
+
+WARC/1.0
+WARC-Type: request
+WARC-Target-URI: http://www.cs.odu.edu/~salam/
+Content-Type: application/http;msgtype=request
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-Record-ID: <urn:uuid:4706ad09-bb52-4366-b711-80119ad2102f>
+WARC-IP-Address: 128.82.4.2
+WARC-Warcinfo-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Block-Digest: sha1:H24M7VNPPW7FX2HGT32WJOD4P765KD33
+Content-Length: 148
+
+GET /~salam/ HTTP/1.1
+User-Agent: Wget/1.16.1 (linux-gnu)
+Accept: */*
+Accept-Encoding: identity
+Host: www.cs.odu.edu
+Connection: Keep-Alive
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Record-ID: <urn:uuid:67bb2aef-6eb9-42fc-b8df-9e26c74b5c78>
+WARC-Warcinfo-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Concurrent-To: <urn:uuid:4706ad09-bb52-4366-b711-80119ad2102f>
+WARC-Target-URI: http://www.cs.odu.edu/~salam/
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-IP-Address: 128.82.4.2
+WARC-Block-Digest: sha1:KJGCBURAG3CG5CJVPM5FPDVISRXETSOU
+WARC-Payload-Digest: sha1:EROTE27QSP4O5OYCL4GCOOAYQBXLMPJV
+Content-Type: application/http;msgtype=response
+Content-Length: 1789
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 05 Mar 2016 19:22:47 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+
+646
+<html>
+<head>
+  <title>HomePage | Sawood Alam</title>
+  <link href="atom.xml" type="application/atom+xml" rel="alternate" title="Atom Feed" />
+  <style type="text/css">
+    body {
+      font-family: Tahoma, Helvetica, Arial, Sans-Serif;
+      line-height: 1.7em;
+      margin: 0;
+      text-align: center;
+    }
+    h1 {
+      background: #474747;
+      padding: 15px;
+      color: #222;
+      text-shadow: 0px 3px 3px #555;
+      font-size: 40px;
+      -moz-box-shadow: 0 10px 10px #ccc;
+      -webkit-box-shadow: 0 10px 10px #ccc;
+      box-shadow: 0 10px 10px #ccc;
+    }
+    a {
+      background: #aaa;
+      color: #fff;
+      border: 1px solid #222;
+      padding: 5px;
+      text-decoration: none;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      -khtml-border-radius: 5px;
+    }
+    a:hover {
+      background: #ccc;
+    }
+    .about {
+      width: 530px;
+      border: 5px solid #ccc;
+      padding: 15px;
+      margin: 0 auto;
+      -moz-border-radius: 20px;
+      -webkit-border-radius: 20px;
+      border-radius: 20px;
+      -khtml-border-radius: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sawood Alam</h1>
+  <p class="hidden">Please consider visiting my personal <a href="http://www.ibnesayeed.com">Home Page</a></p>
+  <p><a href="SawoodAlamCV2015.pdf">My CV (PDF)</a></p>
+  <p class="about">I am a Web Application programmer and Semantic Web researcher. Commonly tagged by Web, Digital Library, Web Archiving, Ruby on Rails, PHP, XHTML, CSS, JavaScript, ExtJS, Urdu, RTL and Linux.</p>
+</body>
+</html>
+
+0
+
+
+
+WARC/1.0
+WARC-Type: metadata
+WARC-Record-ID: <urn:uuid:12add629-9438-4474-83da-39c0f4bad8d9>
+WARC-Warcinfo-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/MANIFEST.txt
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-Block-Digest: sha1:G6DHE4Q672Q27TUHKVMWXRAVVMA2DHF6
+Content-Type: text/plain
+Content-Length: 48
+
+<urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+
+
+WARC/1.0
+WARC-Type: resource
+WARC-Record-ID: <urn:uuid:e643ddf6-fbe3-44cd-8771-a678bdd99a2d>
+WARC-Warcinfo-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Concurrent-To: <urn:uuid:12add629-9438-4474-83da-39c0f4bad8d9>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/wget_arguments.txt
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-Block-Digest: sha1:FBDU3PKIEVTCPIMYQDFENX7H4C4I7BDE
+Content-Type: text/plain
+Content-Length: 60
+
+"--warc-file=salam-home-2" "http://www.cs.odu.edu/~salam/" 
+
+
+WARC/1.0
+WARC-Type: resource
+WARC-Record-ID: <urn:uuid:ea69b123-657b-41fd-8b95-a6058cd144bc>
+WARC-Warcinfo-ID: <urn:uuid:49541a56-24ba-495c-82f1-1c557129192b>
+WARC-Concurrent-To: <urn:uuid:12add629-9438-4474-83da-39c0f4bad8d9>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/wget.log
+WARC-Date: 2016-03-05T19:22:47Z
+WARC-Block-Digest: sha1:NXMJ6U6EE6D272EAYKNQNQPT5RB77ZKS
+Content-Type: text/plain
+Content-Length: 483
+
+Opening WARC file ‘salam-home-2.warc.gz’.
+
+--2016-03-05 14:22:47--  http://www.cs.odu.edu/~salam/
+Resolving www.cs.odu.edu (www.cs.odu.edu)... 128.82.4.2
+Connecting to www.cs.odu.edu (www.cs.odu.edu)|128.82.4.2|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘index.html.1’
+
+     0K .                                                      23.7M=0s
+
+2016-03-05 14:22:47 (23.7 MB/s) - ‘index.html.1’ saved [1606]
+
+
+
