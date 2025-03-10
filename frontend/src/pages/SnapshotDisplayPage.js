@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Display from '../components/Display';
 // import { fetchWARCSnapshot } from '../services/warcService';
-import '../styles/SnapshotDisplay.css';
+import '../styles/SnapshotDisplayPage.css';
 
 // function SnapshotDisplay({ match }) {
 //   const [snapshot, setSnapshot] = useState(null);

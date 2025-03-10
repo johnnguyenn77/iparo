@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import HistoryPage from './pages/HistoryPage';
 import DateLookupPage from './pages/DateLookupPage';
 import SubmitNewURLPage from './pages/SubmitNewURLPage';
+import SnapshotDisplay from './pages/SnapshotDisplayPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import './styles/App.css';
@@ -18,6 +19,7 @@ function App() {
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/date-lookup" element={<DateLookupPage />} />
           <Route path="/submit-new-url" element={<SubmitNewURLPage />} />
+          <Route path="/snapshot/:id" element={<SnapshotDisplay />} />
         </Routes>
         <Footer />
       </div>
