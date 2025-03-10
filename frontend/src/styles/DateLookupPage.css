@@ -1,0 +1,17 @@
+.date-lookup-page {
+    display: flex;
+  }
+  
+  .date-lookup-page .sidebar {
+    flex: 0 0 200px;
+  }
+  
+  .date-lookup-page .date-picker {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .date-lookup-page .snapshot-list {
+    flex: 1;
+    padding: 20px;
+  }
