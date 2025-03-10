@@ -1,5 +1,6 @@
 import unittest
 
+from IPARODateConverter import IPARODateConverter
 from IPAROFactory import IPAROFactory
 from IPAROTestConstants import *
 
@@ -14,7 +15,7 @@ class IPAROObjectTest(unittest.TestCase):
     def test_has_timestamp(self):
         timestamp = iparo1.timestamp
         self.assertIsInstance(timestamp, str)
-        self.assertEqual(timestamp, time1.strftime("%Y%m%d%H%M%S"))
+        self.assertEqual(timestamp, IPARODateConverter.datetime_to_str(time1))
 
     def test_has_linked_nodes(self):
         linked_nodes = iparo1.linked_iparos
@@ -44,8 +45,8 @@ class IPAROFactoryTest(unittest.TestCase):
         self.assertEqual(self.iparo2.content, b"1234567")
 
     def test_date_is_correct(self):
-        self.assertGreaterEqual(datetime.now(), datetime.strptime(self.iparo.timestamp, "%Y%m%d%H%M%S"))
-        self.assertGreaterEqual(datetime.now(), datetime.strptime(self.iparo2.timestamp, "%Y%m%d%H%M%S"))
+        self.assertGreaterEqual(datetime.now(), datetime.strptime(self.iparo.timestamp, IPARODateConverter.DATE_FORMAT))
+        self.assertGreaterEqual(datetime.now(), datetime.strptime(self.iparo2.timestamp, IPARODateConverter.DATE_FORMAT))
 
 
 if __name__ == '__main__':

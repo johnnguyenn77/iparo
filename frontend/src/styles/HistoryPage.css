@@ -1,0 +1,12 @@
+.history-page {
+    display: flex;
+  }
+  
+  .history-page .sidebar {
+    flex: 0 0 200px;
+  }
+  
+  .history-page .snapshot-list {
+    flex: 1;
+    padding: 20px;
+  }

@@ -28,11 +28,12 @@ class IPNS:
             Default is latest.
         """
         self.update_count += 1
-        # Make two changes: existing latest, mapping with specific datetime
-        # /archive/latest/{url} -> value of URL, map it to the CID [default]
-        # /archive/{datetime}/{url} -> convert datetime, map it to the CID
         curr_timestamp = IPARODateConverter.datetime_to_str(datetime.now()) if timestamp == 'latest' else timestamp
+
+        # /archive/latest/{url} -> value of URL, map it to the CID [default]
         self.__store[url] = cid
+
+        # /archive/{datetime}/{url} -> convert datetime, map it to the CID
         self.__versions[(url, curr_timestamp)] = cid
 
     # Optional parameter: datetime ([un]serialized), default value is latest.
@@ -49,18 +50,19 @@ class IPNS:
         self.get_count += 1
         return self.__store.get(url)
 
-    def get_cid(self, url: str, ) -> Optional[str]:
+    def get_cid(self, url: str, timestamp: str) -> Optional[str]:
         """
-        Retrieves the CID for a given datetime.
+        Retrieves the CID for a given timestamp.
 
         Args:
             url (str): The URL of the website.
+            timestamp (str): The 14-character-long timestamp for the
 
         Returns:
             str: The CID of the latest capture for the given URL if it exists, else None.
         """
         self.get_count += 1
-        return self.__store.get(url)
+        return self.__versions.get((url, timestamp))
 
     def get_counts(self):
         """

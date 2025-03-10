@@ -110,7 +110,6 @@ class BigHeadLongTailVersionDensity(VersionDensity):
         return (math.pow(self.param, x) - 1) / (self.param - 1)
 
 
-
 class MultipeakDensity(VersionDensity):
     """
     A big head and long tail distribution. For this version, I will use a uniform random variable to

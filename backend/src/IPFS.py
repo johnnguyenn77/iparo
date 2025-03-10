@@ -65,7 +65,7 @@ class IPFS:
         the target timestamp are equal, the CID with the earlier sequence number will be chosen.
         """
         self.retrieve_count += 1
-        latest_cid = ipns.get_cid(url)
+        latest_cid = ipns.get_latest_cid(url)
         latest_node = self.retrieve(latest_cid)
         # Note: the only times that the "earliest after" mode returns None are when:
         # 1. there are no nodes to begin with.

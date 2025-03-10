@@ -2,3 +2,6 @@
 /.vscode
 .DS_Store
 /backend/data
+node_modules/
+npm-debug.log
+yarn-error.log
