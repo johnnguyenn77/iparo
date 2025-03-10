@@ -1,0 +1,9 @@
+.snapshot-display {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .snapshot-display h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
