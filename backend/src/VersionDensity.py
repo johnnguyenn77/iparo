@@ -7,6 +7,8 @@ import random
 from IPARO import IPARO
 from IPARODateConverter import IPARODateConverter
 
+URL = "example.com"
+
 
 class VersionVolume(IntEnum):
     """
@@ -30,11 +32,11 @@ class VersionDensity(ABC):
         self._start_time = datetime.now().replace(microsecond=0)
         self._interval = interval
 
-    def get_nodes(self, volume: VersionVolume) -> list[IPARO]:
+    def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
         """
         Gets the nodes according to a version volume.
         :param volume: The version volume
-        :return: The volume.
+        :return: The list of unlinked IPAROs
         """
         dq = 1 / (volume - 1) if volume != VersionVolume.SINGLE else 0.0
         iparos = []
@@ -45,7 +47,7 @@ class VersionDensity(ABC):
             time = self._start_time + value
             time_string = IPARODateConverter.datetime_to_str(time)
             iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(), linked_iparos=set(),
-                          seq_num=-1, url="example.com")
+                          seq_num=-1, url=URL)
             iparos.append(iparo)
 
         return iparos
@@ -91,6 +93,7 @@ class BigHeadLongTailVersionDensity(VersionDensity):
     A big head and long tail distribution. For this version, I will use the modified reciprocal distribution.
     Thus, the CDF is ``F(x) = ln(1+(a-1)x)/ln(a)``, for all ``a != 1`` and ``a > 0``
     """
+
     def __init__(self, param: float, time_interval: timedelta = timedelta(seconds=999999)):
         """
         Args:
@@ -116,6 +119,7 @@ class MultipeakDensity(VersionDensity):
     select which normal distribution to use, and then condition a normal random variate from there.
     Unlike the other distributions, this one uses random variates because there is no quantile distribution.
     """
+
     def __init__(self, probability_weights: list[tuple[float, float, float]],
                  time_interval: timedelta = timedelta(seconds=999999)):
         """
@@ -126,7 +130,7 @@ class MultipeakDensity(VersionDensity):
         super().__init__(time_interval)
         self.probability_weights = probability_weights
 
-    def get_nodes(self, volume: VersionVolume) -> list[IPARO]:
+    def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
         sum_weights = 0
         probs = []
         # Two pass (first to know the sum of the weights
@@ -151,10 +155,9 @@ class MultipeakDensity(VersionDensity):
             td = timedelta(seconds=random.normalvariate(mean, sd))
             time_string = IPARODateConverter.datetime_to_str(self._start_time + td)
             iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(),
-                          linked_iparos=set(), seq_num=-1, url="example.com")
+                          linked_iparos=set(), seq_num=-1, url=URL)
 
             iparos.append(iparo)
 
         iparos.sort(key=lambda iparo: iparo.timestamp)
         return iparos
-

@@ -6,7 +6,7 @@ class VersionDensityTestCase(unittest.TestCase):
 
     def test_uniform_is_uniformly_distributed(self):
         uniform = UniformVersionDensity()
-        nodes = uniform.get_nodes(VersionVolume.MEDIUM)
+        nodes = uniform.get_iparos(VersionVolume.MEDIUM)
         timedeltas = set()
         # Make sure that the dt's are equal
         for i in range(len(nodes) - 1):
@@ -17,7 +17,7 @@ class VersionDensityTestCase(unittest.TestCase):
 
     def test_linear_is_linearly_distributed(self):
         uniform = LinearVersionDensity(0)
-        nodes = uniform.get_nodes(VersionVolume.LARGE)
+        nodes = uniform.get_iparos(VersionVolume.LARGE)
         interval = IPARODateConverter.diff(nodes[-1].timestamp, nodes[0].timestamp)
 
         # Split the interval into 16 equal time intervals
@@ -31,7 +31,7 @@ class VersionDensityTestCase(unittest.TestCase):
 
     def test_big_head_long_tail_has_big_head_and_long_tail(self):
         big_head_long_tail = BigHeadLongTailVersionDensity(20)
-        nodes = big_head_long_tail.get_nodes(VersionVolume.LARGE)
+        nodes = big_head_long_tail.get_iparos(VersionVolume.LARGE)
         interval = IPARODateConverter.diff(nodes[-1].timestamp, nodes[0].timestamp)
         frac_intervals = [IPARODateConverter.diff(node.timestamp, nodes[0].timestamp) / interval for node in nodes]
 
@@ -51,7 +51,7 @@ class VersionDensityTestCase(unittest.TestCase):
         random.seed(100)
 
         multipeak = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
-        nodes = multipeak.get_nodes(VersionVolume.LARGE)
+        nodes = multipeak.get_iparos(VersionVolume.LARGE)
         interval = IPARODateConverter.diff(nodes[-1].timestamp, nodes[0].timestamp)
         frac_intervals = [IPARODateConverter.diff(node.timestamp, nodes[0].timestamp) / interval for node in nodes]
         frequencies = [0] * 10
