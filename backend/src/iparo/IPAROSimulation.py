@@ -4,6 +4,7 @@ import networkx as nx
 
 from iparo.VersionDensity import *
 from iparo.IPFS import ipfs
+import matplotlib.pyplot as plt
 
 
 class IPAROSimulation:
@@ -89,3 +90,13 @@ class IPAROSimulation:
             ipns.reset_data()
         ipfs.reset_counts()
         ipns.reset_counts()
+
+
+if __name__ == "__main__":
+    linking_strategy = TemporallyUniformStrategy(2)
+    simulation = IPAROSimulation(linking_strategy=linking_strategy,
+                                 version_volume=VersionVolume.MEDIUM,
+                                 version_density=UniformVersionDensity())
+    simulation.run(100, verbose=False)
+    nx.draw_networkx(simulation.as_graph(), arrows=True)
+    plt.show()

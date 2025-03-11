@@ -126,10 +126,8 @@ class KRandomStrategy(LinkingStrategy):
         # K random sequence numbers from 1 to n-1, n = latest sequence number
         candidate_seq_nums = random.sample(range(1, num_nodes), min(k, num_nodes-1))  # To sort in reverse?
 
-        # (iparo: IPARO, seq_num: int) -> set[IPAROLink]?
         links = links.union({IPAROLinkFactory.from_cid(
             ipfs.retrieve_by_number(url, seq_num)) for seq_num in candidate_seq_nums})
-        # If the number of linked CIDs is less than K add all the linked CIDs
 
         return links
 
