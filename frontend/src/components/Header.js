@@ -1,18 +1,47 @@
 import React from 'react';
-import '../styles/Header.css';
+import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 function Header() {
   return (
-    <header className="header">
-      <h1>IPARO System</h1>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/iparo">IPARO</a></li>
-          <li><a href="/link-strategy">Link Strategy</a></li>
-        </ul>
-      </nav>
-    </header>
+    <AppBar 
+      position="fixed" 
+      color="primary" 
+      elevation={4}
+      sx={{ 
+        zIndex: (theme) => theme.zIndex.drawer + 1
+      }}
+    >
+      <Toolbar>
+        <Box 
+          component={RouterLink} 
+          to="/" 
+          sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            textDecoration: 'none',
+            color: 'inherit',
+            '&:hover': {
+              opacity: 0.9
+            }
+          }}
+        >
+          <ArchiveIcon sx={{ mr: 2, fontSize: 28 }} />
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.2rem',
+            }}
+          >
+            IPARO SYSTEM
+          </Typography>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 }
 

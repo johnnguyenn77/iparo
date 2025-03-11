@@ -1,16 +1,83 @@
 import React from 'react';
+import { 
+  Drawer, 
+  List, 
+  ListItem, 
+  ListItemButton, 
+  ListItemIcon, 
+  ListItemText, 
+  Divider,
+  Box,
+  Toolbar
+} from '@mui/material';
 import { Link } from 'react-router-dom';
-import '../styles/Sidebar.css';
+import HomeIcon from '@mui/icons-material/Home';
+import HistoryIcon from '@mui/icons-material/History';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AddLinkIcon from '@mui/icons-material/AddLink';
+
+
+const drawerWidth = 240;
 
 function Sidebar() {
   return (
-    <div className="sidebar">
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/history">All Versions</Link></li>
-        <li><Link to="/date-lookup">Specific Version Lookup</Link></li>
-      </ul>
-    </div>
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: { 
+          width: drawerWidth, 
+          boxSizing: 'border-box',
+        },
+      }}
+    >
+      <Toolbar />
+      
+      <Box sx={{ overflow: 'auto' }}>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/">
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItemButton>
+          </ListItem>
+          
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/submit-new-url">
+              <ListItemIcon>
+                <AddLinkIcon />
+              </ListItemIcon>
+              <ListItemText primary="Submit URL" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        
+        <Divider />
+        
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/history">
+              <ListItemIcon>
+                <HistoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="All Versions" />
+            </ListItemButton>
+          </ListItem>
+          
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/date-lookup">
+              <ListItemIcon>
+                <CalendarTodayIcon />
+              </ListItemIcon>
+              <ListItemText primary="Specific Version Lookup" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Box>
+    </Drawer>
   );
 }
 

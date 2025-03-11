@@ -1,24 +1,47 @@
 import React, { useState } from 'react';
-import '../styles/SearchBar.css';
+import { Paper, InputBase, IconButton, Divider, Box } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 function SearchBar({ onSearch }) {
   const [url, setUrl] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(url);
+    if (url.trim()) {
+      onSearch(url.trim());
+    }
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Enter a URL to view archived material."
+    <Paper
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ 
+        p: '2px 4px', 
+        display: 'flex', 
+        alignItems: 'center',
+        width: '100%',
+        border: '1px solid #e0e0e0',
+        boxShadow: 1
+      }}
+    >
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Enter URL to search archives"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
+        inputProps={{ 'aria-label': 'search web archives' }}
       />
-      <button type="submit">Search</button>
-    </form>
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      <IconButton 
+        type="submit" 
+        sx={{ p: '10px' }} 
+        aria-label="search"
+        color="primary"
+      >
+        <SearchIcon />
+      </IconButton>
+    </Paper>
   );
 }
 
