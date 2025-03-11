@@ -4,9 +4,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from IPARO import IPARO
-from IPARODateConverter import IPARODateConverter
-from IPNS import ipns
+from iparo.IPARO import IPARO
+from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPNS import ipns
 
 
 class Mode(Enum):

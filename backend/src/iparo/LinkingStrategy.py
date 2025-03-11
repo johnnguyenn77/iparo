@@ -3,11 +3,11 @@ from abc import abstractmethod, ABC
 from datetime import timedelta
 from math import floor
 
-from IPARODateConverter import IPARODateConverter
-from IPAROLink import IPAROLink
-from IPAROLinkFactory import IPAROLinkFactory
-from IPFS import ipfs, Mode
-from IPNS import ipns
+from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPAROLink import IPAROLink
+from iparo.IPAROLinkFactory import IPAROLinkFactory
+from iparo.IPFS import ipfs, Mode
+from iparo.IPNS import ipns
 
 
 # Make package/renaming with __init__ file
@@ -61,18 +61,18 @@ class KPreviousStrategy(LinkingStrategy):
             # First link
             return set()
         latest_iparo = ipfs.retrieve(cid)
-        linked_iparos = {IPAROLinkFactory.from_cid_iparo(cid, latest_iparo)}
+        linked_iparos = latest_iparo.linked_iparos
         # Drop 1 node and add the latest node when... length is k+1?
         # max(0, Length of linked iparos - k), only if positive.
-        latest_iparo_links = latest_iparo.linked_iparos
+        linked_iparos.add(IPAROLinkFactory.from_cid_iparo(cid, latest_iparo))
 
-        if len(latest_iparo_links) == self.k + 1:
+        if len(linked_iparos) == self.k + 2:
 
             seq_num_to_drop = max(latest_iparo.seq_num - self.k, 0)
             if seq_num_to_drop > 0:
                 # Ensure not none.
-                node = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1][0]
-
+                node_to_drop = [node for node in linked_iparos if node.seq_num == seq_num_to_drop][0]
+                linked_iparos.remove(node_to_drop)
 
         # iparo_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
         # while len(iparo_links) > 0 and len(linked_iparos) < self.k + 1:
@@ -108,6 +108,11 @@ class KRandomStrategy(LinkingStrategy):
         latest_node = ipfs.retrieve(latest_cid)
         latest_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_node)
 
+        if latest_node.seq_num == 0:
+            return {latest_link}
+        if latest_node.seq_num >= k-1:
+            pass
+
         # First link is present from latest note links
         latest_node_links = latest_node.linked_iparos
         first_link = [link for link in latest_node_links if link.seq_num == 0][0]
@@ -119,10 +124,11 @@ class KRandomStrategy(LinkingStrategy):
             return links
 
         # K random sequence numbers from 1 to n-1, n = latest sequence number
-        candidate_seq_nums = random.sample(range(1, num_nodes-1), k)  # To sort in reverse?
+        candidate_seq_nums = random.sample(range(1, num_nodes), min(k, num_nodes-1))  # To sort in reverse?
 
         # (iparo: IPARO, seq_num: int) -> set[IPAROLink]?
-        links = links.union({ipfs.retrieve_by_number(url, seq_num) for seq_num in candidate_seq_nums})
+        links = links.union({IPAROLinkFactory.from_cid(
+            ipfs.retrieve_by_number(url, seq_num)) for seq_num in candidate_seq_nums})
         # If the number of linked CIDs is less than K add all the linked CIDs
 
         return links

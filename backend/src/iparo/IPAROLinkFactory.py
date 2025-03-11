@@ -1,11 +1,14 @@
 from typing import Optional
 
-from IPARO import IPARO
-from IPAROLink import IPAROLink
-from IPFS import ipfs
+from iparo.IPARO import IPARO
+from iparo.IPAROLink import IPAROLink
+from iparo.IPFS import ipfs
 
 
 class IPAROLinkFactory:
+    """
+    A collection of helper methods dealing with creating IPAROLinks
+    """
     @classmethod
     def from_cid(cls, cid: str) -> Optional[IPAROLink]:
         """

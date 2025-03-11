@@ -4,8 +4,8 @@ from abc import ABC
 from datetime import datetime, timedelta
 from enum import IntEnum
 
-from IPARO import IPARO
-from IPARODateConverter import IPARODateConverter
+from iparo.IPARO import IPARO
+from iparo.IPARODateConverter import IPARODateConverter
 
 URL = "example.com"
 
@@ -18,7 +18,7 @@ class VersionVolume(IntEnum):
     SMALL = 10
     MEDIUM = 100
     LARGE = 1000
-    HYPER_LARGE = 1000000
+    HYPER_LARGE = 10000
 
 
 class VersionDensity(ABC):

@@ -2,6 +2,7 @@ import unittest
 
 from IPAROTestConstants import *
 from IPAROTestHelpers import add_nodes
+from iparo.IPAROLinkFactory import IPAROLinkFactory
 from iparo.IPFS import ipfs, Mode
 from iparo.IPNS import ipns
 
