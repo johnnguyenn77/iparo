@@ -1,10 +1,10 @@
 import random
 
-from IPAROFactory import IPAROFactory
+from iparo.IPAROFactory import IPAROFactory
 from IPAROTestConstants import *
-from IPFS import ipfs
-from IPNS import ipns
-from LinkingStrategy import LinkingStrategy, SingleStrategy
+from iparo.IPFS import ipfs
+from iparo.IPNS import ipns
+from iparo.LinkingStrategy import LinkingStrategy, SingleStrategy
 
 
 def add_nodes(num_nodes: int):

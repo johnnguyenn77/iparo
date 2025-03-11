@@ -3,7 +3,7 @@ from math import ceil, log2
 import unittest
 
 from IPAROTestHelpers import *
-from LinkingStrategy import *
+from iparo.LinkingStrategy import *
 from IPAROTestConstants import *
 
 

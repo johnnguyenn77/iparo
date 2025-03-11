@@ -1,8 +1,6 @@
 from LinkingStrategy import *
 
-# Use networkx and pyvis.network
 import networkx as nx
-from pyvis.network import Network
 
 from VersionDensity import *
 from IPFS import ipfs

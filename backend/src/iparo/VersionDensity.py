@@ -1,8 +1,8 @@
 import math
-from abc import ABC, abstractmethod
+import random
+from abc import ABC
 from datetime import datetime, timedelta
 from enum import IntEnum
-import random
 
 from IPARO import IPARO
 from IPARODateConverter import IPARODateConverter
