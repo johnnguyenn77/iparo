@@ -7,6 +7,9 @@ import { Box } from '@mui/material';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
+import HistoryPage from './pages/HistoryPage';
+import DateLookupPage from './pages/DateLookupPage';
+import SnapshotDisplay from './pages/SnapshotDisplayPage';
 import SubmitNewURLPage from './pages/SubmitNewURLPage';
 
 function App() {
