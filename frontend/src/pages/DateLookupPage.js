@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Box, Typography, Paper, Container, Grid } from '@mui/material';
 import Sidebar from '../components/Sidebar';
 import DatePicker from '../components/DatePicker';
 import SnapshotList from '../components/SnapshotList';
@@ -13,11 +14,43 @@ function DateLookupPage() {
   };
 
   return (
-    <div className="date-lookup-page">
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
       <Sidebar />
-      <DatePicker onDateSelect={handleDateSelect} />
-      <SnapshotList snapshots={snapshots} />
-    </div>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            borderRadius: 2,
+            backgroundColor: '#ffffff',
+          }}
+        >
+          <Typography
+            variant="h3"
+            component="h1"
+            gutterBottom
+            sx={{ fontWeight: 'bold', color: 'primary.main', mb: 4 }}
+          >
+            Date Lookup
+          </Typography>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={4}>
+              <DatePicker onDateSelect={handleDateSelect} />
+            </Grid>
+            <Grid item xs={12} md={8}>
+              <SnapshotList snapshots={snapshots} />
+            </Grid>
+          </Grid>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
 
