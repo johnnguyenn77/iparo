@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from IPARO import IPARO
-from IPARODateConverter import IPARODateConverter
-from IPFS import ipfs
-from IPNS import ipns
+from iparo.IPARO import IPARO
+from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPFS import ipfs
+from iparo.IPNS import ipns
 
 
 class IPAROFactory:

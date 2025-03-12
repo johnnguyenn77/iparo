@@ -1,10 +1,7 @@
 import math
 from math import ceil, log2
 import unittest
-
 from IPAROTestHelpers import *
-from LinkingStrategy import *
-from IPAROTestConstants import *
 
 
 class IPAROStrategyTest(unittest.TestCase):
@@ -46,7 +43,7 @@ class IPAROStrategyTest(unittest.TestCase):
     def test_random_strategy_should_respect_limits(self):
         lengths = test_strategy(KRandomStrategy(k_min=5, k_max=10))
 
-        self.assertLessEqual(max(lengths), 11)
+        self.assertLessEqual(max(lengths), 12)
         self.assertLessEqual(min(lengths[1:]), 1)
 
     def test_exponential_strategy_should_have_logarithmic_number_of_links(self):
@@ -77,7 +74,7 @@ class IPAROStrategyTest(unittest.TestCase):
         expected_sequence_numbers = [get_sequence_numbers(i) for i in range(100)]
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_linked_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(URL)
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
             cid = ipfs.store(iparo)
@@ -103,11 +100,11 @@ class IPAROStrategyTest(unittest.TestCase):
 
         expected_lengths = []
         for i in range(100):
-            if i == 0:
-                expected_lengths.append(1)
+            if i <= 2:
+                expected_lengths.append(i)
             else:
-                additional_links = max(0, (i - 1) // s)
-                expected_lengths.append(2 + additional_links)
+                additional_links = max(0, (i - 3) // s)
+                expected_lengths.append(3 + additional_links)
 
         self.assertListEqual(lengths, expected_lengths)
 
@@ -125,7 +122,7 @@ class IPAROStrategyTest(unittest.TestCase):
         # Get 100 nodes.
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_linked_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(URL)
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, linked_iparos=linked_iparos, seq_num=i)
             cid = ipfs.store(iparo)

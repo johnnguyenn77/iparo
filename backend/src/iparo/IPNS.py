@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from IPARODateConverter import IPARODateConverter
+from iparo.IPARODateConverter import IPARODateConverter
 
 
 class IPNS:

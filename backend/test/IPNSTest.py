@@ -1,7 +1,7 @@
 import unittest
 
 from IPAROTestConstants import *
-from IPNS import ipns
+from iparo.IPNS import ipns
 
 
 class IPNSTest(unittest.TestCase):

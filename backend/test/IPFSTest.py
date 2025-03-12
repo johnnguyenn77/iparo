@@ -2,8 +2,9 @@ import unittest
 
 from IPAROTestConstants import *
 from IPAROTestHelpers import add_nodes
-from IPFS import ipfs, Mode
-from IPNS import ipns
+from iparo.IPAROLinkFactory import IPAROLinkFactory
+from iparo.IPFS import ipfs, Mode
+from iparo.IPNS import ipns
 
 timestamp = datetime.now()
 

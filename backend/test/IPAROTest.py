@@ -1,7 +1,6 @@
 import unittest
 
-from IPARODateConverter import IPARODateConverter
-from IPAROFactory import IPAROFactory
+from iparo.IPAROFactory import IPAROFactory
 from IPAROTestConstants import *
 
 

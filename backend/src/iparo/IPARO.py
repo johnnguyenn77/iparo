@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import IPAROLink
+from iparo.IPAROLink import IPAROLink
 
 
 @dataclass
@@ -8,7 +8,10 @@ class IPARO:
     url: str
     timestamp: str
     seq_num: int
-    linked_iparos: set[IPAROLink]
+    linked_iparos: set[IPAROLink] # prior_iparos
+    # Advantages: Time efficiency, disadvantages: space?
+    # previous_link: IPAROLink
+    # first_link: IPAROLink
     # Body
     content: bytes
     # Trailer

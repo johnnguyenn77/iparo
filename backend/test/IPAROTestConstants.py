@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 
-from IPARO import IPARO
-from IPARODateConverter import IPARODateConverter
-from IPAROLinkFactory import IPAROLinkFactory
+from iparo.IPARO import IPARO
+from iparo.IPARODateConverter import IPARODateConverter
 
 time1 = datetime.now().replace(microsecond=0)
 time2 = time1 + timedelta(seconds=1)
