@@ -1,0 +1,327 @@
+WARC/1.0
+WARC-Type: warcinfo
+Content-Type: application/warc-fields
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-Record-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Filename: baconIpsum.warc.gz
+WARC-Block-Digest: sha1:V2KZSCVT5LYB3A32TXSFWOMNGONGPVHD
+Content-Length: 282
+
+software: Wget/1.15 (darwin14.0.0)
+format: WARC File Format 1.0
+conformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf
+robots: classic
+wget-arguments: "-pH" "--warc-file=baconIpsum" "http://www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html" 
+
+
+
+WARC/1.0
+WARC-Type: request
+WARC-Target-URI: http://www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html
+Content-Type: application/http;msgtype=request
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-Record-ID: <urn:uuid:1eecba7a-2e3b-48d8-b852-4bf79d23160f>
+WARC-IP-Address: 128.82.4.2
+WARC-Warcinfo-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Block-Digest: sha1:GVBM77ZD5A2JI4SZ4XRWXKAOHL4EK3KX
+Content-Length: 159
+
+GET /~mkelly/semester/2017_spring/baconIpsum.html HTTP/1.1
+User-Agent: Wget/1.15 (darwin14.0.0)
+Accept: */*
+Host: www.cs.odu.edu
+Connection: Keep-Alive
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Record-ID: <urn:uuid:0d4f2a3a-479c-421c-9a2d-d45731ab6006>
+WARC-Warcinfo-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Concurrent-To: <urn:uuid:1eecba7a-2e3b-48d8-b852-4bf79d23160f>
+WARC-Target-URI: http://www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-IP-Address: 128.82.4.2
+WARC-Block-Digest: sha1:6H4GMXBJK222MIOSQOXNPNRE5Q5Q7FPL
+WARC-Payload-Digest: sha1:FJVUI2K5E5LBA5YKCWUYY2D6LRNHKMGD
+Content-Type: application/http;msgtype=response
+Content-Length: 39845
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Thu, 02 Mar 2017 03:03:29 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+Trailer: Link
+
+1efe;extraMetadata="dummyValue"
+<html>
+<body>
+<p>Bacon ipsum dolor amet pig tempor shoulder cupidatat. Culpa shankle excepteur ex dolor. Fatback irure cillum, shankle brisket ut jerky sausage duis kevin ut sunt doner nostrud in. Ut flank lorem ullamco boudin pig ex burgdoggen. Consectetur dolore sausage velit corned beef incididunt tri-tip chicken pork chop pork loin. Ribeye in strip steak sausage drumstick laborum anim ipsum magna pork chop.</p>
+
+<p>Pancetta ut biltong, consectetur brisket nisi excepteur. Dolore leberkas veniam nulla duis jowl. Quis short ribs leberkas, picanha id kevin landjaeger. Doner porchetta flank swine drumstick et dolore tongue short loin aliqua kielbasa capicola. Kielbasa adipisicing eiusmod eu sirloin exercitation consectetur labore filet mignon ball tip ex et voluptate burgdoggen tempor. Qui proident excepteur laboris pork loin adipisicing, enim tongue officia deserunt aliquip ham hock beef. Jowl adipisicing tri-tip qui kielbasa ribeye.</p>
+
+<p>In doner pig capicola anim tenderloin meatloaf. Pancetta spare ribs dolore, turkey quis tongue occaecat tenderloin. Pork belly reprehenderit deserunt aliqua alcatra andouille consequat brisket turducken laborum adipisicing hamburger pastrami chicken labore. Strip steak andouille meatball ullamco, in fugiat ad short ribs ham bacon tempor et cow. Dolore anim excepteur fugiat incididunt t-bone, consectetur pork venison tail.</p>
+
+<p>Shoulder mollit ex alcatra in doner fatback. Frankfurter duis sint laboris beef ribs in doner ullamco enim id capicola. Shankle pork chop ball tip ad eiusmod ullamco, qui capicola cupim. Venison pancetta deserunt corned beef swine. Rump bresaola minim hamburger cillum ham aliquip ham hock bacon do shank magna. Doner id shankle commodo.</p>
+
+<p>Picanha enim shank lorem, bacon tri-tip excepteur. Ham hock nisi pork loin qui cupim bacon. Porchetta fugiat brisket pig velit. Culpa dolore jerky ullamco chuck, kevin enim officia. Brisket tongue cillum beef in fugiat tempor sunt commodo. Aute culpa ipsum tail tempor incididunt voluptate fugiat chuck.</p>
+
+<p>Ex pig reprehenderit mollit. Beef ribs qui hamburger, flank dolore laborum pariatur bresaola in irure. Nisi fatback adipisicing, eiusmod consequat pastrami burgdoggen sausage irure proident leberkas strip steak dolore chicken. Sirloin dolore tongue pork loin, excepteur et laboris doner tenderloin ribeye swine t-bone. Laboris frankfurter beef ribs minim ut cupidatat. Cow lorem venison irure id est qui chuck swine short loin salami filet mignon laboris.</p>
+
+<p>Jowl filet mignon cupim flank. Landjaeger eu cupim officia strip steak, et chicken jerky. Do consectetur excepteur velit turkey tail elit magna cupidatat laboris tri-tip eiusmod pancetta drumstick proident. Cupidatat incididunt picanha in biltong.</p>
+
+<p>Sed dolore in, adipisicing ea enim rump irure aute alcatra. Filet mignon laboris tri-tip nostrud tongue ut biltong velit. Sirloin dolor fugiat laboris do beef ribs, ullamco doner consequat jerky nisi. Cupidatat sirloin t-bone, dolore ut velit labore duis nisi ut voluptate picanha. Eiusmod ut picanha qui sausage prosciutto adipisicing t-bone.</p>
+
+<p>Tail ham kevin, voluptate meatloaf deserunt ball tip ea reprehenderit veniam officia aute cillum shankle flank. Leberkas ut shoulder, culpa fugiat filet mignon tongue ullamco ea boudin duis tempor t-bone chuck flank. Strip steak lorem pariatur magna dolor ut. Bacon minim ut non kielbasa deserunt turducken sirloin meatball ham hock venison. Veniam occaecat pancetta ut sirloin, andouille ribeye aliqua in ullamco elit t-bone officia enim fatback. Chuck shank hamburger, veniam nisi porchetta alcatra ham laborum spare ribs pork chop jowl. Shank fatback pork belly minim beef ribs enim reprehenderit et kevin turducken short ribs voluptate shankle venison rump.</p>
+
+<p>Fugiat shoulder beef beef ribs ipsum, alcatra tenderloin magna boudin pastrami id cupidatat biltong commodo. Fatback ball tip cupidatat strip steak turkey salami deserunt corned beef ham hock est velit biltong pig brisket. Velit tongue irure pork chop shank kevin. Ham doner duis, ea ullamco bacon laboris minim shankle excepteur nulla flank. Officia flank jowl pig.</p>
+
+<p>Pork ex irure eiusmod dolore. Landjaeger et in adipisicing deserunt, bresaola ullamco labore eiusmod pork loin dolore. Ut pork nulla consectetur est cupidatat reprehenderit brisket irure minim ham hock biltong ribeye do. Ribeye swine qui in. Excepteur pig corned beef cillum. Doner corned beef proident occaecat burgdoggen venison strip steak laboris brisket.</p>
+
+<p>Boudin eiusmod magna doner commodo picanha irure pig aliquip. Rump t-bone excepteur bresaola enim, ball tip pariatur quis tail nostrud. Tenderloin sirloin et in ham hock prosciutto chicken tail enim pariatur. Beef ribs occaecat dolor short ribs in reprehenderit. Salami veniam porchetta, beef jowl exercitation spare ribs brisket. Pork sirloin strip steak fatback short ribs.</p>
+
+<p>Flank jerky cillum rump doner pariatur consequat short loin nisi. Aute chicken cillum deserunt. Fugiat sed andouille nisi beef ipsum. Do andouille leberkas, drumstick tail magna ham sunt anim bacon fatback qui meatball dolore strip steak. Consequat ipsum frankfurter, nostrud ribeye shankle duis deserunt cupim spare ribs turkey. Pariatur aliqua chicken, officia ut andouille magna mollit bacon.</p>
+
+<p>Qui eu sirloin shankle deserunt ea in quis jerky jowl. Laboris pastrami prosciutto porchetta veniam, ad cow chuck in elit fugiat ea est cupim nulla. Nostrud ullamco exercitation culpa tri-tip venison labore jerky ut officia commodo elit alcatra. Sausage pariatur do, tenderloin ground round consectetur minim esse tri-tip tongue ham hock non sunt aliqua irure. Aute swine ground round ea ipsum consectetur enim sausage dolore cow sint porchetta turkey ham. Hamburger ut short loin cupidatat venison mollit sint. Elit adipisicing prosciutto culpa spare ribs.</p>
+
+<p>Sausage bacon dolore do fatback. Turkey shoulder tempor consectetur hamburger. Andouille dolor aliqua magna, nostrud tri-tip pastrami pig short loin pariatur shank commodo. Kevin swine veniam, deserunt cupidatat culpa voluptate nulla in adipisicing duis id ground round venison rump. Shank picanha pastrami irure. Ex ipsum boudin ham hock tempor.</p>
+
+<p>Proident jerky andouille, deserunt kielbasa excepteur landjaeger. Shoulder pariatur flank burgdoggen laborum brisket, laboris beef ribs hamburger sint drumstick quis et anim chuck. Ham beef ribs tempor pig. Leberkas excepteur dolor proident sunt. Fatback pork chop turkey ullamco aliquip exercitation. Velit laborum adipisicing lorem.</p>
+
+<p>Boudin andouille cillum pastrami cupim lorem eu pig jerky occaecat veniam pork belly sed. Enim tongue kevin esse, magna consectetur short ribs drumstick swine voluptate chicken. Commodo ipsum quis, voluptate short loin alcatra tri-tip cupim est consectetur. Fugiat shankle ut consequat culpa pork chop. Shoulder laboris aute, aliquip ground round venison short loin short ribs ex ad bresaola cow culpa dolore burgdoggen.</p>
+
+<p>Sint excepteur ham in anim laboris incididunt spare ribs. Dolor pork loin pastrami, leberkas ea porchetta id magna irure. Dolore t-bone strip steak andouille. Tempor turkey pastrami exercitation ut bacon hamburger lorem nostrud eu fatback.</p>
+
+<p>Ad pariatur burgdoggen id aute venison porchetta fatback bresaola flank exercitation ea voluptate in deserunt. Fugiat jerky fatback, tail non est eiusmod tenderloin dolore reprehenderit chuck occaecat pork belly chicken. Mollit magna est labore reprehenderit ham hock id. Id bresaola pork swine chuck pariatur ad, corned beef hamburger ut pork loin pancetta. Leberkas kielbasa elit shoulder prosciutto, ullamco bacon ham jowl fatback tail commodo biltong bresaola turducken. Short ribs kevin cupidatat non drumstick veniam, esse ea duis sausage.</p>
+
+<p>Swine ribeye tongue prosciutto. Pariatur hamburger nisi flank laborum kielbasa. Dolore prosciutto ham in laboris, beef
+1000
+ ribs occaecat bresaola aliqua voluptate tongue excepteur shank. Salami tongue voluptate ipsum ut esse cow nulla et est. Adipisicing sint magna turkey.</p>
+
+<p>Nisi quis pastrami turducken irure, velit consequat alcatra turkey ea. Swine aliqua shankle flank frankfurter ut. Exercitation burgdoggen aliquip incididunt occaecat pig labore ham veniam swine commodo pork loin. Laboris ullamco ut sint tongue irure tri-tip eu t-bone consectetur. Do laboris id non nulla eiusmod shank mollit labore aliquip salami ullamco. Landjaeger pork belly porchetta frankfurter non. Ut burgdoggen nostrud brisket pariatur shoulder sirloin dolore kielbasa.</p>
+
+<p>Pork loin proident pariatur pastrami, kielbasa leberkas occaecat venison ribeye lorem pancetta enim. Pancetta turkey tempor meatloaf do esse aute meatball sausage pork. Drumstick culpa qui rump, venison incididunt fugiat elit flank short ribs t-bone. Flank meatloaf magna chuck, pork loin ground round pancetta.</p>
+
+<p>Sint enim meatball pork, kielbasa tri-tip burgdoggen aliquip laborum capicola shoulder ball tip cillum. Venison culpa sirloin rump pork ribeye porchetta, do ullamco ground round capicola. Frankfurter elit commodo nisi bacon nulla shoulder veniam ullamco cupim prosciutto cow reprehenderit bresaola. Excepteur cupidatat eu enim landjaeger sunt venison et, leberkas biltong turducken. Leberkas pastrami excepteur labore.</p>
+
+<p>Anim dolor shoulder, cow in venison sausage turducken cillum nostrud picanha meatloaf excepteur aute. Ut in voluptate ground round cupim. Chicken quis pariatur shankle strip steak ham hock do. Duis meatball beef ribs dolore pork chop bacon burgdoggen labore minim cillum officia. Eiusmod cow laborum meatloaf rump ball tip cillum aliquip dolore jerky ex consectetur minim. Turkey do ullamco culpa corned beef kevin.</p>
+
+<p>Kevin qui pork loin, jowl andouille t-bone biltong pork chop sirloin dolore ullamco aliqua in nisi. Fatback rump spare ribs boudin magna. Jerky laboris ground round, chuck ex sausage salami commodo in officia nisi. Pancetta laboris adipisicing pig ribeye dolor, capicola voluptate.</p>
+
+<p>Id pork velit ribeye, ut brisket turkey excepteur tongue magna ipsum non ut lorem chicken. Beef ribs est drumstick andouille, shankle duis kevin exercitation pork belly dolore pork chop aute ea commodo. Ipsum pancetta tri-tip beef t-bone swine shankle. Beef tongue jerky ea culpa laboris consequat strip steak mollit venison corned beef irure. Cow incididunt fugiat esse.</p>
+
+<p>Veniam pancetta aute lorem kevin drumstick brisket fugiat culpa mollit. Short ribs frankfurter swine duis ut shankle shank do ex in ipsum eu biltong tri-tip. Turkey meatloaf t-bone ball tip ullamco in. Andouille labore in cow enim pastrami. Chuck flank mollit strip steak tri-tip prosciutto.</p>
+
+<p>Doner tail qui minim. Tempor short loin mollit pork belly ham qui laborum occaecat. Proident tongue alcatra, rump strip steak ut mollit prosciutto. Id lorem do eiusmod prosciutto culpa tongue, exercitation in swine jowl veniam salami ut.</p>
+
+<p>Flank aute burgdoggen frankfurter aliquip short loin kevin, non meatloaf jerky ham. Shank bacon ut consequat filet mignon veniam corned beef prosciutto exercitation biltong non nostrud tempor strip steak est. Voluptate sunt irure excepteur qui in, sint shank biltong pork belly fugiat. Nostrud dolore qui in sint commodo tenderloin, doner cupidatat picanha turducken ut bresaola. Cow ad labore sausage ham hock pariatur landjaeger aliquip exercitation duis tri-tip chuck ea. Ham hock tongue chuck, magna laboris picanha id consectetur pig pork belly tri-tip. Meatball adipisicing picanha deserunt ut fugiat eu.</p>
+
+<p>Leberkas bresaola duis in andouille ground round shank brisket irure ut ham hock culpa flank prosciutto nostrud. Labore sunt minim bresaola, brisket dolor irure tri-tip ut consequat meatball chicken bacon enim. Short ribs et tail, irure quis kevin ham hock shankle. Magna nostrud ea in. Pork loin ball tip laboris qui andouille, in excepteur in strip steak.</p>
+
+<p>Enim sirloin short ribs ex. Excepteur shoulder sunt turducken velit pork. Rum
+2000
+p excepteur flank id laborum aute in cow consequat kevin aliqua turkey pastrami. Short ribs meatball turkey occaecat, filet mignon dolore pastrami pariatur leberkas id proident.</p>
+
+<p>Alcatra dolore tri-tip bresaola. Shoulder ball tip beef ribs jowl, capicola sint pork pastrami meatloaf pancetta consectetur cupim bacon spare ribs. Pork loin excepteur eu pastrami salami pork irure labore. Ut id short ribs nulla tri-tip. Salami nisi pork loin meatball occaecat turducken. In meatball adipisicing sunt cillum chicken eiusmod beef ribs aute.</p>
+
+<p>Ham ribeye in, pastrami tail shankle duis laborum nisi. Pork loin filet mignon doner corned beef, ipsum pork elit tempor do. Burgdoggen exercitation ball tip pastrami voluptate kielbasa. Nulla irure ullamco ut landjaeger. Nulla ut id, consequat capicola pork loin lorem meatloaf magna. Pork chop kielbasa bresaola tail aliqua ad pancetta picanha. Doner ham hock cupidatat deserunt elit dolore adipisicing tempor meatloaf cillum esse.</p>
+
+<p>Shoulder cow bacon aliquip salami. Leberkas deserunt laborum mollit. Eiusmod kevin sunt pariatur minim. Short loin deserunt ea jowl pariatur pig brisket bresaola ut ham hock cupim. Kielbasa pig beef, ut ullamco capicola quis boudin. Pastrami biltong short ribs sausage pork belly jerky sunt, ut reprehenderit. Enim fatback eiusmod laboris, commodo venison in.</p>
+
+<p>Cupidatat nostrud laboris incididunt. Pork corned beef ball tip capicola sint id in, et irure. Eu pig sed jowl porchetta, do incididunt. Tail ut strip steak sirloin hamburger nostrud beef ribs, pork belly fatback quis beef salami turducken.</p>
+
+<p>Do cillum aliquip short loin pariatur, eiusmod ad adipisicing sed elit aliqua sirloin. Sed spare ribs filet mignon enim adipisicing. Turkey nisi bresaola chuck. Pork loin anim capicola tri-tip venison spare ribs meatloaf aliquip ribeye ut salami.</p>
+
+<p>Flank minim pastrami, short loin venison lorem adipisicing filet mignon mollit laboris prosciutto occaecat do reprehenderit turkey. Kielbasa filet mignon sunt hamburger ad. Minim labore et exercitation elit occaecat non andouille strip steak fugiat cow boudin laboris. Commodo aliquip biltong, mollit chuck landjaeger et ullamco anim culpa.</p>
+
+<p>In alcatra frankfurter pig laborum, sausage consequat corned beef turducken. Excepteur laboris chuck t-bone nulla. Strip steak officia bacon, labore sirloin do frankfurter. Minim t-bone est filet mignon.</p>
+
+<p>Pig qui in burgdoggen lorem shank andouille ut jowl enim. Adipisicing dolor pork chop in hamburger. Proident ex fatback, aliqua culpa sed doner ham hock cupidatat spare ribs alcatra sausage occaecat do. Ball tip bacon quis, adipisicing boudin biltong porchetta lorem qui proident exercitation t-bone ham hock in. Exercitation bresaola ullamco deserunt boudin kevin drumstick beef ribs cillum picanha nisi anim lorem landjaeger. Qui meatball jerky, elit do pig eiusmod turducken consequat voluptate proident.</p>
+
+<p>Corned beef tempor lorem jerky, swine qui magna laboris tri-tip tenderloin labore boudin in. Do sed officia magna kevin tenderloin qui occaecat drumstick spare ribs hamburger veniam. Eu enim sint ut turkey burgdoggen pork belly. Aute culpa fugiat consectetur officia. Ball tip fugiat tri-tip shankle. Cupidatat nisi nostrud prosciutto pancetta proident. Anim enim cupim reprehenderit labore.</p>
+
+<p>Short loin et flank turducken mollit fugiat. Short ribs tongue consequat incididunt, fatback turducken cupim. Bresaola doner corned beef ea velit ham hock. Elit dolore nostrud voluptate velit cow.</p>
+
+<p>In pig veniam ut ex ribeye dolore shank sunt beef. Eu aute meatball est, andouille eiusmod jerky turkey landjaeger ad quis. Excepteur tongue t-bone pork loin filet mignon velit cupim prosciutto tempor pancetta tri-tip turkey pig. Laborum dolor corned beef, ex ad turducken ham jowl aliquip qui swine non bacon chicken commodo. Ut brisket do salami t-bone mollit irure shank laboris enim. Filet mignon do veniam aliqua pastrami hamburger. Shoulder kevin eu, filet mignon irure dolore pork tenderloin pork belly.</p>
+
+<p>Consectetur voluptate chuck meatloaf labore short loin. Ham tempor cow excepteur andouille nisi quis turkey aliqua in minim qui leberkas. Excepteur jerky shank, veniam kielbasa sausage ut prosciutto velit sint fatback et. Chuck salami mollit pig, et dolore in hamburger. Nisi dolor proident, andouille tail filet mignon sed kielbasa. Fatback chuck cillum non ground round, ut turducken bacon ut capicola. Ribeye rump aute sunt ut t-bone duis in pastrami et corned beef ground round chuck pariatur deserunt.</p>
+
+<p>Filet mignon ipsum exercitation fatback capicola porchetta kielbasa sint flank tongue picanha excepteur eu id veniam. Laborum minim sausage cillum est, in salami magna landjaeger beef. Pig sunt beef ribs ut boudin beef. Turkey aliquip in, burgdoggen sed et bresaola landjaeger pariatur. Venison ham hock chuck brisket dolore beef ribs. Beef ham hock jowl, in pork belly reprehenderit excepteur exercitation kielbasa irure shank sed incididunt ut. Frankfurter burgdoggen fugiat meatball sausage salami sunt short ribs spare ribs pancetta pork chop enim.</p>
+
+<p>Officia salami filet mignon pork belly deserunt meatball cupim alcatra. Voluptate capicola t-bone pariatur officia hamburger sed leberkas ham hock. Chicken frankfurter landjaeger kevin ut. Nostrud sunt velit boudin, tenderloin shoulder sed sint commodo jowl tri-tip brisket. Aliquip spare ribs sausage exercitation consequat. Fugiat bresaola doner short ribs kielbasa hamburger aliqua ground round beef ribs.</p>
+
+<p>Pork belly duis sunt adipisicing rump shankle. Commodo tail deserunt incididunt, burgdoggen fatback pig quis culpa pork belly occaecat. Shank strip steak anim short loin ham biltong laborum salami sint dolore tenderloin meatball aliquip. Aliquip turkey shoulder ut pancetta eiusmod pork spare ribs irure short ribs. Corned beef voluptate picanha, meatloaf jerky id culpa turducken venison velit kielbasa excepteur. Excepteur drumstick incididunt alcatra elit pork commodo cow exercitation nostrud aliquip picanha short loin turducken et. Irure bresaola drumstick excepteur dolor fatback.</p>
+
+<p>Chicken id kielbasa cupim pork salami reprehenderit duis in brisket turducken voluptate anim meatball pariatur. Filet mignon quis dolore sausage velit sed kielbasa cillum exercitation shoulder proident landjaeger. Kielbasa pancetta pork loin tongue, cupidatat lorem pig shankle ut laboris in. Tempor hamburger pancetta, nisi pork belly turkey laborum. Sint velit officia turducken veniam. Excepteur eiusmod pork chop, pastrami labore magna sausage filet mignon jowl bacon. Jowl ground round veniam, cillum pancetta tempor pork aliqua.</p>
+
+<p>Cupim laboris velit, sint ball tip capicola chuck mollit deserunt. In jerky bacon ipsum, ea short ribs sausage minim occaecat tail shoulder pastrami eu. Eu pork belly doner cupidatat. Tri-tip exercitation adipisicing, sed drumstick ex pork belly pork chop officia turducken capicola chicken ut ground round. Corned beef do cupidatat boudin bacon.</p>
+
+<p>Ground round tail ea landjaeger proident velit culpa consequat nisi. Flank eu bacon, ut cillum labore porchetta meatball voluptate in. Drumstick t-bone flank ut, boudin dolore qui cillum ut ipsum. Aliqua voluptate ball tip non sed velit cillum turducken consequat esse in bresaola laboris. Salami eiusmod duis in sed, ball tip spare ribs ham qui pastrami ullamco. Commodo aliquip shank enim. Picanha pork belly commodo tongue tail laborum shank eu anim pork do fugiat cillum brisket cow.</p>
+
+<p>Flank dolor t-bone bresaola veniam est minim bacon tail exercitation velit drumstick fugiat consequat. Velit kielbasa esse, quis mollit pancetta lorem. Burgdoggen doner jowl, esse picanha magna pork dolore in labore nulla culpa ham fugiat. Tenderloin laboris cillum reprehenderit enim.</p>
+
+<p>Dolor commodo reprehenderit, excepteur enim pork anim sausage tri-tip. Dolore voluptate jowl ground round incididunt chicken do kielbasa jerky turkey pork chop. Shank salami cillum leberkas cow pork loin. Ut venison biltong, est ex excepteur bresaola ad brisket shoulder bacon meatball. Dolore beef ribs spare ribs sint meatloaf chuck pork loin. Al
+4b83
+catra excepteur sunt in laborum leberkas ball tip fugiat venison adipisicing irure salami ipsum dolore.</p>
+
+<p>Cow fatback alcatra in biltong ea. T-bone boudin et, ut dolore tongue pastrami andouille jerky jowl nulla. Qui frankfurter corned beef sausage fatback. Pork belly ut jowl do reprehenderit, andouille alcatra tail nostrud cupidatat jerky in pork. Short ribs ribeye pork belly fugiat, ad pork ut landjaeger eiusmod sint culpa meatball turkey magna irure.</p>
+
+<p>In pig culpa, picanha aliquip short loin beef ribs porchetta andouille cupim dolore strip steak. Kevin enim prosciutto, incididunt ut picanha fatback irure biltong short ribs ham hock ex. Consectetur voluptate pork chop commodo, adipisicing aliquip officia tenderloin shank tongue consequat ground round ut. Anim laborum spare ribs filet mignon picanha aliqua in beef ribs hamburger ut duis leberkas.</p>
+
+<p>Veniam ex ad, tempor kevin esse cupidatat do prosciutto mollit burgdoggen nulla. Pig pastrami tongue consectetur capicola, cillum do flank officia incididunt deserunt ut frankfurter salami ipsum. Qui ipsum in sirloin kevin tri-tip ground round aliquip ut in short ribs. Tail ullamco tenderloin turkey picanha jowl sausage chicken laborum shank filet mignon pork beef ribs short loin.</p>
+
+<p>Fatback officia beef ribs, deserunt brisket landjaeger pork chop ball tip minim shank elit. Nisi meatball culpa est, jowl landjaeger excepteur bacon t-bone veniam cow. Nulla occaecat cupidatat laborum, eu ullamco prosciutto ex sed. Culpa lorem consectetur shank venison pork belly pariatur ullamco.</p>
+
+<p>T-bone bacon jerky jowl elit labore capicola porchetta in anim biltong bresaola dolore. Cillum chuck aute, voluptate burgdoggen jerky beef. Ut sed ham hock shank. Boudin laboris commodo fatback meatloaf picanha hamburger chuck esse proident.</p>
+
+<p>Ut fatback tenderloin sausage chicken kielbasa labore. Id turducken quis, nisi lorem ut eiusmod voluptate. Andouille rump aute biltong leberkas turkey. Ut in culpa landjaeger frankfurter pastrami dolore.</p>
+
+<p>Ut biltong turkey, commodo dolore tempor kevin elit culpa pork loin dolore nostrud. Short ribs swine dolore, irure nisi sausage quis ipsum drumstick corned beef shank deserunt frankfurter. Sunt esse ham elit. Aute sirloin in kevin salami, veniam dolore irure. Tempor sirloin proident, non kevin kielbasa t-bone id turducken nulla ipsum ad short loin. Jerky ad short ribs ham dolore labore.</p>
+
+<p>Spare ribs tri-tip eu, qui anim fatback sunt beef sausage ribeye exercitation. Ball tip biltong brisket exercitation reprehenderit elit cupidatat labore. Minim andouille meatloaf adipisicing swine pork chop ball tip. Ipsum et do officia andouille shank minim dolor dolore bacon ut short ribs tri-tip kielbasa. Bresaola drumstick ex cow in. Ham sirloin prosciutto velit cupidatat spare ribs. Shank cow ea drumstick non.</p>
+
+<p>Sunt occaecat ut prosciutto, duis beef ribs laborum aliqua ut biltong leberkas. Minim pork loin labore picanha chuck. Bacon boudin burgdoggen quis doner. Leberkas eiusmod alcatra pig brisket ipsum id fugiat.</p>
+
+<p>Fugiat ad quis magna in ham aliqua cupidatat tongue flank kielbasa cow. Non velit veniam, magna swine rump exercitation jowl minim ut consectetur ea tri-tip shoulder. Velit exercitation ham pig, in aute pork shoulder. Picanha turducken meatball, pariatur in kielbasa jerky. Quis exercitation burgdoggen chicken, dolore sirloin sunt aute nulla brisket velit. Turkey irure dolore sint corned beef shankle. Kevin in aute reprehenderit ullamco jowl dolor frankfurter non lorem filet mignon.</p>
+
+<p>Prosciutto mollit kevin tongue, flank ball tip incididunt pig exercitation aliqua turducken nostrud qui. Pastrami ball tip pork loin, sed turkey hamburger dolor cillum dolore sint. Reprehenderit salami fatback tail bacon. Turkey frankfurter spare ribs, beef boudin mollit veniam. In venison tri-tip reprehenderit. Ullamco mollit bacon, leberkas excepteur drumstick landjaeger kevin consequat ribeye meatball short loin. Sed burgdoggen excepteur enim.</p>
+
+<p>In anim ut aliqua proident ad. Nisi sed ut, magna ex fugiat id dolore. Ut ad jowl lorem, magna corned beef do tri-tip. Aliqua in ribeye cow deserunt. Prosciutto pariatur eiusmod commodo hamburger.</p>
+
+<p>Boudin officia frankfurter turkey, meatball in beef dolore non. Veniam ham nisi, dolore cow jerky venison eu tongue doner velit meatball lorem id tail. Qui officia tongue corned beef. Strip steak sunt ut tongue. Strip steak pancetta sint, proident laborum shank minim ex alcatra t-bone. Chicken tenderloin brisket, irure pork loin short loin ea.</p>
+
+<p>Sint aliqua chuck labore officia short ribs, ad shankle ullamco ham spare ribs qui pork loin. Anim nostrud pork chop, sausage swine cupidatat ea cillum velit sint short ribs tongue in turducken. Filet mignon dolore pork chop tenderloin pork quis. Proident turducken voluptate velit. Meatball pork loin nisi turducken cupidatat aute.</p>
+
+<p>In sunt do, elit reprehenderit in quis frankfurter ribeye kevin nisi ut. Anim proident shank shankle, sed culpa ea mollit. Shoulder mollit turkey, qui lorem culpa porchetta frankfurter ex flank spare ribs tongue eiusmod doner alcatra. Eu corned beef kevin capicola veniam voluptate elit strip steak prosciutto aliquip dolor ullamco. Elit turducken eiusmod shoulder, enim ut dolore t-bone labore short loin ham hock. Meatloaf minim tongue ham hock nisi.</p>
+
+<p>Landjaeger tempor short loin, strip steak pariatur fugiat leberkas dolore ball tip ut. Nisi in dolore adipisicing deserunt. Bacon cupim kevin, minim in prosciutto jerky hamburger laboris ut ex meatloaf laborum. Proident ham hock pork chop elit magna veniam sunt ipsum capicola kevin do. Nostrud esse nisi occaecat, exercitation tri-tip quis sint ut jerky burgdoggen aute strip steak kielbasa ut. Swine eu salami bresaola nostrud lorem leberkas meatball shankle exercitation ea cupim mollit.</p>
+
+<p>Aute adipisicing spare ribs eu pork, dolore shankle reprehenderit. Exercitation pastrami occaecat mollit id est chicken labore, pork loin lorem tail cow short loin minim biltong. Bacon tenderloin ipsum t-bone short ribs tempor officia laborum consectetur ut turkey landjaeger. Veniam velit in in elit cillum pariatur kevin est short loin meatball turkey id. Corned beef sint shank pariatur cow chuck. Ground round shoulder cillum fugiat.</p>
+
+<p>Sausage pancetta turkey ea, enim ham hock est lorem in. Nisi tenderloin chicken cow do spare ribs fugiat cillum dolore. Flank jowl sausage kevin. In deserunt salami pastrami nostrud culpa commodo brisket sunt ipsum sirloin doner chicken. Bacon jowl in strip steak enim aliquip shoulder. Ut reprehenderit fugiat pariatur occaecat capicola venison sunt ham quis non pork ullamco.</p>
+
+<p>Chicken landjaeger officia bresaola leberkas nisi. Tri-tip qui prosciutto pork belly, ad doner ex landjaeger quis frankfurter veniam commodo. Velit in chicken sausage, aute sed leberkas labore alcatra pastrami occaecat. Porchetta swine esse eiusmod capicola, cow corned beef non frankfurter.</p>
+
+<p>Velit filet mignon pork et shank anim consequat leberkas tenderloin aute ullamco minim frankfurter beef ribs boudin. Short ribs tenderloin sint tail venison proident alcatra pork loin officia irure qui swine bresaola occaecat laborum. Kevin exercitation spare ribs, boudin ea capicola aute frankfurter reprehenderit beef. Laboris magna pig, meatball sed irure aute chuck corned beef ribeye ex commodo filet mignon tempor. Quis ad est do chicken beef cupim pork chop dolore ribeye pork belly picanha biltong. Consectetur jowl eu ex short loin reprehenderit aliquip esse, in pork. Voluptate pig turkey, minim sausage doner tail ullamco ea ball tip culpa beef pork.</p>
+
+<p>Ham hock velit sint, aliqua boudin cupidatat kielbasa eiusmod. Cow turkey t-bone mollit pork belly turducken. Proident corned beef officia pork chop. Tongue capicola nisi, pork ut eiusmod aliqua short ribs. Culpa salami flank labore ham t-bone meatball ground round meatloaf porchetta leberkas.</p>
+
+<p>Ham fugiat sunt tongue, bacon flank ut ipsum leberkas jerky beef dolor filet mignon. Enim sint pork chop veniam, bresaola ham hock kielbasa cupidatat. Veniam ut adipisicing eiusmod qui ground round turducken aute shankle bresaola rump elit sausage alcatra meatloaf. Tail andouille landjaeger jerky beef ribs tongue pork belly esse capicola veniam cow shankle.</p>
+
+<p>Dolor commodo in ad kevin pork belly tongue frankfurter dolore voluptate. Ut reprehenderit beef, quis corned beef meatball pork belly filet mignon dolore swine pork chop do et turducken andouille. Bresaola velit ham hock shank. Swine meatloaf dolore aute elit. Short ribs irure t-bone pork, drumstick meatball burgdoggen. Brisket pork belly hamburger irure commodo biltong non occaecat ullamco. Alcatra aliquip turkey flank velit aute dolor tongue sed occaecat do nisi shank hamburger.</p>
+
+<p>In cupidatat labore, consectetur pork loin pork belly prosciutto ball tip sint short ribs spare ribs hamburger aute dolor. Aliqua elit in, capicola dolor tri-tip bacon cupim. Biltong pastrami hamburger ut labore ham hock chicken. Ea bresaola pig dolor consequat laborum cupim in nisi occaecat sed duis burgdoggen cupidatat lorem.</p>
+
+<p>Aliquip landjaeger pork belly non ipsum frankfurter capicola proident esse short loin chicken flank tail deserunt consectetur. Pariatur doner pastrami ad sed aute in brisket lorem in duis. Eu venison mollit ribeye sirloin. Chicken sint alcatra aute pastrami lorem pork loin incididunt nostrud veniam shoulder ball tip. Burgdoggen dolore sirloin pork chop.</p>
+
+<p>Laboris sed do turducken turkey short loin. Dolore tongue brisket nisi, salami kielbasa sed pork frankfurter esse venison et enim in. Corned beef boudin shoulder, laboris porchetta jowl nulla pork belly strip steak ut hamburger tail elit. Dolore dolor duis, laborum nostrud anim aliquip culpa adipisicing sirloin laboris tempor mollit aute short loin. Veniam ipsum voluptate laboris. Esse frankfurter elit in, venison swine shankle irure bresaola bacon meatloaf ground round. Ullamco exercitation dolore chicken cupim dolore est aute spare ribs turducken mollit tongue incididunt deserunt.</p>
+
+<p>Leberkas rump qui, cupidatat meatloaf hamburger biltong shoulder beef pastrami turducken sed eiusmod kielbasa. Reprehenderit cillum minim qui labore flank doner sirloin culpa sint officia ullamco shankle. Consectetur nostrud et, anim dolor proident magna tail cillum in laboris hamburger enim lorem est. Drumstick boudin shankle, pork loin irure in enim tenderloin. Consequat velit jerky shoulder duis magna. Ullamco landjaeger venison, et tempor boudin aliquip ipsum est qui picanha reprehenderit pork belly sint.</p>
+
+<p>Reprehenderit cupidatat tenderloin, elit boudin pig pancetta in meatloaf cupim duis strip steak consequat tempor mollit. Sed rump sirloin dolor doner, ground round pancetta id tongue sint strip steak bacon consequat. Shankle tri-tip nulla salami sausage voluptate shoulder rump chicken proident swine. Pork loin chuck rump eiusmod, in turkey in cow et cillum aliquip est ipsum landjaeger pork.</p>
+
+<p>Exercitation ham velit occaecat lorem laboris filet mignon ea reprehenderit bresaola fatback. Shankle incididunt dolore ham ut minim exercitation. Ut short loin quis t-bone, dolore porchetta short ribs meatball labore duis bacon tempor laboris. Nisi cupidatat flank ex, hamburger pancetta turkey do proident sausage. Labore tri-tip kielbasa boudin consectetur doner rump in in ex mollit proident pork dolor.</p>
+
+<p>Ut bacon ex ham. Non sunt picanha aliquip kielbasa biltong. Tempor sausage capicola reprehenderit pork chop rump short ribs mollit fatback officia picanha salami corned beef tri-tip. Dolor flank voluptate swine. Ut fatback laborum velit eiusmod minim irure filet mignon voluptate. Chuck culpa nisi filet mignon capicola ham hock bresaola. In consequat reprehenderit spare ribs sausage boudin, filet mignon fatback lorem alcatra do occaecat non.</p>
+
+<p>Ham landjaeger beef ribs hamburger, spare ribs do t-bone non in cillum. Meatball ribeye minim jowl. Kevin burgdoggen pork chop filet mignon labore sausage ham do pork loin ut. Excepteur pork chop in, t-bone voluptate cupim tongue shoulder turkey commodo eiusmod meatloaf ut et tempor. Nulla ribeye t-bone, incididunt anim sunt pastrami et bacon.</p>
+
+<p>T-bone filet mignon sint, ex flank lorem porchetta biltong cow minim consequat burgdoggen bacon pig. Beef doner sunt tongue kielbasa, pariatur tempor tail velit sirloin ut dolor pork loin porchetta deserunt. Occaecat adipisicing pariatur incididunt exercitation, chuck eiusmod pig irure. Alcatra shank turkey, exercitation ea fugiat pork chop t-bone. Sirloin tongue sausage ut, picanha bacon chuck prosciutto leberkas chicken ham shankle. Ullamco shankle burgdoggen laborum drumstick nisi commodo velit porchetta. Leberkas excepteur dolor culpa, pastrami laboris aliquip jowl occaecat.</p>
+
+<p>Minim corned beef boudin adipisicing, proident strip steak pork chop. Biltong commodo ad picanha lorem nulla filet mignon nisi adipisicing. Shoulder dolore ham pork chop ball tip. Ex fugiat laboris dolore sunt et voluptate short loin consectetur alcatra short ribs elit filet mignon shankle. Venison strip steak deserunt ground round. Sed et duis incididunt pancetta labore prosciutto in voluptate biltong magna meatball officia ham hock. Tenderloin doner est aute, chuck alcatra do strip steak.</p>
+
+<p>Ham alcatra jowl, id dolor cupim adipisicing jerky ut aliqua capicola. Adipisicing spare ribs proident, andouille landjaeger venison kielbasa ut in. Voluptate est magna leberkas. Dolore aliquip filet mignon commodo venison aute dolore quis kevin. Kielbasa magna ea excepteur, beef ut ground round shankle. Occaecat pig boudin ball tip dolor ex ham voluptate picanha adipisicing ut kevin kielbasa consectetur ground round.</p>
+
+<p>Short ribs tongue corned beef andouille, jowl velit leberkas laborum fugiat aliqua ut. Tri-tip alcatra ullamco incididunt ut filet mignon prosciutto sirloin spare ribs. Enim shank flank jerky, cow short loin leberkas deserunt turkey. Hamburger kielbasa do porchetta ipsum tempor. Drumstick spare ribs ham adipisicing, tongue non et rump. Capicola incididunt ea short loin burgdoggen, proident non chicken fatback jerky.</p>
+
+<p>Bacon non landjaeger, ullamco andouille ribeye boudin cillum meatball ground round. Cupim chicken eiusmod, culpa ex salami voluptate. Cupidatat bacon shank officia pastrami. Est turkey ullamco, reprehenderit filet mignon occaecat sausage.</p>
+
+<p>Bacon prosciutto cow id, ribeye laboris shank. Corned beef velit ipsum, ad pancetta porchetta quis ham dolore. Chuck bresaola aliquip ham hock, alcatra consequat ea kevin drumstick cillum. Sed non incididunt laborum tail, ham hock ut ut qui. Ut esse leberkas in occaecat anim. Proident bresaola sausage elit adipisicing, pork chop fatback sirloin ullamco jerky ribeye brisket sed nostrud.</p>
+
+<p>Porchetta velit in, irure swine ullamco incididunt bacon magna officia pastrami ipsum. Rump burgdoggen pig, ribeye pastrami occaecat beef ribs ad magna ball tip aliquip sunt. Ullamco chicken pancetta sed cupidatat commodo duis burgdoggen veniam jowl leberkas jerky reprehenderit. Turducken filet mignon ut pariatur tempor. Excepteur meatball ullamco proident ham hock velit irure chuck short ribs ground round pork loin.</p>
+
+<p>Ex cupim elit, spare ribs sed aliqua quis do. In voluptate short ribs pariatur nulla pork chop ut ea beef turducken doner cow commodo dolore velit. Exercitation short ribs qui pork chop ham hock. Dolore aliqua brisket, ham hock velit rump ea doner nisi et tri-tip leberkas. Commodo frankfurter t-bone dolor excepteur hamburger dolore tenderloin jerky shoulder proident shank. Anim enim officia kielbasa.</p>
+
+<p>T-bone fugiat doner, aliquip ipsum flank reprehenderit. Drumstick exercitation id flank, elit picanha eiusmod dolore sunt sausage chicken short ribs. Meatball fugiat andouille lorem duis. Corned beef tongue adipisicing biltong consectetur veniam. Kevin sed turkey rump. Sed nostrud eu, elit deserunt pig salami porchetta hamburger shankle alcatra tri-tip ipsum dolore sausage. Laboris bacon corned beef cupidatat eiusmod, pastrami in.</p>
+
+<p>Sausage pancetta ham tongue picanha ad. Leberkas boudin pariatur pork loin occaecat. Bresaola esse drumstick, ut strip steak doner alcatra magna andouille. In velit pork pancetta tail labore quis adipisicing, qui turkey sint turducken. Consectetur shoulder veniam tail magna. Cupim ball tip chuck, mollit ut ex cillum short ribs venison dolor leberkas occaecat id.</p>
+
+<p>Pork lorem excepteur, rump chicken fugiat cupim picanha ad deserunt do aliqua elit. Cow dolor boudin tongue, qui doner burgdoggen nulla dolore pork chop tri-tip elit dolore. Lorem corned beef salami, kevin esse laborum qui sausage meatloaf in meatball boudin ullamco spare ribs bacon. Hamburger drumstick nostrud short ribs fatback cillum sirloin pariatur ut quis. In salami irure ground round, ad nulla cow sint lorem aute excepteur kevin.</p>
+
+<p>Boudin rump quis, strip steak flank qui picanha sausage spare ribs ham hock. Esse nostrud spare ribs burgdoggen, ham landjaeger ad ex cupidatat ipsum pariatur. Adipisicing nulla biltong, short ribs aliquip filet mignon shank deserunt tenderloin kielbasa. Rump mollit turkey non, tempor occaecat chuck aliqua sunt ribeye ut. Laborum tri-tip ball tip, qui in ullamco pastrami. Commodo doner jerky, cupidatat strip steak kevin ground round cow.</p>
+
+<p>Meatloaf magna id, voluptate proident aliqua incididunt bacon nostrud deserunt elit prosciutto brisket leberkas officia. Sint ribeye adipisicing boudin doner. Tail beef in consectetur tempor incididunt excepteur pariatur shoulder alcatra cupidatat. Biltong jowl shankle sirloin flank kielbasa ham enim. Tenderloin laboris labore id, adipisicing brisket porchetta ad ham fatback alcatra pig. Irure rump pork chop, bacon turkey turducken pancetta jowl esse laboris. Short loin alcatra ball tip kielbasa leberkas eu.</p>
+
+<p>Chicken id excepteur jowl hamburger. Elit rump incididunt frankfurter ball tip jerky beef porchetta velit. Reprehenderit tempor capicola biltong irure velit dolore brisket pork belly cow frankfurter spare ribs minim beef cillum. Eu ex tail tri-tip, in alcatra sunt aliqua short ribs. Ham hock bresaola meatloaf bacon aute burgdoggen ipsum pancetta. Ham quis bacon pork belly. Chicken capicola strip steak, voluptate incididunt qui chuck.</p>
+
+<p>Voluptate dolore tail kevin. Qui exercitation rump pork chop. Kevin esse shankle beef ribs. Sint aute corned beef kevin rump incididunt pork belly pork loin dolore meatloaf. Short loin t-bone exercitation officia, jowl id quis fugiat pork loin salami chicken swine.</p>
+
+<p>Pork meatloaf elit, cupidatat landjaeger nulla id pig. Ea strip steak occaecat ad, short ribs id filet mignon. Laboris occaecat salami, meatloaf labore sunt velit. Ball tip t-bone filet mignon, labore meatloaf burgdoggen ham hamburger deserunt.</p>
+
+<p>Hamburger swine dolore ullamco filet mignon bacon doner pastrami labore id pork. Prosciutto culpa in, adipisicing non sunt dolore dolor cow pastrami. Ea porchetta sunt commodo, ribeye pig biltong elit alcatra consequat short loin ham hock. Spare ribs deserunt sausage tongue tri-tip porchetta ea mollit dolore chicken pig brisket drumstick labore.</p>
+</body>
+</html>
+0
+
+Link: <http://example.com>; rel="original"
+
+
+WARC/1.0
+WARC-Type: metadata
+WARC-Record-ID: <urn:uuid:2df8f74b-3f0d-4c2a-8857-5d44150600bb>
+WARC-Warcinfo-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/MANIFEST.txt
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-Block-Digest: sha1:PQWWFLAVNEQXXKD7XEZDUS7KQYMBWB7F
+Content-Type: text/plain
+Content-Length: 48
+
+<urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+
+
+WARC/1.0
+WARC-Type: resource
+WARC-Record-ID: <urn:uuid:3a9c73f2-5ec7-46b0-8efb-3693aafc3a43>
+WARC-Warcinfo-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Concurrent-To: <urn:uuid:2df8f74b-3f0d-4c2a-8857-5d44150600bb>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/wget_arguments.txt
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-Block-Digest: sha1:A3DVUG2V2ADHIN6JZN42O5WVC4HBDPFR
+Content-Type: text/plain
+Content-Length: 101
+
+"-pH" "--warc-file=baconIpsum" "http://www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html" 
+
+
+WARC/1.0
+WARC-Type: resource
+WARC-Record-ID: <urn:uuid:b0660d2b-ba0c-4a23-85a9-fe73821b151e>
+WARC-Warcinfo-ID: <urn:uuid:08746b67-77ae-44e8-89db-1a1635031e46>
+WARC-Concurrent-To: <urn:uuid:2df8f74b-3f0d-4c2a-8857-5d44150600bb>
+WARC-Target-URI: metadata://gnu.org/software/wget/warc/wget.log
+WARC-Date: 2017-03-02T03:03:29Z
+WARC-Block-Digest: sha1:5FQBX4DSSXC2FL2ZG6NIOYNZRRFGY25X
+Content-Type: text/plain
+Content-Length: 721
+
+Opening WARC file ‘baconIpsum.warc.gz’.
+
+--2017-03-01 22:03:29--  http://www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html
+Resolving www.cs.odu.edu (www.cs.odu.edu)... 128.82.4.2
+Connecting to www.cs.odu.edu (www.cs.odu.edu)|128.82.4.2|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html’
+
+     0K .......... .......... .......... ........               584K=0.07s
+
+2017-03-01 22:03:29 (584 KB/s) - ‘www.cs.odu.edu/~mkelly/semester/2017_spring/baconIpsum.html’ saved [39553]
+
+FINISHED --2017-03-01 22:03:29--
+Total wall clock time: 0.2s
+Downloaded: 1 files, 39K in 0.07s (584 KB/s)
+
+

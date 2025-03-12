@@ -1,0 +1,36 @@
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2017-02-18T10:00:00Z
+WARC-Filename: HTTP204.warc
+WARC-Record-ID: <urn:uuid:7c1adc7b-7f62-49c3-b3d3-42ee1c6345d6>
+Content-Type: application/warc-fields
+Content-Length: 248
+
+software: Fabricated
+ip: 127.0.0.1
+hostname: localhost
+format: WARC File Format 1.0
+conformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf
+description: SampleCrawl
+robots: ignore
+http-header-user-agent: WARCFab/1.0
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2020-02-02T10:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 215
+
+HTTP/1.1 404 NOT FOUND
+Server: nginx
+Date: Mon, 20 Jan 2020 16:29:49 GMT
+Content-Type: text/html
+Connection: close
+
+<html><body>The page was not found on this server. This is an archived 404.</body></html>
+

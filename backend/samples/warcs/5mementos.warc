@@ -1,0 +1,163 @@
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2017-02-18T10:00:00Z
+WARC-Filename: ipwb-memento.warc
+WARC-Record-ID: <urn:uuid:7c1adc7b-7f62-49c3-b3d3-42ee1c6345d6>
+Content-Type: application/warc-fields
+Content-Length: 238
+
+software: Fabricated
+ip: 127.0.0.1
+hostname: localhost
+format: WARC File Format 1.0
+conformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf
+description: SampleCrawl
+robots: ignore
+http-header-user-agent: WARCFab/1.0
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2014-01-14T10:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 186
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Memento for 1/14/2014 10:00am</body></html>
+
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2014-01-15T10:15:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 186
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Memento for 1/15/2014 10:15am</body></html>
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2013-02-02T10:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 186
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Memento for 2/2/2013 10:00am</body></html>
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2016-12-31T11:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 187
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Memento for 12/31/2016 11:00am</body></html>
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://memento.us/
+WARC-Date: 2016-12-31T11:00:01Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 187
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Memento for 12/31/2016 11:01am</body></html>
+
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://someotherURI.us/
+WARC-Date: 2016-12-31T11:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 170
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>SomeotherURI</body></html>
+
+
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://anothersite.us/
+WARC-Date: 2016-12-31T11:00:00Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 170
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<html><body>Another site</body></html>
+
+
+

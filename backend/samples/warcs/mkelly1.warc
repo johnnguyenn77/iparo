@@ -1,0 +1,538 @@
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2017-01-30T18:39:42Z
+WARC-Filename: Wail-20170130183942829-00000-8627~localhost~8443.warc
+WARC-Record-ID: <urn:uuid:7c1adc7b-7f62-49c3-b3d3-42ee1c6345d6>
+Content-Type: application/warc-fields
+Content-Length: 367
+
+software: Heritrix/3.2.0 http://crawler.archive.org
+ip: 127.0.0.1
+hostname: localhost
+format: WARC File Format 1.0
+conformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf
+isPartOf: MyWAILBasedHeritrixCrawl
+description: SampleCrawl
+robots: ignore
+http-header-user-agent: Mozilla/5.0 (compatible; heritrix/3.2.0 +http://yourdomain.com)
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: dns:www.cs.odu.edu
+WARC-Date: 2017-01-30T18:39:42Z
+WARC-IP-Address: 128.82.254.154
+WARC-Record-ID: <urn:uuid:7c647237-1704-4377-bbe7-203eadb7e507>
+Content-Type: text/dns
+Content-Length: 55
+
+20170130183942
+xenon.cs.odu.edu.	82862	IN	A	128.82.4.2
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://www.cs.odu.edu/robots.txt
+WARC-Date: 2017-01-30T18:39:45Z
+WARC-Payload-Digest: sha1:PJ7OVFJC4MDZEY6JXVH4GAE7RRWNALQG
+WARC-IP-Address: 128.82.4.2
+WARC-Record-ID: <urn:uuid:ce9b7f1e-58ca-4234-a021-968ed6fb4790>
+Content-Type: application/http; msgtype=response
+Content-Length: 348
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:46 GMT
+Content-Type: text/plain
+Content-Length: 122
+Last-Modified: Sun, 12 Jan 2014 02:50:40 GMT
+Connection: close
+ETag: "52d20300-7a"
+Accept-Ranges: bytes
+
+User-Agent: 008
+Disallow: /
+
+User-agent: *
+Disallow: /~extract/DocumentCollections
+Disallow: /~wild/cs333/fall02/students
+
+
+WARC/1.0
+WARC-Type: request
+WARC-Target-URI: http://www.cs.odu.edu/robots.txt
+WARC-Date: 2017-01-30T18:39:45Z
+WARC-Concurrent-To: <urn:uuid:ce9b7f1e-58ca-4234-a021-968ed6fb4790>
+WARC-Record-ID: <urn:uuid:42937cb2-98f1-4e5f-96a0-e2aed81a11ee>
+Content-Type: application/http; msgtype=request
+Content-Length: 219
+
+GET /robots.txt HTTP/1.0
+User-Agent: Mozilla/5.0 (compatible; heritrix/3.2.0 +http://yourdomain.com)
+Connection: close
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Host: www.cs.odu.edu
+
+
+
+WARC/1.0
+WARC-Type: metadata
+WARC-Target-URI: http://www.cs.odu.edu/robots.txt
+WARC-Date: 2017-01-30T18:39:45Z
+WARC-Concurrent-To: <urn:uuid:ce9b7f1e-58ca-4234-a021-968ed6fb4790>
+WARC-Record-ID: <urn:uuid:dee0c23c-54f8-4f07-a55c-84f430a4183e>
+Content-Type: application/warc-fields
+Content-Length: 187
+
+force-fetch:
+via: http://www.cs.odu.edu/~mkelly/
+hopsFromSeed: P
+fetchTimeMs: 168
+charsetForLinkExtraction: ISO-8859-1
+outlink: http://www.cs.odu.edu/favicon.ico I =INFERRED_MISC
+
+
+
+WARC/1.0
+WARC-Type: response
+WARC-Target-URI: http://www.cs.odu.edu/~mkelly/
+WARC-Date: 2017-01-30T18:39:49Z
+WARC-Payload-Digest: sha1:3KRQHQ65T23N52AOS5QLFTIMWZIOO7G5
+WARC-IP-Address: 128.82.4.2
+WARC-Record-ID: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+Content-Type: application/http; msgtype=response
+Content-Length: 40743
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 30 Jan 2017 18:39:49 GMT
+Content-Type: text/html
+Connection: close
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Academic Homepage of Mat Kelly, Doctoral Degree student at Old Dominion University in Norfolk, Virginia." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#031fc9" />
+    <!--[if lt IE 9]>
+        <script src="_js/html5shiv.js"></script>
+    <![endif]-->
+    <title>Mat Kelly, PhD Student of Computer Science, Old Dominion University in Norfolk, Virginia</title>
+    <link rel="stylesheet" href="style.css" media="all" />
+    <link rel="author" href="https://plus.google.com/u/0/103717513886594190386" />
+    <script src="_js/html2canvas.js"></script>
+    <script src="index.js"></script>
+    <style type="text/css">
+        /*#screenshot {position: absolute; right: 300px; top: 10px; width: 500px; -webkit-transition: all ease 1s;}*/
+        #screenshot {width: 200px;}
+        #screenshot:hover {
+
+        }
+        #thumbnailFrame {height: 100px; overflow: hidden;}
+    </style>
+  </head>
+
+  <body>
+    <header itemscope itemtype="http://data-vocabulary.org/Person">
+
+        <img src="mofro.png" alt="mug shot" id="mugShot" itemprop="photo" />
+
+      <h1 itemprop="name">Mat Kelly</h1>
+      <h2 itemprop="title">PhD Student, Computer Science</h2>
+      <h3 itemprop="affiliation">Web Science &amp; Digital Libraries Research Group</h3>
+      <h3 itemprop="affiliation">Old Dominion University</h3>
+      <!--<a href="http://www.cs.odu.edu/~mkelly" onclick="screenshotTest();return false;">
+        <img src="amish.jpg" alt="mug shot" id="openMenu" itemprop="photo" />
+      </a>//future work -->
+    </header>
+    <nav>
+      <ul id="sections">
+        <li><a href="#currentProjects">Upcoming/Current Projects</a></li>
+        <li><a href="#papersPostersAndPresentations">Papers, Posters &amp; Presentations</a></li>
+        <li><a href="#recognitionAndParticipation">Recognition &amp; Participation</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+        <li><a href="#courseworkHistory">Coursework History</a></li>
+        <li><a href="#projects">Recent Software Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li id="cv"><a target="_blank" href="http://matkelly.com/cv">C.V.</a></li>
+      </ul>
+    </nav>
+
+    <section id="currentProjects">
+      <h2>Current/Upcoming Projects</h2>
+        <ul>
+          <li>Research and paper development on various aspects of personal web archiving.</li>
+          <li>Continued development of <a href="http://warcreate.com">WARCreate</a>, <a href="http://matkelly.com/wail">Web Archiving Integration Layer (WAIL)</a>, and <a href="https://github.com/machawk1/mink">Mink</a> for <a href="http://www.neh.gov/divisions/odh/grant-news/announcing-seven-digital-humanities-implementation-grants-july-2014">NEH Digital Humanities Implementation Grant</a>.</li>
+          <li>Continued development of <a href="http://github.com/oduwsdl/ipwb">InterPlanetary Wayback (ipwb)</a>.</li>
+        </ul>
+    </section>
+
+    <section id="papersPostersAndPresentations">
+      <h2 id="ppp_heading">Papers, Posters &amp; Presentations</h2>
+        <ul id="ppp_filter">
+          <li class="ppp_active"><a id="ppp_all">All</a></li>
+          <li><a id="ppp_pr">Only Peer-Reviewed</a></li>
+          <li><a id="ppp_p">Only Papers</a></li>
+          <li><a id="ppp_j">Only Journals</a></li>
+        </ul>
+        <ul id="ppp">
+          <li class="paper shortPaper peerReviewed"><em class="me">Mat Kelly</em>, Sawood Alam, Michael L. Nelson, and Michele C. Weigle. "InterPlanetary Wayback: Peer-To-Peer Permanence of Web Archives," In <em>Proceedings of the International Conference on Theory and Practice of Digital Libraries</em> (TPDL). Hannover, Germany, September 2016, pp. 411-416. (<a href="http://www.cs.odu.edu/~mkelly/papers/2016_tpdl_ipwb.pdf">PDF</a>, <a href="publications/kelly-tpdl2016.bib">BibTeX</a>)</li>
+          <li class="poster workshop"><em class="me">Mat Kelly</em>, Sawood Alam, Michael L. Nelson, and Michele C. Weigle, "InterPlanetary Wayback: The Permanent Web Archive," At the <em>Web Archiving and Digital Libraries Workshop (WADL 2016)</em>. Newark, NJ, June 2016.</li>
+          <li class="poster peerReviewed">Sawood Alam, <em class="me">Mat Kelly</em>, and Michael L. Nelson, "InterPlanetary Wayback: The Permanent Web Archive," In <em>Proceedings of the IEEE/ACM Joint Conference on Digital Libraries (JCDL)</em>. Newark, NJ, June 2016, pp. 273-274.  (<a href="http://www.cs.odu.edu/~mkelly/papers/2016_jcdl_ipwb.pdf">PDF</a>, <a href="publications/alam-jcdl2016.bib">BibTeX</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, "Exploring Aggregation of Personal, Private, and Institutional Web Archives," Presented At <em>Archives Unleashed 2.0: Web Archive Datathon</em>, 2016 June 15. (<a href="http://www.cs.odu.edu/~mkelly/presentations/2016_archivesUnleashed_aggregation.pptx">PPTX</a>)</li>
+          <li class="online"><em class="me">Mat Kelly</em>, "A Framework for Aggregating Private and Public Web Archives," <em>Bulletin of IEEE Technical Committee on Digital Libraries (IEEE-TCDL)</em>, Vol. 11, No. 3, December 2015.  (<a href="http://www.ieee-tcdl.org/Bulletin/v11n3/papers/149-Kelly.pdf">PDF</a>, <a href="publications/kelly-tcdl2015.bib">BibTeX</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, "A Framework for Aggregating Private and Public Web Archives," at the <em>ACM/IEEE Joint Conference on Digital Libraries (JCDL)</em>. Doctoral Consortium. Knoxville, TN, June 2015. (<a href="papers/2015_jcdl_aframework.pdf">PDF</a>, <a href="publications/kelly-jcdl2015.bib">BibTeX</a>)</li>
+          <li class="poster peerReviewed">Wesley Jordan, <em class="me">Mat Kelly</em>, Justin F. Brunelle, Laura Vobrak, Michele C. Weigle and Michael L. Nelson, "Mobile Mink: Merging Mobile and Desktop Archived Webs," In <em>Proceedings of the ACM/IEEE Joint Conference on Digital Libraries (JCDL)</em>. Knoxville, TN, June 2015, pp. 243-244, <em class="best">Best Poster Award</em>. (<a href="papers/2015_jcdl_mobileMink.pdf">PDF</a>, <a href="publications/jordan-jcdl2015.bib">BibTeX</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, Michael L. Nelson, and Michele C. Weigle, "Visualizing Digital Collections of Web Archives," <em>Web Archiving Collaboration: New Tools and Models</em>; 2015 June 4; New York City, NY. (<a href="presentations/2015_columbiawac_thumbnails.pptx">PPTX</a>)</li>
+          <li class="journal peerReviewed">Justin F. Brunelle, <em class="me">Mat Kelly</em>, Hany SalahEldeen, Michele C. Weigle and Michael L. Nelson, "Not All Mementos Are Created Equal: Measuring the Impact of Missing Resources," <em>International Journal of Digital Libraries (IJDL)</em>, 16(3), pp. 283-301. May 2015. (<a href="http://link.springer.com/article/10.1007/s00799-015-0150-6">article</a>, <a href="publications/brunelle-ijdl2015-damage.bib">BibTeX</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, "Facilitation of the A Posteriori Replication of Web Published Satellite Imagery", <em>Virginia Space Grant Consortium 2015 Student Research Conference</em>. 2015 April 17; Hampton, VA. (<a href="papers/2015_vsgc_imagery.pdf">PDF</a>, <a href="presentations/2015_vsgc_imagery.pptx">PPTX</a>, <a href="publications/kelly-vsgc2015.bib">BibTeX</a>)
+          <li class="journal peerReviewed">Justin F. Brunelle, <em class="me">Mat Kelly</em>, Michele C. Weigle and Michael L. Nelson, "The Impact of JavaScript on Archivability," <em>International Journal of Digital Libraries (IJDL)</em>, 15(1), pp. 95-117. January 2015. (<a href="http://link.springer.com/article/10.1007%2Fs00799-015-0140-8">article</a>, <a href="publications/brunelle-ijdl2015-impact.bib">BibTeX</a>)</li>
+          <li class="paper longPaper peerReviewed">Michael Ruffing, Yangyang He, <em class="me">Mat Kelly</em>, Jason O. Hallstrom, Stephan Olariu, and Michele C. Weigle. "A Retasking Framework For Wireless Sensor Networks," In <em>Proceedings of the IEEE Military Communications Conference (MILCOM)</em>. Baltimore, MD, 2014 October 6-8, pp. 1066-1071 (<a href="papers/2014_milcom_retasking.pdf">PDF</a>, <a href="publications/ruffing-milcom2014.bib">BibTeX</a>)</li>
+          <li class="paper longPaper peerReviewed">Justin F. Brunelle, <em class="me">Mat Kelly</em>, Hany SalahEldeen, Michele C. Weigle, and Michael L. Nelson, "Not All Mementos Are Created Equal: Measuring The Impact Of Missing Resources," In <em>Proceedings of the IEEE/ACM Joint Conference on Digital Libraries (JCDL)</em>. London, England, September 2014, pp. 321-330, <em class="best">Best Student Paper Award</em>. (<a href="http://www.cs.odu.edu/~mkelly/papers/2014_dl_damage.pdf">PDF</a>, <a href="publications/brunelle-dl2014.bib">BibTeX</a>)</li>
+          <li class="paper shortPaper peerReviewed"><em class="me">Mat Kelly</em>, Michael L. Nelson, and Michele C. Weigle, "The Archival Acid Test: Evaluating Archive Performance on Advanced HTML and JavaScript," In <em>Proceedings of the IEEE/ACM Joint Conference on Digital Libraries (JCDL)</em>. London, England, September 2014, pp. 25-28. (<a href="http://www.cs.odu.edu/~mkelly/papers/2014_dl_acid.pdf">PDF</a>, <a href="publications/kelly-dl2014-acid.bib">BibTeX</a>)</li>
+          <li class="poster peerReviewed"><em class="me">Mat Kelly</em>, Michael L. Nelson, and Michele C. Weigle, "Mink: Integrating the Live and Archived Web Viewing Experience Using Web Browsers and Memento," In <em>Proceedings of the IEEE/ACM Joint Conference on Digital Libraries (JCDL)</em>. London, England, September 2014, pp. 469-470. (<a href="http://www.cs.odu.edu/~mkelly/papers/2014_dl_mink.pdf">PDF</a>, <a href="publications/kelly-dl2014-mink.bib">BibTeX</a>)</li>
+          <li class="presentation">Michael L. Nelson, Scott G. Ainsworth, Justin F. Brunelle, <em class="me">Mat Kelly</em>, Hany SalahEldeen, Michele C. Weigle. "Assessing the Quality of Web Archives," <em>Digital Preservation 2014</em>, Future of Web Archiving Panel; 2014 July 23; Washington, DC. (<a href="http://www.cs.odu.edu/~mkelly/presentations/2014_digitalPreservation.ppt">PPT</a>)</li>
+          <li class="poster"><em class="me">Mat Kelly</em>, Michael L. Nelson, and Michele C. Weigle. "Efficient Thumbnail Summarization for Web Archives," Digital Preservation 2014, Poster Session; 2014 July 22; Washington, DC. (<a href="http://www.cs.odu.edu/~mkelly/posters/2014_digpres_thumbnails.pdf">PDF</a>)</li>
+          <li class="online peerReviewed"><em class="me">Mat Kelly</em>, Justin F. Brunelle, Michele C. Weigle and Michael L. Nelson. "A Method for Identifying Personalized Representations in the Archives,"  <em>D-Lib Magazine</em>, 19(11/12), 2013. (<a href="http://www.dlib.org/dlib/november13/kelly/11kelly.html">article</a>, <a href="publications/kelly-dlib2013.bib">BibTeX</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>. "Archive What I See Now,"  <em>Archive-It Partner Meeting</em>. Salt Lake City, UT, 2013 November 12. (<a href="presentations/2013_archiveItPartnerMeeting_archiveWhatISeeNow.pptx">PPTX</a>)</li>
+          <li class="poster peerReviewed"><em class="me">Mat Kelly</em>, Michael L. Nelson and Michele C. Weigle. "Graph-Based Navigation of a Box Office Prediction System,"  In <em>Proceedings of the IEEE VIS 2013</em>. Atlanta, GA, 2013 October 13-18. (<a href="papers/2013_ieeevis_boxofficeprediction.pdf">PDF</a>, <a href="posters/2013_vis_boxoffice.pdf">Poster</a>, <a href="publications/kelly-vis2013.bib">BibTeX</a>)</li>
+          <li class="presentation">Michael L. Nelson, Scott G. Ainsworth, Justin F. Brunelle, <em class="me">Mat Kelly</em>, Hany SalahEldeen and Michele C. Weigle. "Who Will Archive the Archives? Thoughts About the Future of Web Archiving,"  Wolfram Data Summit 2013. Washington, DC, 2013 September 5-6. (<a href="presentations/2013_wolframDataSumnmit_archiveTheArchives.ppt">PPT</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, Michael L. Nelson and Michele C. Weigle. "WARCreate and WAIL: WARC, Wayback and Heritrix Made Easy," <em>Digital Preservation 2013</em>, Workshops and Sessions: Web Archiving; 2013 July 24; Alexandria, VA. (<a href="http://www.cs.odu.edu/~mkelly/presentations/2013_digitalPreservation_heritrixMadeEasy.pptx">PPTX</a>)</li>
+          <li class="paper longPaper peerReviewed"><em class="me">Mat Kelly</em>, Justin F. Brunelle, Michele C. Weigle and Michael L. Nelson. "On the Change in Archivability of Websites Over Time," In <em>Proceedings of the International Conference on Theory and Practice of Digital Libraries</em> (TPDL). Valletta, Malta, September 2013, pp. 35-47 (<a href="papers/2013_tpdl_archivabilityOverTime_final.pdf">PDF</a>, <a href="publications/kelly-tpdl2013.bib">BibTeX</a>)</li>
+          <li class="poster"><em class="me">Mat Kelly</em>, Michele C. Weigle and Michael L. Nelson. "Making Enterprise-Level Archive Tools Accessible for Personal Web Archiving," <em>Personal Digital Archiving 2013</em>; 2013 February 21; College Park, MD. (<a href="posters/2013_pda_wail.pdf">PDF</a>, <a href="publications/kelly-pda2013.bib">BibTeX</a>)</li>
+          <li class="poster"><em class="me">Mat Kelly</em>, Michele C. Weigle and Michael L. Nelson. "WARCreate - Create Wayback-Consumable WARC Files from Any Webpage," Digital Preservation 2012, Tools Demo Session: Web Archiving; 2012 July 25; Washington, DC. (<a href="presentations/2012_digitalPreservation_warcreate.pptx">PPTX</a>, <a href="presentations/2012_digitalPreservation_warcreate.zip">PPTX w/ videos</a>)</li>
+          <li class="poster peerReviewed"><em class="me">Mat Kelly</em> and Michele C. Weigle, "WARCreate - Create Wayback-Consumable WARC Files from Any Webpage," In <em>Proceedings of the ACM/IEEE Joint Conference on Digital Libraries (JCDL)</em>. Washington, DC, June 2012, pp. 437-438 (<a href="papers/2012_jcdl_warcreate.pdf">PDF</a>, <a href="posters/2012_jcdl_warcreate.pdf">Poster</a>, <a href="publications/kelly-jcdl2012.bib">BibTeX</a>)</li>
+          <li class="poster peerReviewed">Thad Chee (Science Systems &amp; Applications, Inc., Hampton, VA), <em class="me">Matthew Kelly</em> (Science Systems &amp; Applications, Inc., Hampton, VA), Louis Nguyen (NASA-Langley Research Center, Hampton, VA), Patrick Minnis (NASA-Langley Research Center, Hampton, VA), Rabindra Palikonda, Douglas A. Spagenberg (Science Systems &amp; Applications, Inc., Hampton, VA), J. Kirk Ayers (Science Systems &amp; Applications, Inc., Hampton, VA). Access to Real-time and Historic Satellite Products from a Mobile Application. <em>American Geophysical Union Fall Meeting</em>; 2011 December 5-9; San Francisco, CA. (<a href="posters/2012_agu_cloudproducts.ppt">PPT</a>,  <a href="publications/chee-agu2011.bib">BibTeX</a>)</li>
+          <li class="poster"><em class="me">Mat Kelly</em>, Syed R. Rizvi, Liang Chen, Chinmay Lokesh, Stephan Olariu and Michele C. Weigle. ALERT: A Next-generation Emergency Response System for First Responders using Retasking of Wireless Sensor Networks. <em>13th Annual Tidewater Student Research Poster Session</em>; 2011 November 18; Newport News, VA. (<a href="posters/2011_cnu_alert.pdf">PDF</a>)</li>
+          <li class="presentation"><em class="me">Mat Kelly</em>, Michele C. Weigle and Michael L. Nelson. Archiving Your Facebook Pages Using Archive Facebook. NDIIPP/NDSA Partners Meeting Special Interest Session: Web Archiving; 2011 July 20; Washington, DC. (<a href="presentations/2011_ndiipp_archivefacebook.pptx">PPTX</a>)</li>
+          <li class="whitePaper">David Helman (BMW Group, Greenville, SC), <em class="me">Matthew Kelly</em> (BMW Group, Greenville, SC ), Martin Guttmann (Intel Corporation, Santa Clara, CA), Bill Carter (Intel Corporation, Santa Clara, CA), Enrique Castro-Leon (Intel Corporation, Santa Clara, CA), Thomas Kellerer (Intel Corporation, Santa Clara, CA), Dror Shenkar (Intel Corporation, Santa Clara, CA). "Preserving Performance While Saving Power Using Intel Intelligent Power Node Manager and Intel Data Center Manger"; December 2009. (<a href="https://software.intel.com/sites/datacentermanager/node_manager_white_paper_bmw.pdf">article</a>, <a href="papers/2009_intel_node_manager_white_paper_bmw.pdf">PDF</a>)</li>
+        </ul>
+    </section>
+
+    <section id="recognitionAndParticipation">
+      <h2>Recognition &amp; Participation</h2>
+      <ul>
+        <li>Scholarship Awardee, <a href="https://www.rjionline.org/stories/graduate-students-receive-scholarships-to-attend-digital-news-preservati">Donald W. Reynolds Journalism Institute</a>, October 2016.</li>
+        <li>Participant, <a href="http://www.netpreserve.org/events/iipc-crawler-hackathon-london-2016">IIPC "Building Better Crawlers" Hackathon</a>, September 2016.</li>
+        <li>Invited Participant and Presenter, <a href="http://archivesunleashed.com">Archives Unleashed 2.0: Web Archive Datathon</a>, June 2016.</li>
+        <li>Invited Participant, <a href="http://archivesunleashed.ca">Archives Unleashed: Web Archive Hackathon</a>, March 2016.</li>
+        <li>Sole Presenter, Old Dominion University Department of Computer Science PhD Gathering, November 2015.</li>
+        <li>Best Poster for <a href="papers/2015_jcdl_mobileMink.pdf">"Mobile Mink: Merging Mobile and Desktop Archived Webs"</a> at the ACM/IEEE Joint Conference on Digital Libraries (JCDL), June 2015.</li>
+        <li>Best Student Paper for <a href="http://www.cs.odu.edu/~mkelly/papers/2014_dl_damage.pdf">"Not All Mementos Are Created Equal: Measuring The Impact Of Missing Resources"</a> at IEEE/ACM Digital Libraries 2014, September 2014.</li>
+        <li>NASA <a href="http://vsgc.odu.edu/sf/gradfellow/">Virginia Space Grant Consortium</a> <a href="http://vsgc.odu.edu/awardees/20142015/">Graduate Fellow</a>, August 2014.</li>
+        <li><a href="http://www.cs.odu.edu/~mkelly/presentations/2014_pesUniversity_browserBasedDigitalPreservation.pptx">Doctoral Student Presenter</a>, "Browser-Based Digital Preservation" for Visiting <a href="http://pes.edu/">PES University</a> Students, Old Dominion University, July 2014.</li>
+        <li>Acknowledged Contributor, <a href="https://tools.ietf.org/html/rfc7089">RFC7089: HTTP Framework for Time-Based Access to Resource States -- Memento</a>, December 2013.</li>
+        <li><a href="http://www.cs.odu.edu/~mkelly/presentations/2013_cs595_movieExplorer.pptx">Guest Presenter</a>, CS595 - Intro to Web Science, Old Dominion University, October 2013.</li>
+        <li><a href="http://blogs.loc.gov/digitalpreservation/2012/08/warcreate-and-future-stewardship-an-interview-with-mat-kelly/">Featured Interviewee</a>, The Signal Digital Preservation Blog, August 2012.</li>
+        <li><a href="http://cs.harding.edu/wac-workshop2012/participants.html">Participant</a>, Web Archiving Cooperative (WAC) Summer Workshop, June 2012.</li>
+        <li><a href="http://blogs.loc.gov/digitalpreservation/2012/06/announcing-five-ndsa-innovation-award-winners/">Future Steward Innovation Award Recipient</a>, National Digital Stewardship Alliance (NDSA) / Library of Congress, July 2012.</li>
+        <li><a href="http://www.cs.odu.edu/show_features.shtml?64">Featured Grad Student</a>, Old Dominion University Computer Science Department, June 2012.</li>
+        <li>Reviewer, Joint Conference on Digital Libraries (JCDL) 2012, March 2012.</li>
+      </ul>
+    </section>
+
+    <section id="teaching">
+      <h2>Teaching</h2>
+      <ul>
+        <li class="oduphd">Spring 2015: <a href="http://www.cs.odu.edu/~mkelly/semester/2015_spring/cs418/">CS418 - Web Programming</a></li>
+      </ul>
+    </section>
+
+    <section id="courseworkHistory">
+      <h2>Coursework History</h2>
+      <ul>
+        <li class="oduphd">Spring 2017
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Fall 2016
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Summer 2016
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Spring 2016
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Fall 2015
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Summer 2015
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Spring 2015
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Fall 2014
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Summer 2014
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Spring 2014
+          <ul>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+          </ul>
+        </li>
+        <li class="oduphd">Fall 2013
+          <ul>
+            <li>CS595 - <a href="http://www.cs.odu.edu/~mln/teaching/cs595-f13/">Introduction to Web Science</a> (<a href="http://www.cs.odu.edu/~mln/">Dr. Michael L. Nelson</a>)</li>
+            <li>CS899 - Doctoral Dissertation (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+            <li>CS690 - Colloquium</li>
+          </ul>
+        </li>
+        <li class="oduphd">Summer 2013
+          <ul>
+            <li>CS891 - Graduate Seminar (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+            <li>CS690 - Colloquium</li>
+          </ul>
+        </li>
+        <li class="oduphd">Spring 2013
+          <ul>
+            <li>CS895 - <a href="http://www.cs.odu.edu/~mweigle/CS795-S13/Home">Applied Visual Analytics</a> (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)
+              <ul>
+                <li>Project: You're Gonna Die: Diet Edition (<a href="http://www.cs.odu.edu/~mkelly/semester/2013_spring/project1/finalReport.pdf">report</a>, <a href="http://www.cs.odu.edu/~mkelly/semester/2013_spring/project1/">visualization</a>)</li>
+                <li>Project: Box Office Movie Rating and Take Prediction (<a href="http://www.cs.odu.edu/~mkelly/semester/2013_spring/project2/CS895S13P2_FinalReport_Kelly.pdf">report</a>, <a href="http://www.cs.odu.edu/~mkelly/semester/2013_spring/project2/">visualization</a>)</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="oduphd">Fall 2012
+          <ul>
+            <li>CS895 - <a href="http://www.cs.odu.edu/~mweigle/CS795-F12/Home">Information Visualization</a> (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)
+              <ul>
+                <li>Project: <a href="http://www.cs.odu.edu/~mkelly/cs795f12/final/finalReport.pdf">BibT<sub class="texE">e</sub>X Corpus Visualizer</a></li>
+              </ul>
+            </li>
+            <li>CS895 - <a href="http://www.cs.odu.edu/~olariu/cs795-f-2012.html">Topics: Adventures in Sensor Networks</a> (<a href="http://www.cs.odu.edu/~olariu/">Dr. Stephan Olariu</a>)<ul>
+                <li><a href="http://www.cs.odu.edu/~mkelly/semester/2012_fall/cs895SensorNetworks/CS895_midTermPresentation_matKelly.pdf">Presentation</a> of <a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5585658">a recent paper on sensor networks</a></li>
+                <li>Project/Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2012_fall/cs895SensorNetworks/CS895_projectPresentation_matKelly.pdf">Runtime Reprogramming on TinyOS Sans Deluge Modifications</a></li>
+            </ul></li>
+        </ul></li>
+    <li class="odu">Summer 2012<ul>
+            <li>CS891 - Graduate Seminar (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+        </ul>
+        <li class="odu">Spring 2012<ul>
+            <li>CS896 - Topics in Computer Science (<a href="http://www.cs.odu.edu/~mln/">Dr. Michael L. Nelson</a>)</li>
+            <li>CS699 - Thesis Research (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a> &amp; <a href="http://www.cs.odu.edu/~mln/">Dr. Michael L. Nelson</a>)<ul>
+                <li>Defense Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2012_summer/thesis_presentation.pptx">An Extensible Framework for Creating Personal Web Archives of Content Behind Authentication</a></li>
+                <li>Thesis: <a href="http://www.cs.odu.edu/~mweigle/papers/kelly-thesis-12.pdf">An Extensible Framework for Creating Personal Archives of Web Resources Requiring Authentication</a></li></ul>
+            </li>
+        </ul>
+    </li>
+    <li class="odu">Fall 2011<ul>
+            <li>CS895 - <a href="http://www.cs.odu.edu/~olariu/cs795-895-sm.html">Topics: Stochastic Modeling Performance Evaluation</a> (<a href="http://www.cs.odu.edu/~olariu/">Dr. Stephan Olariu</a>)<ul>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_stochasticModeling_midtermPresentation.pdf">Midterm Presentation on a chosen Stochastic Modeling Problem</a></li>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_stochasticModeling_finalPresentation.pdf">Stochastic Modeling Paper</a></li>
+            </ul></li>
+            <li>CS895 - <a href="http://www.cs.odu.edu/~mln/teaching/cs895-f11/">Topics: Web-based Information Retrieval</a> (<a href="http://www.cs.odu.edu/~mln/">Dr. Michael L. Nelson</a>)<ul>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_informationRetrieval_presentation1.pptx">Evaluation and Relation</a> of a <a href="http://quod.lib.umich.edu/j/jep/3336451.0007.104?view=text;rgn=main" title="The Deep Web: Surfacing Hidden Value by Michael K. Bergman">Seminal Paper</a> and a <a href="http://web.eecs.umich.edu/~michjc/papers/cafarella-webscale-sigmodrecord08.pdf" title="Web-Scale Extraction of Structured Data by Michael J. Cafarella, Jayant Madhavan &amp; Alon Halevy">Followup Paper</a></li>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_informationRetrieval_presentation2.pptx">Evaluation and Relation</a> of a <a href="http://www.aclweb.org/anthology/A88-1019.pdf" title="A Stochastic Parts Program and Noun Phrase Parser for Unrestricted Text by Kenneth Ward Church">Seminal Paper</a> and a <a href="http://www.aclweb.org/anthology/E93-1046" title="Ambiguity Resolution In A Reductionist Parser by Atro Voutilainen &amp; Pasi Tapanainen">Followup Paper</a></li>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_informationRetrieval_presentation3.pptx">Evaluation and Relation</a> of a <a href="http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=5392672&amp;abstractAccess=no&amp;userType=inst" title="The Automatic Creation of Literature Abstracts by H. P. Luhn">Seminal Paper</a> and a <a href="http://dl.acm.org/citation.cfm?id=215333" title="A Trainable Document Summarizer by Julian Kupiec, Jan Pedersen &amp; Francine Chen">Followup Paper</a></li>
+                <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/semester/2011_fall/cs895_informationRetrieval_presentation4.pptx">Evaluation and Relation</a> of a <a href="http://www.aaai.org/ojs/index.php/aimagazine/article/viewArticle/1294" title="Question Answering from Frequently Asked Question Files by Robin D. Burke, Kristian J Hammond, Valdimir Kulyukin, Steven L. Lytinen, Noriko Tomurom &amp; Scott Schoenberg">Seminal Paper</a> and a <a href="http://dl.acm.org/citation.cfm?id=1099572" title="Finding Similar Questions in large Question and Answer Archives by Jiwoon Jeon, W. Bruce Croft and Joon Ho Lee">Followup Paper</a></li>
+            </ul></li>
+            <li>CS699 - Thesis Research (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)</li>
+            <li>CS690 - Colloquium</li></ul>
+        </li>
+        <li class="odu">Summer 2011<ul>
+            <li>CS697 - Independent Study In CS (<a href="http://www.cs.odu.edu/~mweigle/">Dr. Michele C. Weigle</a>)<ul>
+                <li><a href="http://www.cs.odu.edu/~mkelly/semester/2011_summer/independent_study_report.pdf">Report on work done</a></li>
+                <li>Project: <a href="https://web.archive.org/web/20110831021613/http://hcil.cs.umd.edu/localphp/hcil/vast11/">IEEE VAST Challenge</a> 2011 (<a href="http://matkelly.com/projects/VAST2011/">submission</a>) (<a href="http://www.cs.odu.edu/~mkelly/semester/2011_summer/submission_review_vast.txt">results</a>)</li>
+                <li>Investigation of <a href="http://docs.tinyos.net/index.php/Deluge_T2">Deluge T2</a> on <a href="https://github.com/tinyos/tinyos-main">TinyOS</a>-based motes for project in Fall 2011</li>
+                <li>Validation of <a href="http://www.cs.odu.edu/~mweigle/papers/tmix-nsdoc.pdf">Tmix</a> for ns-2 and porting of delaybox for <a href="http://www.nsnam.org/">ns-3</a></li>
+                <li>Initial investigation of <a href="https://en.wikipedia.org/wiki/Universal_Software_Radio_Peripheral">USRP</a>s for <a href="http://www.cs.odu.edu/~nadeem/">Dr. Tamer Nadeem</a>. Ongoing into Fall 2011.</li>
+                <li>Further programming of <a href="https://github.com/machawk1/archivefacebook">Archive Facebook</a> for <a href="http://www.cs.odu.edu/~mln/">Dr. Michael L. Nelson</a>/<a href="http://ws-dl.blogspot.com">Web Science and Digital Libraries Research Group</a>.<ul>
+                  <li>Presentation: <a href="http://www.cs.odu.edu/~mkelly/archivefb/presentation.pptx">Archive Facebook</a> at NDIIPP/NDSA Partner Meetup in Washington, DC (<a href="http://ws-dl.blogspot.com/2011/07/2011-07-25-ndsandiipp-partner-meetup.html">blog post</a>)</li></ul>
+                </li></ul>
+            </li>
+    </ul></li>
+    <li class="odu">Spring 2011<ul>
+            <li>CS665 - <a href="http://www.cs.odu.edu/~olariu/cs665.html">Computer Architecture</a> (<a href="http://www.cs.odu.edu/~olariu/">Dr. Stephan Olariu</a>)<ul>
+                <li><a href="https://github.com/machawk1/scoreboarding">Project: An illustration of Scoreboarding dynamics</a></li></ul>
+            </li>
+            <li>CS695 - <!--<a href="http://www.cs.odu.edu/~yaohang/cs695/">-->Topics: Monte Carlo Simulation<!--</a>--> (<a href="http://www.cs.odu.edu/~yaohang/">Dr. Yaohang Li</a>)<ul>
+            <li><a href="http://www.cs.odu.edu/~mkelly/semester/2011_spring/cs695_montecarlosimulation_20110426_paper.docx">Paper</a>/<a href="http://www.cs.odu.edu/~mkelly/semester/2011_spring/cs695_montecarlosimulation_20110412_presentation.pptx">Presentation</a>: Simulated Annealing and N Generals as applied to a Synchronized Distributed Operation</li></ul>
+            </li>
+        </ul></li>
+    <li class="odu">Fall 2010
+      <ul>
+        <li>CS600 - Algorithms and Data Structures (Dr. Desh Ranjan)</li>
+        <li>CS795 - Topics: Machine Learning (<a href="http://www.cs.odu.edu/~zeil/">Dr. Steven J. Zeil</a>)
+          <ul>
+            <li>Paper/Presentation: A Subjectivity Free Analysis and Predictive Scheme for Ranking College Football Teams Using Perceptrons</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="citadel">Spring 2009
+      <ul>
+        <li>CSCI603 - Object-Oriented Design Patterns (Dr. Christopher W. Starr)
+          <ul>
+            <li>Project: Object-Oriented Design Patterns in OCaml</li>
+          </ul>
+        </li>
+        <li>CSCI618 - <!--<a href="http://macs.citadel.edu/rudolphg/csci618/091/index.html">-->Programming Languages<!--</a>-->  (<a href="http://www.mathcs.citadel.edu/rudolphg/">Dr. George Rudolph</a>)<ul>
+                <li>Project: <a href="http://csci618.matkelly.com/">An Exploration of OCaml</a></li></ul>
+            </li>
+        </ul></li>
+    <li class="citadel">Fall 2008<ul>
+            <li>CSCI602 - Foundations of Software Engineering (<a href="http://www.mathcs.citadel.edu/rudolphg/">Dr. George Rudolph</a>)<ul>
+                <li>Projects: Extensive Documentation for the open source <a href="http://spaz.ca/cronometer/">CRON-O-Meter</a> Project</li></ul>
+            </li>
+            <li>CSCI601 - Data Modeling and Database Design (<a href="http://www.cs.cofc.edu/~bowring/">Dr. Jim Bowring</a>)</li>
+        </ul></li>
+    <li class="citadel">Spring 2008<ul>
+            <li>CSCI616 - Automata (<a href="http://www.cs.cofc.edu/~mccauley/">Dr. Ren&eacute;e McCauley</a>)</li>
+        </ul></li>
+        <li class="uf">Spring 2006<ul>
+            <li>EEL4744C - Microprocessor Applications (<a href="http://www.ece.ufl.edu/users/gugel-karl">Dr. Karl Gugel</a>)</li>
+        </ul></li>
+    <li class="uf">Fall 2005<ul>
+            <li>CAP4800 - Systems Simulation (<a href="http://www.cise.ufl.edu/~fishwick/">Dr. Paul Fishwick</a>)<ul>
+                <li>Project: Deadlocked Philosophers, a simulation illustrating the Dining Philosophers and Resource Deadlock ideas</li></ul>
+            </li>
+            <li>CIS4914 - Senior Project (<a href="http://www.cise.ufl.edu/~mssz/">Dr. Mark S. Schmalz</a>, <a href="http://www.cise.ufl.edu/~dts/">Dave Small</a>)<ul>
+                <li>Project: "<a href="https://sourceforge.net/projects/ufseniorproject/">Project: Bob</a>" - a team-based rapidly developed networked 3-D turn-based strategy game.</li></ul>
+            </li>
+            <li>COT4501 - Numerical Analysis - A Computational Approach (<a href="http://www.math.ufl.edu/~rs/">Dr. Rick L. Smith</a>)</li>
+        </ul></li>
+    <li class="uf">Summer 2005<ul>
+            <li>GEO1010 - Geography for a Changing World</li>
+            <li>CEN4500C - Computer Networking Fundamentals (<a href="http://www.cise.ufl.edu/~dts/">Dave Small</a>)</li>
+            <li>ENC1102 - Argument and Persuasion</li>
+            <li>STA4321 - Introduction to Probability</li>
+        </ul></li>
+    <li class="uf">Spring 2005<ul>
+            <li>CEN3031 - Introduction to Software Engineering (<a href="http://www.cise.ufl.edu/~tyavuz/">Dr. Tuba Yavuz</a>)</li>
+            <li>COP4600 - Operating Systems (Dr. Rob Cubert)</li>
+            <li>WIS2040 - Wildlife Issues</li>
+        </ul></li>
+    <li class="uf">Fall 2004<ul>
+            <li>PHY2054 - Physics 2</li>
+            <li>MAS3114 - Computational Linear Algebra</li>
+        </ul></li>
+    <li class="uf">Summer 2004<ul>
+            <li>CDA3101 - Introduction to Computer Organization</li>
+            <li>COP3530 - Data Structures and Algorithms (<a href="http://www.cise.ufl.edu/~sahni/">Dr. Sartaj K. Sahni</a>)</li>
+        </ul></li>
+    <li class="uf">Spring 2004<ul>
+            <li>EEL3701C - <a href="http://mil.ufl.edu/4744/">Digital Logic and Computer Systems</a> (<a href="http://www.mil.ufl.edu/~ems/">Dr. Eric M. Schwartz</a>)</li>
+            <li>PHY4320 - Philosophy of Mind (<a href="http://www.clas.ufl.edu/users/gwitmer/">Dr. D. Gene Witmer</a>)</li>
+            <li>SPN1131 - Beginning Spanish 2</li>
+        </ul></li>
+    <li class="uf">Fall 2003<ul>
+            <li>PHI3130 - Symbolic Logic (<a href="http://faculty.arts.ubc.ca/maydede/">Dr. Murat Aydede</a>)</li>
+            <li>SPN1130 - Beginning Spanish 1</li>
+        </ul></li>
+    <li class="uf">Summer 2003<ul>
+            <li>COT3100 - Applied Discrete Structures</li>
+            <li>PHY2049L - Physics 2 Lab</li>
+        </ul></li>
+    <li class="uf">Spring 2003<ul>
+            <li>ENC2210 - Technical Writing</li>
+            <li>PHI3500 - Metaphysics (<a href="http://www.clas.ufl.edu/users/gwitmer/">Dr. D. Gene Witmer</a>)<ul>
+                <li>Paper: Redefenere Universalia - a proposed solution of the identification of universals through correlating the understanding of universals with Flat Landers</li></ul>
+            </li>
+            <li>PHY2048 - Physics 1</li>
+            <li>POS2041 - American Federal Government</li>
+        </ul></li>
+    <li class="uf">Fall 2002<ul>
+            <li>BSC2008 - Biological Sciences: Evolution, Ecology and Behavior</li>
+            <li>MAC2312 - Calculus 2</li>
+            <li>PHI2630 - Contemporary Moral Issues</li>
+    </ul></li>
+    <li class="uf">Summer 2002<ul>
+            <li>MAC2313 - Calculus 3</li>
+            <li>PHY2048L - Physics 1 Lab</li>
+    </ul></li>
+    <li class="uf">Spring 2002<ul>
+            <li>CGS2414 - Computer Programming Using Java (<a href="http://www.cise.ufl.edu/~pjd/">Peter J. Dobbins</a>)</li>
+            <li>CIS3020 - Advanced Programming Fundamentals/Intro to CIS</li>
+    </ul></li>
+    <li class="uf">Fall 2001<ul>
+            <li>CHM2045L - Chemistry 1 Lab</li>
+            <li>ENC1101 - Expositional and Argumentative Writing</li>
+            <li>MAC2311 - Calculus 1</li>
+    </ul></li>
+    <li>Spring 2001<ul>
+            <li>CHM2030 - Introduction to College Chemistry 1</li>
+            <li>CHM2030L - Introduction to College Chemistry 1 Lab</li>
+    </ul></li>
+    </ul>
+
+    <h3>Coursework Key</h3>
+    <ul>
+        <li class="oduphd">Doctor of Philosophy, Computer Science; Old Dominion University, Norfolk, Virginia, Expected 2016</li>
+        <li class="odu">Master of Science, Computer Science; Old Dominion University, Norfolk, Virginia, August 2012</li>
+        <li class="citadel">Coursework for Master of Science, Computer Science; The Citadel, Charleston, South Carolina</li>
+        <li class="uf">Bachelor of Science, Computer Science; University of Florida, Gainesville, Florida, June 2006</li>
+    </ul>
+</section>
+
+<section id="projects">
+    <h2>Recent Software Projects</h2>
+    <ul>
+        <li><a href="https://github.com/oduwsdl/ipwb"><em>Interplanetary Wayback (ipwb)</em></a> - Integration of WARCs into IPFS for more redundant and persistent web archives</li>
+        <li><a href="https://github.com/thing342/mobilememento"><em>Mobile Mink</em></a> - Android application for aggregating and accessing mobile and desktop mementos</li>
+        <li><a href="https://github.com/machawk1/mink"><em>Mink</em></a> - Chrome extension to integrate the live and archived web using Memento</li>
+        <li><a href="https://github.com/machawk1/tachyon"><em>Tachyon</em></a> - Time travel for the web. Memento browser plugin for Google Chrome</li>
+        <li><a href="http://matkelly.com/wail"><em>Web Archiving Integration Layer (WAIL)</em></a> - One-Click User Instigated Preservation</li>
+        <li><a href="http://matkelly.com/warcreate"><em>WARCreate</em></a> - Google Chrome extension to allow a user to create a Web ARCive (WARC) file from any webpage.</li>
+        <li><a href="http://www.cs.odu.edu/~mkelly/reversearchiveit/reverseArchiveIt05102011.crx"><em>Reverse Archive-It</em></a> - Quick prototype to determine the collections to which a webpage has been associated by <a href="https://archive-it.org">Archive-It</a>. (<a href="http://www.cs.odu.edu/~mkelly/reversearchiveit/reverseArchiveItDemo.avi">video demo</a>)</li>
+        <li><a href="https://addons.mozilla.org/en-US/firefox/addon/archivefacebook/"><em>ArchiveFacebook</em></a> - Mozilla Firefox add-on to allow a user to easily download and save the contents of his/her Facebook profile.</li>
+    </ul>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <ul>
+        <li>mkelly at cs.odu.edu (E-mail)</li>
+        <li><a href="https://twitter.com/machawk1" rel="me">@machawk1</a> (Twitter)</li>
+        <li><a href="https://github.com/machawk1" rel="me">GitHub</a></li>
+        <li><a href="http://orcid.org/0000-0002-0236-7389">orcid:0000-0002-0236-7389</a></li>
+    </ul>
+    <!--<p>Further information including employment history can be found at <a href="http://matkelly.com" rel="me">matkelly.com</a></p>-->
+</section>
+
+</body>
+</html>
+
+
+WARC/1.0
+WARC-Type: request
+WARC-Target-URI: http://www.cs.odu.edu/~mkelly/
+WARC-Date: 2017-01-30T18:39:49Z
+WARC-Concurrent-To: <urn:uuid:ba892695-eaca-441c-b6f1-1733930df0a9>
+WARC-Record-ID: <urn:uuid:214fffbe-c15d-47ee-9618-2792d1fcdd07>
+Content-Type: application/http; msgtype=request
+Content-Length: 217
+
+GET /~mkelly/ HTTP/1.0
+User-Agent: Mozilla/5.0 (compatible; heritrix/3.2.0 +http://yourdomain.com)
+Connection: close
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Host: www.cs.odu.edu
+
+
+
