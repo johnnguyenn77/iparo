@@ -21,7 +21,10 @@ function App() {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/date-lookup" element={<DateLookupPage />} />
                 <Route path="/submit-new-url" element={<SubmitNewURLPage />} />
+                <Route path="/snapshot/:id" element={<SnapshotDisplay />} />
               </Routes>
             </Box>
           </Box>
