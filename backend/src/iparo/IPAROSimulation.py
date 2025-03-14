@@ -33,7 +33,10 @@ class IPAROSimulation:
         # Link the IPAROs in the IPFS
         for i, node in enumerate(nodes):
             node.seq_num = i
-            node.linked_iparos = self.linking_strategy.get_candidate_nodes(URL)
+            try:
+                node.linked_iparos = self.linking_strategy.get_candidate_nodes(URL)
+            except:
+                node.linked_iparos = set()
             cid = ipfs.store(node)
             ipns.update(URL, cid)
 

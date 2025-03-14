@@ -145,16 +145,17 @@ class SequentialExponentialStrategy(LinkingStrategy):
         node_num = latest_node.seq_num
         if node_num == 0:
             return {IPAROLinkFactory.from_cid_iparo(latest_cid, latest_node)}
-        # Required: node_num >= 2
+        # Required: node_num >= 1
         indices: set[int] = {0, node_num}
         index = 1.0
-        while index < node_num + 1:
-            indices.add(node_num + 1 - floor(index))
+        while index < node_num:
+            indices.add(node_num - floor(index))
             index *= self.k
 
         links = set()
 
         for i in indices:
+            # Function call should change accordingly.
             cid = ipfs.retrieve_by_number(url, i)
             link = IPAROLinkFactory.from_cid(cid)
             if link is not None:
@@ -173,8 +174,14 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
+
+        # get_latest_node(url) -> IPARO
         latest_node = ipfs.retrieve(latest_cid)
         node_num = latest_node.seq_num
+
+        # Might need helper function for this - See Sequential Exponential
+        # Helper: set[int] -> set[IPAROLink] (Put in base class)
+        # May also consider set[str] (date times) -> set[IPAROLink] for temporal
         indices: set[int] = {node_num * i // (self.n + 1) for i in range(self.n + 2)}
 
         links = set()
@@ -195,6 +202,7 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
         self.s = s
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
+
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()
@@ -216,18 +224,16 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
         previous_link = IPAROLinkFactory.from_cid(previous_cid)
         links.add(previous_link)
 
+
         # Sequentially add nodes with no more than S hops between them
         current_seq_num = latest_node.seq_num - 1
+
+        # S: size -> N (N*S = total size)
         while current_seq_num > 0:
-            next_seq_num = max(current_seq_num - self.s, 0)
-            if next_seq_num == current_seq_num:
-                break
-
-            next_cid = ipfs.retrieve_by_number(url, next_seq_num)
-            next_link = IPAROLinkFactory.from_cid(next_cid)
-            links.add(next_link)
-
-            current_seq_num = next_seq_num
+            current_seq_num = max(current_seq_num - self.s, 0)
+            current_cid = ipfs.retrieve_by_number(url, current_seq_num)
+            current_link = IPAROLinkFactory.from_cid(current_cid)
+            links.add(current_link)
 
         return links
 
@@ -237,6 +243,9 @@ class TemporallyUniformStrategy(LinkingStrategy):
         self.n = n  # Number of uniformly distributed links to create
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
+        # Helper function str -> IPARO or exception
+        # How to handle special cases? - use try-catch?
+
         latest_cid = ipns.get_latest_cid(url)
         if latest_cid is None:
             return set()

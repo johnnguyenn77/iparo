@@ -139,6 +139,13 @@ class IPFS:
         r = (target_timestamp - before_node_timestamp) / (node_timestamp - before_node_timestamp)
         return before_node.cid if r <= 0.5 else cid
 
+
+    # Add function retrieve_nth_iparo? (IPARO, number) -> IPARO (throw error if not found)
+    # Test cases: (IPARO, number > iparo.seq_num)-> Value/Index/Custom error
+    # (IPARO, number = iparo.seq_num) -> return input
+    # (IPARO, number < iparo.seq_num) -> return another IPARO with seq_num = number.
+    # Add function retrieve_closest_iparo? (IPARO, date) -> Optional[IPARO]?
+
     def retrieve_by_number(self, url: str, number: int) -> Optional[str]:
         """
         Retrieves the IPARO CID corresponding to a given sequence number and a URL.

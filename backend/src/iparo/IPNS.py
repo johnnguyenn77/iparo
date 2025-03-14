@@ -37,7 +37,7 @@ class IPNS:
         self.__versions[(url, curr_timestamp)] = cid
 
     # Optional parameter: datetime ([un]serialized), default value is latest.
-    def get_latest_cid(self, url: str) -> Optional[str]:
+    def get_latest_cid(self, url: str) -> str:
         """
         Retrieves the latest CID for a given URL if it exists, else None.
 
@@ -46,11 +46,14 @@ class IPNS:
 
         Returns:
             str: The CID of the latest capture for the given URL if it exists, else None.
+
+        Exceptions:
+            EmptyError: If the URL is not found.
         """
         self.get_count += 1
-        return self.__store.get(url)
+        return self.__store[url]
 
-    def get_cid(self, url: str, timestamp: str) -> Optional[str]:
+    def get_cid(self, url: str, timestamp: str) -> str:
         """
         Retrieves the CID for a given timestamp.
 
@@ -62,7 +65,7 @@ class IPNS:
             str: The CID of the latest capture for the given URL if it exists, else None.
         """
         self.get_count += 1
-        return self.__versions.get((url, timestamp))
+        return self.__versions[(url, timestamp)]
 
     def get_counts(self):
         """
