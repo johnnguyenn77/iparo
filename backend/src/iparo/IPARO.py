@@ -8,10 +8,7 @@ class IPARO:
     url: str
     timestamp: str
     seq_num: int
-    linked_iparos: set[IPAROLink] # prior_iparos
-    # Advantages: Time efficiency, disadvantages: space?
-    # previous_link: IPAROLink
-    # first_link: IPAROLink
+    linked_iparos: set[IPAROLink]
     # Body
     content: bytes
     # Trailer

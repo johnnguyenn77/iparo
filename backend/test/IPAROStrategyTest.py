@@ -41,10 +41,10 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(lengths, expected_lengths)
 
     def test_random_strategy_should_respect_limits(self):
-        lengths = test_strategy(KRandomStrategy(k_min=5, k_max=10))
+        lengths = test_strategy(KRandomStrategy(10))
 
         self.assertLessEqual(max(lengths), 12)
-        self.assertLessEqual(min(lengths[1:]), 1)
+        self.assertEqual(min(lengths[1:]), 1)
 
     def test_exponential_strategy_should_have_logarithmic_number_of_links(self):
         strategy = SequentialExponentialStrategy(k=2)
@@ -74,7 +74,10 @@ class IPAROStrategyTest(unittest.TestCase):
         expected_sequence_numbers = [get_sequence_numbers(i) for i in range(100)]
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_candidate_nodes(URL)
+            try:
+                linked_iparos = strategy.get_candidate_nodes(URL)
+            except IPARONotFoundException:
+                linked_iparos = set()
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
             cid = ipfs.store(iparo)
@@ -122,7 +125,11 @@ class IPAROStrategyTest(unittest.TestCase):
         # Get 100 nodes.
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_candidate_nodes(URL)
+            try:
+                linked_iparos = strategy.get_candidate_nodes(URL)
+            except IPARONotFoundException:
+                linked_iparos = set()
+
             iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
                           url=URL, linked_iparos=linked_iparos, seq_num=i)
             cid = ipfs.store(iparo)
@@ -143,12 +150,11 @@ class IPAROStrategyTest(unittest.TestCase):
         # Iterate over BFS values
         self.assertLessEqual(max(bfs_values.values()), 5)
 
-
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
         # 0, 10, 11, ..., 44, 50
         relative_times = [(i * 10 + j) for i in range(5) for j in range(i+1)]
         relative_times.append(50)
-        timestamps = test_strategy_with_time_distribution(TemporallyUniformStrategy(4), relative_times)
+        timestamps = test_strategy_with_time_distribution(TemporallyUniformStrategy(5), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [10*i for i in range(6)]
 

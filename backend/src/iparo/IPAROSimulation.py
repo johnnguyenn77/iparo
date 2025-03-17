@@ -1,3 +1,4 @@
+from iparo.Exceptions import EmptyStorageException
 from iparo.LinkingStrategy import *
 
 import networkx as nx
@@ -35,7 +36,7 @@ class IPAROSimulation:
             node.seq_num = i
             try:
                 node.linked_iparos = self.linking_strategy.get_candidate_nodes(URL)
-            except:
+            except EmptyStorageException:
                 node.linked_iparos = set()
             cid = ipfs.store(node)
             ipns.update(URL, cid)
@@ -76,8 +77,7 @@ class IPAROSimulation:
         """
         # Do comprehensive
         nx_graph = nx.DiGraph()
-        for cid in ipfs.get_all_cids(URL):
-            iparo = ipfs.retrieve(cid)
+        for iparo in ipfs.get_all_iparos(URL):
             curr_num = iparo.seq_num
             nx_graph.add_node(curr_num)
             for link in iparo.linked_iparos:

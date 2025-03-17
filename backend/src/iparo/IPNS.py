@@ -1,6 +1,6 @@
 from datetime import datetime
-from typing import Optional
 
+from iparo.Exceptions import IPARONotFoundException
 from iparo.IPARODateConverter import IPARODateConverter
 
 
@@ -51,6 +51,8 @@ class IPNS:
             EmptyError: If the URL is not found.
         """
         self.get_count += 1
+        if url not in self.__store:
+            raise IPARONotFoundException(url)
         return self.__store[url]
 
     def get_cid(self, url: str, timestamp: str) -> str:

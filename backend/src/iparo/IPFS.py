@@ -4,8 +4,10 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
+from iparo.Exceptions import IPARONotFoundException
 from iparo.IPARO import IPARO
 from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPAROLink import IPAROLink
 from iparo.IPNS import ipns
 
 
@@ -46,13 +48,16 @@ class IPFS:
     def reset_data(self):
         self.data: dict[str, IPARO] = {}
 
-    def retrieve(self, cid) -> Optional[IPARO]:
+    def retrieve(self, cid) -> IPARO:
         """
-        Retrieves the IPARO object corresponding to a given CID, if it exists, otherwise, ``None``.
+        Retrieves the IPARO object corresponding to a given CID, if it exists;
+        otherwise, it throws an IPARONotFoundException.
         """
         self.retrieve_count += 1
-        iparo_bytes = self.data.get(cid)
-        return pickle.loads(iparo_bytes) if iparo_bytes is not None else iparo_bytes
+        if cid not in self.data:
+            raise IPARONotFoundException(cid)
+        iparo_bytes = self.data[cid]
+        return pickle.loads(iparo_bytes)
 
     def retrieve_by_timestamp(self, url: str, target_timestamp: datetime, mode: Mode = Mode.LATEST_BEFORE) -> \
             Optional[str]:
@@ -67,13 +72,6 @@ class IPFS:
         self.retrieve_count += 1
         latest_cid = ipns.get_latest_cid(url)
         latest_node = self.retrieve(latest_cid)
-        # Note: the only times that the "earliest after" mode returns None are when:
-        # 1. there are no nodes to begin with.
-        # 2. the target timestamp comes after the latest time.
-
-        # The first case is tackled by an if statement
-        if latest_node is None:
-            return None
         latest_time = IPARODateConverter.str_to_datetime(latest_node.timestamp)
 
         # The second case is tackled by another if statement. Of course,
@@ -139,13 +137,6 @@ class IPFS:
         r = (target_timestamp - before_node_timestamp) / (node_timestamp - before_node_timestamp)
         return before_node.cid if r <= 0.5 else cid
 
-
-    # Add function retrieve_nth_iparo? (IPARO, number) -> IPARO (throw error if not found)
-    # Test cases: (IPARO, number > iparo.seq_num)-> Value/Index/Custom error
-    # (IPARO, number = iparo.seq_num) -> return input
-    # (IPARO, number < iparo.seq_num) -> return another IPARO with seq_num = number.
-    # Add function retrieve_closest_iparo? (IPARO, date) -> Optional[IPARO]?
-
     def retrieve_by_number(self, url: str, number: int) -> Optional[str]:
         """
         Retrieves the IPARO CID corresponding to a given sequence number and a URL.
@@ -185,25 +176,43 @@ class IPFS:
         self.store_count = 0
         self.retrieve_count = 0
 
-    def get_all_cids(self, url: str) -> list[str]:
+    def get_all_links(self, url: str) -> list[IPAROLink]:
         """
-        Retrieves the list of all CIDs in the IPFS, corresponding to the given URL.
-        The nodes are sorted from latest to earliest.
+        Retrieves the list of all links in the IPFS, corresponding to the given URL.
+        The links are sorted from latest to earliest. This will also include all the CIDs.
         """
-        cid = ipns.get_latest_cid(url)
-        if cid is None:
-            return []
-        cids = [cid]
-        while True:
-            iparo = self.retrieve(cid)
-            # TODO: Optimize
-            links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
-            if len(links) == 0:
-                break
-            cid = links[0].cid
-            cids.append(cid)
+        links = []
+        try:
+            cid = ipns.get_latest_cid(url)
+            while True:
+                iparo = self.retrieve(cid)
+                links.append(IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp))
+                # TODO: Optimize
+                curr_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
+                if len(curr_links) == 0:
+                    raise IPARONotFoundException()
+                cid = curr_links[0].cid
+        finally:
+            return links
 
-        return cids
+    def get_all_iparos(self, url: str) -> list[IPARO]:
+        """
+        Retrieves the list of all IPAROs in the IPFS, corresponding to the given URL.
+        The nodes are sorted from latest to earliest. This will also include all the CIDs.
+        """
+        iparos = []
+        try:
+            cid = ipns.get_latest_cid(url)
+            while True:
+                iparo = self.retrieve(cid)
+                iparos.append(iparo)
+                # TODO: Optimize
+                links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
+                if len(links) == 0:
+                    raise IPARONotFoundException()
+                cid = links[0].cid
+        finally:
+            return iparos
 
 
 ipfs = IPFS()
