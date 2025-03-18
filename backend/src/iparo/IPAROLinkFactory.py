@@ -5,7 +5,7 @@ from iparo.Exceptions import IPARONotFoundException
 from iparo.IPARO import IPARO
 from iparo.IPARODateConverter import IPARODateConverter
 from iparo.IPAROLink import IPAROLink
-from iparo.IPFS import ipfs
+from iparo.IPFS import ipfs, Mode
 
 
 class IPAROLinkFactory:
@@ -60,8 +60,9 @@ class IPAROLinkFactory:
 
         return IPAROLinkFactory.retrieve_nth_iparo(next_link, number)
 
+
     @classmethod
-    def retrieve_closest_iparo(cls, link: IPAROLink, timestamp: datetime) -> IPAROLink:
+    def retrieve_closest_iparo(cls, link: IPAROLink, timestamp: datetime, mode: Mode = Mode.CLOSEST) -> IPAROLink:
         """
         A helper method that enables the retrieval of IPARO using a sequence number
         to save IPARO operations by adding the ability to repeatedly apply the
@@ -70,21 +71,21 @@ class IPAROLinkFactory:
         """
         curr_ts = IPARODateConverter.str_to_datetime(link.timestamp)
 
-        # if ts > timestamp:
-        #     raise IPARONotFoundException(ts)
         try:
             if curr_ts == timestamp:
                 return link
             prev_link = IPAROLinkFactory.retrieve_nth_iparo(link, link.seq_num - 1)
             prev_ts = IPARODateConverter.str_to_datetime(prev_link.timestamp)
-            # Calculate time fraction and see if it's greater than 0.5.
+            # Calculate time fraction.
             time_frac = (timestamp - prev_ts) / (curr_ts - prev_ts)
-            if 0 <= time_frac < 0.5:
-                return prev_link
-            elif 0.5 <= time_frac <= 1:
-                return link
-            elif 1 <= time_frac:
+            if time_frac > 1:
                 raise IPARONotFoundException("Not a valid timestamp")
+            elif time_frac >= 0:
+                if mode == Mode.CLOSEST:
+                    return prev_link if time_frac < 0.5 else link
+                elif mode == Mode.EARLIEST_AFTER:
+                    return link if time_frac > 0 else prev_link
+                return prev_link if time_frac < 1 else link
             else:
                 iparo = ipfs.retrieve(prev_link.cid)
                 candidate_links = iparo.linked_iparos
@@ -93,22 +94,11 @@ class IPAROLinkFactory:
                 next_link = min([link for link in candidate_links if
                                  IPARODateConverter.str_to_datetime(link.timestamp) >= timestamp],
                                 key=lambda link: IPARODateConverter.str_to_datetime(link.timestamp))
-                return IPAROLinkFactory.retrieve_closest_iparo(next_link, timestamp)
+                return IPAROLinkFactory.retrieve_closest_iparo(next_link, timestamp, mode)
         except IPARONotFoundException as e:
             raise e
         except ValueError:
             raise IPARONotFoundException("No previous link")
-
-    # @classmethod
-    # def find_link(cls, iparo: IPARO, ):
-    #     """
-    #     Given an IPARO object, find a link with the given sequence number.
-    #     """
-    #     try:
-    #         previous_link = [link for link in iparo.linked_iparos if link.seq_num == ]
-    #         return previous_link[0]
-    #     except IndexError:
-    #         raise IPARONotFoundException(f"No link available for sequence number {seq_num}")
 
     @classmethod
     def from_indices(cls, link: IPAROLink, indices: set[int]) -> set[IPAROLink]:

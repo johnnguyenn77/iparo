@@ -47,8 +47,8 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertGreaterEqual(frequencies[9] / frequencies[8], 0.8)
 
     def test_multipeak_can_have_two_peaks(self):
-        # For reproducibility
-        random.seed(100)
+        # Reason why I omitted the seed: It turns out that the algorithm used
+        # to
 
         multipeak = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
         nodes = multipeak.get_iparos(VersionVolume.LARGE)

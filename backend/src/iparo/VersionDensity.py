@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 import math
 import random
 from abc import ABC
@@ -52,15 +53,18 @@ class VersionDensity(ABC):
 
         return iparos
 
+    @abstractmethod
     def get_quantile(self, x: float) -> float:
-        return x
+        pass
 
 
 class UniformVersionDensity(VersionDensity):
     """
     Uniform version density would mean each node is equally spaced.
     """
-    pass
+
+    def get_quantile(self, x: float) -> float:
+        return x
 
 
 class LinearVersionDensity(VersionDensity):
@@ -161,3 +165,6 @@ class MultipeakDensity(VersionDensity):
 
         iparos.sort(key=lambda iparo: iparo.timestamp)
         return iparos
+
+    def get_quantile(self, x: float) -> float:
+        pass

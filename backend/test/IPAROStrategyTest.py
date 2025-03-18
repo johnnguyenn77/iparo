@@ -106,8 +106,8 @@ class IPAROStrategyTest(unittest.TestCase):
             if i <= 2:
                 expected_lengths.append(i)
             else:
-                additional_links = max(0, (i - 3) // s)
-                expected_lengths.append(3 + additional_links)
+                additional_links = max(0, (i - 2) // s)
+                expected_lengths.append(2 + additional_links)
 
         self.assertListEqual(lengths, expected_lengths)
 
