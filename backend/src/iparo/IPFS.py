@@ -2,7 +2,6 @@ import hashlib
 import pickle
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 from iparo.Exceptions import IPARONotFoundException
 from iparo.IPARO import IPARO
@@ -59,105 +58,81 @@ class IPFS:
         iparo_bytes = self.data[cid]
         return pickle.loads(iparo_bytes)
 
-    def retrieve_by_timestamp(self, url: str, target_timestamp: datetime, mode: Mode = Mode.LATEST_BEFORE) -> \
-            Optional[str]:
+    def retrieve_by_url_and_timestamp(self, url: str, target_timestamp: datetime, mode: Mode = Mode.LATEST_BEFORE) -> \
+            IPAROLink:
+        link = self.get_latest_link(url)
+        return self.retrieve_closest_iparo(link, target_timestamp, mode)
+
+    def retrieve_nth_iparo(self, link: IPAROLink, number: int) -> IPAROLink:
         """
-        Retrieves the IPARO versions of a given URL closest to a given datetime if at least one
-        IPARO version is stored in the IPFS, otherwise ``None``. Default is the latest timestamp
-        that occurs before the target timestamp, but ``Mode.EARLIEST_AFTER`` gives the node with
-        the earliest time after a given timestamp, and ``Mode.CLOSEST`` gives the node with the
-        closest timestamp to a given timestamp. If the distance from the two closest times to
-        the target timestamp are equal, the CID with the earlier sequence number will be chosen.
+        A helper method that enables the retrieval of IPARO using a sequence number
+        to save IPARO operations by adding the ability to repeatedly apply the
+        greedy search method.
         """
-        self.retrieve_count += 1
-        latest_cid = ipns.get_latest_cid(url)
-        latest_node = self.retrieve(latest_cid)
-        latest_time = IPARODateConverter.str_to_datetime(latest_node.timestamp)
+        if link.seq_num < number:
+            raise IPARONotFoundException(number)
+        elif link.seq_num == number:
+            return link
 
-        # The second case is tackled by another if statement. Of course,
-        # when the target timestamp comes after the latest time (on any other mode),
-        # the latest CID gets chosen.
-        if target_timestamp > latest_time and mode == Mode.EARLIEST_AFTER:
-            return None
-        elif target_timestamp > latest_time:
-            return latest_cid
+        # It is assumed that there is a link to the previous node.
+        iparo = self.retrieve(link.cid)
+        candidate_links = [link for link in iparo.linked_iparos if link.seq_num >= number]
+        if not candidate_links:
+            raise IPARONotFoundException(number)
+        next_link = min(candidate_links, key=lambda link: link.seq_num)
 
-        # Find the earliest node after a given timestamp
-        cid = latest_cid
-        node = latest_node
-        while IPARODateConverter.str_to_datetime(node.timestamp) > target_timestamp:
-            linked_iparos = node.linked_iparos
-            # Find earliest node after the target timestamp
-            next_cid = None
-            next_timestamp = None
+        return self.retrieve_nth_iparo(next_link, number)
 
-            # Traverse through all links to find the next CID and timestamp
-            for link in linked_iparos:
-                curr_timestamp = IPARODateConverter.str_to_datetime(link.timestamp)
+    def retrieve_closest_iparo(self, link: IPAROLink, timestamp: datetime, mode: Mode = Mode.CLOSEST) -> IPAROLink:
+        """
+        A helper method that enables the retrieval of IPARO using a sequence number
+        to save IPARO operations by adding the ability to repeatedly apply the
+        greedy search method from an IPARO link. Unlike the other method, it only applies
+        the closest IPARO.
+        """
+        curr_ts = IPARODateConverter.str_to_datetime(link.timestamp)
 
-                is_relevant = curr_timestamp >= target_timestamp
-                is_closest = next_timestamp is None or curr_timestamp <= next_timestamp
+        try:
+            if curr_ts == timestamp:
+                return link
+            prev_link = self.retrieve_nth_iparo(link, link.seq_num - 1)
+            prev_ts = IPARODateConverter.str_to_datetime(prev_link.timestamp)
+            # Calculate time fraction.
+            time_frac = (timestamp - prev_ts) / (curr_ts - prev_ts)
+            if time_frac > 1:
+                raise IPARONotFoundException("Not a valid timestamp")
+            elif time_frac >= 0:
+                if mode == Mode.CLOSEST:
+                    return prev_link if time_frac <= 0.5 else link
+                elif mode == Mode.EARLIEST_AFTER:
+                    return link if time_frac > 0 else prev_link
+                return prev_link if time_frac < 1 else link
+            else:
+                iparo = self.retrieve(prev_link.cid)
+                candidate_links = iparo.linked_iparos
+                candidate_links.add(prev_link)
+                # Find minimum time
+                next_link = min([link for link in candidate_links if
+                                 IPARODateConverter.str_to_datetime(link.timestamp) >= timestamp],
+                                key=lambda link: IPARODateConverter.str_to_datetime(link.timestamp))
+                return self.retrieve_closest_iparo(next_link, timestamp, mode)
+        except IPARONotFoundException as e:
+            raise e
+        except ValueError:
+            raise IPARONotFoundException("No previous link")
 
-                if is_relevant and is_closest:
-                    next_cid = link.cid
-                    next_timestamp = IPARODateConverter.str_to_datetime(link.timestamp)
-
-            if next_cid is None:
-                break
-
-            cid = next_cid
-            node = self.retrieve(cid)
-
-        # Get closest timestamp
-        node_timestamp = IPARODateConverter.str_to_datetime(node.timestamp)
-
-        # Case 1: Target timestamp is equal to node timestamp. In this case, we can just return the CID.
-        # Case 2: Mode == Earliest after, in which case returning the CID should be sufficient.
-        if node_timestamp == target_timestamp or mode == Mode.EARLIEST_AFTER:
-            return cid
-
-        # Case 3: Sequence number is 0 and mode is latest before. Returns None.
-        if node.seq_num == 0 and mode == Mode.LATEST_BEFORE:
-            return None
-
-        # Case 4: The node is the very first node and the mode is not "latest before".
-        # This will return the CID of the first IPARO.
-        elif node.seq_num == 0:
-            return cid
-
-        # Find previous node - assume that can never be None
-        before_node = [link for link in node.linked_iparos if link.seq_num == node.seq_num - 1][0]
-        if mode == Mode.LATEST_BEFORE:
-            return before_node.cid
-
-        before_node_timestamp = IPARODateConverter.str_to_datetime(before_node.timestamp)
-
-        # r measures how close to the "before node" the target timestamp is, as a percentage of
-        # the total time gap between the two consecutive nodes.
-        r = (target_timestamp - before_node_timestamp) / (node_timestamp - before_node_timestamp)
-        return before_node.cid if r <= 0.5 else cid
-
-    def retrieve_by_number(self, url: str, number: int) -> Optional[str]:
+    def retrieve_iparo_by_url_and_number(self, url: str, number: int) -> IPAROLink:
         """
         Retrieves the IPARO CID corresponding to a given sequence number and a URL.
+        Usually only used for tests.
         """
         cid = ipns.get_latest_cid(url)
-        if cid is None:
-            return None
-        cids = [cid]
-        while True:
-            iparo = self.retrieve(cid)
-            if iparo.seq_num == number:
-                return cid
-            # TODO: Optimize
-            link = min((link for link in iparo.linked_iparos if link.seq_num >= number),
-                       default=None, key=lambda x: x.seq_num)
-            if link is None or link.seq_num == number:
-                break
-            cid = link.cid
-            cids.append(cid)
 
-        return link.cid if link is not None else None
+        # To avoid a circular dependency on IPAROLinkFactory
+        iparo = self.retrieve(cid)
+        link = IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp)
+        result = self.retrieve_nth_iparo(link, number)
+        return result
 
     def get_counts(self) -> dict:
         """
@@ -183,17 +158,17 @@ class IPFS:
         """
         links = []
         try:
-            cid = ipns.get_latest_cid(url)
+            link = self.get_latest_link(url)
             while True:
-                iparo = self.retrieve(cid)
-                links.append(IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp))
-                # TODO: Optimize
-                curr_links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
-                if len(curr_links) == 0:
-                    raise IPARONotFoundException()
-                cid = curr_links[0].cid
+                links.append(link)
+                link = self.retrieve_nth_iparo(link, link.seq_num - 1)
         finally:
             return links
+
+    def get_latest_link(self, url: str) -> IPAROLink:
+        cid = ipns.get_latest_cid(url)
+        iparo = self.retrieve(cid)
+        return IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp)
 
     def get_all_iparos(self, url: str) -> list[IPARO]:
         """
@@ -206,7 +181,7 @@ class IPFS:
             while True:
                 iparo = self.retrieve(cid)
                 iparos.append(iparo)
-                # TODO: Optimize
+
                 links = [link for link in iparo.linked_iparos if link.seq_num == iparo.seq_num - 1]
                 if len(links) == 0:
                     raise IPARONotFoundException()

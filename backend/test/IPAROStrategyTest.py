@@ -1,7 +1,7 @@
 import math
 from math import ceil, log2
 import unittest
-from itertools import takewhile, starmap, count
+from itertools import takewhile, count
 
 from IPAROTestHelpers import *
 

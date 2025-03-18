@@ -1,17 +1,19 @@
 from datetime import datetime
 from typing import Optional
 
-from iparo.Exceptions import IPARONotFoundException
 from iparo.IPARO import IPARO
-from iparo.IPARODateConverter import IPARODateConverter
 from iparo.IPAROLink import IPAROLink
-from iparo.IPFS import ipfs, Mode
+from iparo.IPFS import ipfs
+from iparo.IPNS import ipns
 
 
 class IPAROLinkFactory:
     """
     A collection of helper methods dealing with creating IPAROLinks
     """
+    def __init__(self):
+        pass
+
     @classmethod
     def from_cid(cls, cid: str) -> Optional[IPAROLink]:
         """
@@ -40,67 +42,6 @@ class IPAROLinkFactory:
         return IPAROLink(seq_num=iparo.seq_num, timestamp=iparo.timestamp, cid=cid)
 
     @classmethod
-    def retrieve_nth_iparo(cls, link: IPAROLink, number: int) -> IPAROLink:
-        """
-        A helper method that enables the retrieval of IPARO using a sequence number
-        to save IPARO operations by adding the ability to repeatedly apply the
-        greedy search method.
-        """
-        if link.seq_num < number:
-            raise IPARONotFoundException(number)
-        elif link.seq_num == number:
-            return link
-
-        # It is assumed that there is a link to the previous node.
-        iparo = ipfs.retrieve(link.cid)
-        candidate_links = [link for link in iparo.linked_iparos if link.seq_num >= number]
-        if not candidate_links:
-            raise IPARONotFoundException(number)
-        next_link = min(candidate_links, key=lambda link: link.seq_num)
-
-        return IPAROLinkFactory.retrieve_nth_iparo(next_link, number)
-
-
-    @classmethod
-    def retrieve_closest_iparo(cls, link: IPAROLink, timestamp: datetime, mode: Mode = Mode.CLOSEST) -> IPAROLink:
-        """
-        A helper method that enables the retrieval of IPARO using a sequence number
-        to save IPARO operations by adding the ability to repeatedly apply the
-        greedy search method from an IPARO link. Unlike the other method, it only applies
-        the closest IPARO.
-        """
-        curr_ts = IPARODateConverter.str_to_datetime(link.timestamp)
-
-        try:
-            if curr_ts == timestamp:
-                return link
-            prev_link = IPAROLinkFactory.retrieve_nth_iparo(link, link.seq_num - 1)
-            prev_ts = IPARODateConverter.str_to_datetime(prev_link.timestamp)
-            # Calculate time fraction.
-            time_frac = (timestamp - prev_ts) / (curr_ts - prev_ts)
-            if time_frac > 1:
-                raise IPARONotFoundException("Not a valid timestamp")
-            elif time_frac >= 0:
-                if mode == Mode.CLOSEST:
-                    return prev_link if time_frac < 0.5 else link
-                elif mode == Mode.EARLIEST_AFTER:
-                    return link if time_frac > 0 else prev_link
-                return prev_link if time_frac < 1 else link
-            else:
-                iparo = ipfs.retrieve(prev_link.cid)
-                candidate_links = iparo.linked_iparos
-                candidate_links.add(prev_link)
-                # Find minimum time
-                next_link = min([link for link in candidate_links if
-                                 IPARODateConverter.str_to_datetime(link.timestamp) >= timestamp],
-                                key=lambda link: IPARODateConverter.str_to_datetime(link.timestamp))
-                return IPAROLinkFactory.retrieve_closest_iparo(next_link, timestamp, mode)
-        except IPARONotFoundException as e:
-            raise e
-        except ValueError:
-            raise IPARONotFoundException("No previous link")
-
-    @classmethod
     def from_indices(cls, link: IPAROLink, indices: set[int]) -> set[IPAROLink]:
         """
         A helper method that allows the IPFS to retrieve the selected versions of a URL,
@@ -110,7 +51,7 @@ class IPAROLinkFactory:
         curr_link = link
         links = set()
         for index in sorted_indices:
-            curr_link = IPAROLinkFactory.retrieve_nth_iparo(curr_link, index)
+            curr_link = ipfs.retrieve_nth_iparo(curr_link, index)
             links.add(curr_link)
 
         return links
@@ -123,10 +64,32 @@ class IPAROLinkFactory:
         sorted_timestamps = sorted(timestamps, reverse=True)
         links = set()
         for ts in sorted_timestamps:
-            link = IPAROLinkFactory.retrieve_closest_iparo(link, ts)
+            link = ipfs.retrieve_closest_iparo(link, ts)
             links.add(link)
 
         return links
+
+    @classmethod
+    def get_first_and_latest_links(self, url) -> tuple[IPAROLink, IPAROLink]:
+        """
+        A helper method that adds the first and latest links.
+        """
+        latest_link = ipfs.get_latest_link(url)
+        first_link = ipfs.retrieve_nth_iparo(latest_link, 0)
+        return first_link, latest_link
+
+    @classmethod
+    def get_latest_node_links(self, url) -> tuple[set[IPAROLink], IPAROLink]:
+        """
+        A helper method to get the latest link as well as the set of all IPARO links for the latest node.
+        """
+        latest_cid = ipns.get_latest_cid(url)
+        latest_iparo = ipfs.retrieve(latest_cid)
+        linked_iparos = latest_iparo.linked_iparos
+        latest_iparo_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_iparo)
+        linked_iparos.add(latest_iparo_link)
+
+        return linked_iparos, latest_iparo_link
 
 
 

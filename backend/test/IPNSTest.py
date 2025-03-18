@@ -1,6 +1,7 @@
 import unittest
 
 from IPAROTestConstants import *
+from iparo.Exceptions import IPARONotFoundException
 from iparo.IPNS import ipns
 
 
@@ -15,7 +16,7 @@ class IPNSTest(unittest.TestCase):
 
     def test_returns_none_accessing_invalid_url(self):
         ipns.update(URL, CID1)
-        self.assertIsNone(ipns.get_latest_cid(URL1))
+        self.assertRaises(IPARONotFoundException, lambda: ipns.get_latest_cid(URL1))
 
     def test_counts_are_zero_initially(self):
         self.assertEqual(ipns.update_count, 0)

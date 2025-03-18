@@ -48,7 +48,8 @@ class VersionDensityTestCase(unittest.TestCase):
 
     def test_multipeak_can_have_two_peaks(self):
         # Reason why I omitted the seed: It turns out that the algorithm used
-        # to
+        # to create normal variates has an "upper bound" according to the random
+        # number generator used.
 
         multipeak = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
         nodes = multipeak.get_iparos(VersionVolume.LARGE)

@@ -91,85 +91,86 @@ class IPFSTest(unittest.TestCase):
         cids = {link.cid for link in ipfs.get_all_links(URL)}
         self.assertSetEqual(cids, {cid, cid2})
 
-    def test_ipfs_should_retrieve_by_number(self):
+    def test_ipfs_should_retrieve_by_url_and_number(self):
         iparos = add_nodes(3)
 
-        cid = ipfs.retrieve_by_number(URL, 0)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_iparo_by_url_and_number(URL, 0)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[0])
 
     def test_ipfs_should_retrieve_last_node(self):
         iparos = add_nodes(3)
 
-        cid = ipfs.retrieve_by_number(URL, 2)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_iparo_by_url_and_number(URL, 2)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[2])
 
     def test_ipfs_should_retrieve_middle_node(self):
         iparos = add_nodes(10)
 
-        cid = ipfs.retrieve_by_number(URL, 5)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_iparo_by_url_and_number(URL, 5)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_retrieve_latest_time_before_target_timestamp_by_default(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=55))
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=55))
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_raise_error_if_no_iparo_is_inserted_into_ipfs(self):
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_timestamp(URL, time1, Mode.CLOSEST))
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_timestamp(URL, time1, Mode.EARLIEST_AFTER))
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_timestamp(URL, time1))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1, Mode.CLOSEST))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1,
+                                                                                             Mode.EARLIEST_AFTER))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1))
 
     def test_ipfs_should_retrieve_earliest_time_after_target_timestamp(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=51), Mode.EARLIEST_AFTER)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=51), Mode.EARLIEST_AFTER)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[6])
 
     def test_ipfs_should_retrieve_target_timestamp_if_there_exists_a_cid_with_the_target_timestamp(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=50), Mode.EARLIEST_AFTER)
-        cid2 = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=50), Mode.CLOSEST)
-        cid3 = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=50))
+        link1 = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=50), Mode.EARLIEST_AFTER)
+        link2 = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=50), Mode.CLOSEST)
+        link3 = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=50))
 
-        cids = {cid, cid2, cid3}
-        iparo = ipfs.retrieve(cid)
+        links = {link1, link2, link3}
+        iparo = ipfs.retrieve(link1.cid)
 
         self.assertEqual(iparo, iparos[5])
-        self.assertSetEqual(cids, {cid})
+        self.assertSetEqual(links, {link1})
 
     def test_ipfs_should_retrieve_earlier_time_if_two_closest_timestamps_are_equally_distant(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=55), Mode.CLOSEST)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=55), Mode.CLOSEST)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_earlier(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=54), Mode.CLOSEST)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=54), Mode.CLOSEST)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_later(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=56), Mode.CLOSEST)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=56), Mode.CLOSEST)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[6])
 
     def test_ipfs_should_retrieve_earliest_time_after_timestamp(self):
         iparos = add_nodes(100)
 
-        cid = ipfs.retrieve_by_timestamp(URL, time1 + timedelta(seconds=54), Mode.CLOSEST)
-        iparo = ipfs.retrieve(cid)
+        link = ipfs.retrieve_by_url_and_timestamp(URL, time1 + timedelta(seconds=54), Mode.CLOSEST)
+        iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
 
@@ -182,36 +183,35 @@ class IPAROLinkFactoryTest(unittest.TestCase):
     def test_can_throw_when_iparo_seq_num_is_less_than_input_seq_num(self):
         cid = ipns.get_latest_cid(URL)
         iparo = ipfs.retrieve(cid)
-        self.assertRaises(IPARONotFoundException, lambda: IPAROLinkFactory.retrieve_nth_iparo(iparo, 100))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_nth_iparo(iparo, 100))
 
     def test_can_get_latest_iparo_if_iparo_seq_num_is_equal_to_input_seq_num(self):
         cid = ipns.get_latest_cid(URL)
         iparo = ipfs.retrieve(cid)
         link = IPAROLinkFactory.from_cid_iparo(cid, iparo)
-        self.assertEqual(IPAROLinkFactory.retrieve_nth_iparo(link, 99), link)
+        self.assertEqual(ipfs.retrieve_nth_iparo(link, 99), link)
 
     def test_can_get_nth_iparo_if_iparo_seq_num_is_less_than_input_seq_num(self):
-        cid = ipfs.retrieve_by_number(URL, 55)
-        expected_fetched_cid = ipfs.retrieve_by_number(URL, 44)
-        iparo = ipfs.retrieve(cid)
-        link = IPAROLinkFactory.from_cid_iparo(cid, iparo)
-        fetched_link = IPAROLinkFactory.retrieve_nth_iparo(link, 44)
-        self.assertEqual(fetched_link.cid, expected_fetched_cid)
-        self.assertEqual(fetched_link.seq_num, 44)
+        link = ipfs.retrieve_iparo_by_url_and_number(URL, 55)
+        expected_fetched_link = ipfs.retrieve_iparo_by_url_and_number(URL, 44)
+        iparo = ipfs.retrieve(link.cid)
+        link = IPAROLinkFactory.from_cid_iparo(link.cid, iparo)
+        fetched_link = ipfs.retrieve_nth_iparo(link, 44)
+        self.assertEqual(fetched_link, expected_fetched_link)
 
     def test_can_get_multiple_indices_in_iparo(self):
-        cids = [ipfs.retrieve_by_number(URL, i*i) for i in range(10)]
+        links = [ipfs.retrieve_iparo_by_url_and_number(URL, i*i) for i in range(10)]
         indices = {i * i for i in range(10)}
         cid = ipns.get_latest_cid(URL)
         iparo = ipfs.retrieve(cid)
         link = IPAROLinkFactory.from_cid_iparo(cid, iparo)
 
-        observed = [link.cid for link in IPAROLinkFactory.from_indices(link, indices)]
+        observed = list(IPAROLinkFactory.from_indices(link, indices))
 
-        cids.sort()
-        observed.sort()
+        links.sort(key=lambda link: link.seq_num)
+        observed.sort(key=lambda link: link.seq_num)
 
-        self.assertListEqual(observed, cids)
+        self.assertListEqual(observed, links)
 
     # Test cases:
     # 1. Latest IPARO has exact timestamp.

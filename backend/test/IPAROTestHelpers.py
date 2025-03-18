@@ -1,6 +1,6 @@
 from iparo import IPARO
 from IPAROTestConstants import *
-from iparo.Exceptions import IPARONotFoundException
+from iparo.IPFS import *
 from iparo.LinkingStrategy import *
 from iparo.IPAROFactory import IPAROFactory
 
@@ -96,6 +96,6 @@ def test_closest_iparo(rel_time: timedelta):
     latest_iparo = ipfs.retrieve(cid)
     link = IPAROLinkFactory.from_cid_iparo(cid, latest_iparo)
     timestamp = IPARODateConverter.str_to_datetime(link.timestamp) + rel_time
-    observed_iparo_seq_num = IPAROLinkFactory.retrieve_closest_iparo(link, timestamp).seq_num
+    observed_iparo_seq_num = ipfs.retrieve_closest_iparo(link, timestamp).seq_num
 
     return observed_iparo_seq_num

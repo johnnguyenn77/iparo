@@ -1,4 +1,3 @@
-from iparo.Exceptions import EmptyStorageException
 from iparo.LinkingStrategy import *
 
 import networkx as nx
@@ -36,7 +35,7 @@ class IPAROSimulation:
             node.seq_num = i
             try:
                 node.linked_iparos = self.linking_strategy.get_candidate_nodes(URL)
-            except EmptyStorageException:
+            except IPARONotFoundException:
                 node.linked_iparos = set()
             cid = ipfs.store(node)
             ipns.update(URL, cid)
@@ -52,8 +51,9 @@ class IPAROSimulation:
         latest_node = ipfs.retrieve(latest_cid)
         for i in range(k):
             selected_index = random.randint(0, latest_node.seq_num - 1)
-            ipfs.retrieve_by_number(URL, selected_index)
 
+            # The intent is to find separate numbers, where the numbers are not known until at runtime.
+            ipfs.retrieve_iparo_by_url_and_number(URL, selected_index)
         if verbose:
             IPAROSimulation.print_counts("Retrieve")
 
