@@ -1,6 +1,8 @@
 import math
 from math import ceil, log2
 import unittest
+from itertools import takewhile, starmap, count
+
 from IPAROTestHelpers import *
 
 
@@ -57,21 +59,16 @@ class IPAROStrategyTest(unittest.TestCase):
     def test_exponential_strategy_should_have_the_right_nodes(self):
         strategy = SequentialExponentialStrategy(k=2)
 
-        def get_sequence_numbers(k: int):
-            if k == 0:
-                return []
-            numbers = {0}
-            i = 0
-            s = k - 1
-            while s >= 0:
-                numbers.add(int(s))
-                i += 1
-                s = k - math.exp2(i)
-
-            return sorted(numbers)
+        def get_sequence_numbers(n):
+            if n == 0:
+                return {}
+            # Node N maps to N - 1, N - 2, N - 4, and so on, until we hit 0.
+            numbers = set(takewhile(lambda x: x > 0, map(lambda x: int(n - math.exp2(x)), count())))
+            numbers.update({0, n-1})  # Obviously, we want to add the previous and latest nodes.
+            return numbers
 
         sequence_numbers = []
-        expected_sequence_numbers = [get_sequence_numbers(i) for i in range(100)]
+        expected_sequence_numbers = [sorted(get_sequence_numbers(i)) for i in range(100)]
         for i in range(100):
             content = generate_random_content_string()
             try:
@@ -120,21 +117,7 @@ class IPAROStrategyTest(unittest.TestCase):
                 self.assertLessEqual(gap, s)
 
     def test_sequential_s_max_gap_strategy_should_be_at_most_s_hops_away(self):
-        strategy = SequentialSMaxGapStrategy(5)
-
-        # Get 100 nodes.
-        for i in range(100):
-            content = generate_random_content_string()
-            try:
-                linked_iparos = strategy.get_candidate_nodes(URL)
-            except IPARONotFoundException:
-                linked_iparos = set()
-
-            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
-                          url=URL, linked_iparos=linked_iparos, seq_num=i)
-            cid = ipfs.store(iparo)
-            ipns.update(URL, cid)
-
+        test_strategy(SequentialSMaxGapStrategy(5))
         # Now use BFS
         latest_cid = ipns.get_latest_cid(URL)
         frontier = [latest_cid]
