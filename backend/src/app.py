@@ -10,9 +10,6 @@ app = Flask(__name__)
 
 IPFS_API_URL = "http://127.0.0.1:5001/api/v0"
 
-# Dictionary to track sequence numbers per URL
-url_sequence_counter = defaultdict(int)
-
 def push_to_ipfs():
     """Processes WARC file, creates IPARO objects, and pushes them to IPFS and IPNS."""
     
@@ -23,20 +20,20 @@ def push_to_ipfs():
                 timestamp = record.rec_headers.get_header('WARC-Date')
                 content = record.content_stream().read()
 
-                # Get the current sequence number for the URL
-                seq_num = url_sequence_counter[url]
-                
-                # Increment the counter for the next occurrence
-                url_sequence_counter[url] += 1
-
-                # Create an IPARO object
-                iparo_object = IPARO(
-                    url=url,
-                    timestamp=timestamp,
-                    seq_num=seq_num,
-                    linked_iparos=set(),
-                    content=content
-                )
+                # use IPNS to get the latest IPARO object
+                # if it does not exist, create a new iparo object
+                if fetch_ipns_data():
+                # implement logic to get all the information from the IPNS and create a new IPARO object based on the information from the latest node
+                # how do the ipns know which IPARO is belong to the current URL we used to archive 
+                    pass
+                else:
+                    iparo_object = IPARO(
+                        url=url,
+                        timestamp=timestamp,
+                        seq_num=0,
+                        linked_iparos=set(),
+                        content=content
+                    )
 
                 # Convert IPARO object to string (uses IPARO.__str__())
                 iparo_string = str(iparo_object)
@@ -59,12 +56,12 @@ def add_to_ipfs(data):
 def update_ipns(ipfs_hash):
     """Pins an IPFS hash to IPNS using HTTP API."""
     response = requests.post(f"{IPFS_API_URL}/name/publish", params={"arg": f"/ipfs/{ipfs_hash}"})
-    return response.json().get("Name", "Unknown IPNS Name")  # Returns the IPNS name
+    return response.json().get("Name", "Unknown IPNS Name")
 
 def fetch_ipfs_data(ipfs_hash):
     """Fetches data from IPFS."""
     response = requests.get(f"https://ipfs.io/ipfs/{ipfs_hash}")
-    return response.text  # Returns the stored IPARO object as a string
+    return response.text
 
 def fetch_ipns_data(ipns_name):
     """Fetches the latest IPFS hash from IPNS."""
