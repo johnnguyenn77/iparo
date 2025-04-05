@@ -1,7 +1,7 @@
 import unittest
 
 from IPAROTestConstants import *
-from iparo.Exceptions import IPARONotFoundException
+from iparo.IPAROException import IPARONotFoundException
 from iparo.IPNS import ipns
 
 

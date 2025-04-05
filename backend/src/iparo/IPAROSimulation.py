@@ -1,3 +1,4 @@
+from iparo.IPAROException import IPARONotFoundException
 from iparo.LinkingStrategy import *
 
 import networkx as nx

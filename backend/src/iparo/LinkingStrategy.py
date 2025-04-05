@@ -3,8 +3,7 @@ from abc import abstractmethod, ABC
 from datetime import timedelta
 from math import floor
 
-from iparo.Exceptions import IPARONotFoundException
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPARODateFormat import IPARODateFormat
 from iparo.IPAROLink import IPAROLink
 from iparo.IPAROLinkFactory import IPAROLinkFactory
 from iparo.IPFS import ipfs, Mode
@@ -35,7 +34,7 @@ class SingleStrategy(LinkingStrategy):
 class ComprehensiveStrategy(LinkingStrategy):
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        latest_node_links, latest_link = IPAROLinkFactory.get_latest_node_links(url)
+        latest_node_links, latest_link, _ = IPAROLinkFactory.get_latest_node_links(url)
         latest_node_links.add(latest_link)
 
         return latest_node_links
@@ -47,11 +46,11 @@ class KPreviousStrategy(LinkingStrategy):
         self.k = k
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        linked_iparos, latest_link = IPAROLinkFactory.get_latest_node_links(url)
+        linked_iparos, latest_link, latest_iparo = IPAROLinkFactory.get_latest_node_links(url)
 
         seq_num_to_drop = max(latest_link.seq_num - self.k, 0)
         if seq_num_to_drop > 0:
-            iparo_link_to_drop = ipfs.retrieve_nth_iparo(latest_link, seq_num_to_drop)
+            iparo_link_to_drop = ipfs.retrieve_nth_iparo(seq_num_to_drop, latest_link)
             linked_iparos.remove(iparo_link_to_drop)
 
         return linked_iparos
@@ -69,7 +68,7 @@ class KRandomStrategy(LinkingStrategy):
         self.k = k
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        latest_node_links, latest_link = IPAROLinkFactory.get_latest_node_links(url)
+        latest_node_links, latest_link, latest_iparo = IPAROLinkFactory.get_latest_node_links(url)
 
         num_nodes = latest_link.seq_num
         if num_nodes <= self.k:
@@ -107,11 +106,8 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
         self.n = n
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        latest_cid = ipns.get_latest_cid(url)
-        latest_link = IPAROLinkFactory.from_cid(latest_cid)
-        node_num = latest_link.seq_num
-
-        indices: set[int] = {node_num * i // (self.n + 1) for i in range(self.n + 2)}
+        latest_link, latest_iparo = IPAROLinkFactory.get_link_to_latest_node(url)
+        indices: set[int] = {latest_iparo.seq_num * i // (self.n + 1) for i in range(self.n + 2)}
         return IPAROLinkFactory.from_indices(latest_link, indices)
 
 
@@ -122,9 +118,7 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
         self.s = s
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        latest_cid = ipns.get_latest_cid(url)
-        latest_link = IPAROLinkFactory.from_cid(latest_cid)
-        first_link = ipfs.retrieve_nth_iparo(latest_link, 0)
+        first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
 
         # Sequentially add nodes with no more than S hops between them
         start_seq_num = latest_link.seq_num - self.s
@@ -143,22 +137,16 @@ class TemporallyUniformStrategy(LinkingStrategy):
         self.n = n  # Number of uniformly distributed links to create
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        latest_cid = ipns.get_latest_cid(url)
-        latest_link = IPAROLinkFactory.from_cid(latest_cid)
-        first_link = ipfs.retrieve_nth_iparo(latest_link, 0)
-
-        latest_timestamp = IPARODateConverter.str_to_datetime(latest_link.timestamp)
-        first_timestamp = IPARODateConverter.str_to_datetime(first_link.timestamp)
-
-        time_window = latest_timestamp - first_timestamp
-
+        # Get Latest Link and Latest CID in one fell swoop
+        first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
+        time_window = IPARODateFormat.diff(latest_link.timestamp, first_link.timestamp)
+        first_ts = first_link.timestamp
         # Adds nodes sequenced as 1, 2, ..., n-1
-        timestamps = {first_timestamp + i * time_window / self.n for i in range(1, self.n)}
-        try:
-            links = IPAROLinkFactory.from_timestamps(latest_link, timestamps)
-        except IPARONotFoundException:
-            links = set()
+        timestamps = set(IPARODateFormat.add_timedeltas(first_ts,
+                                                        [i * time_window / self.n for i in range(1, self.n)]))
+        links, _ = IPAROLinkFactory.from_timestamps(latest_link, {first_link, latest_link}, timestamps)
 
+        # Add latest and first links.
         links.add(first_link)
         links.add(latest_link)
 
@@ -170,19 +158,22 @@ class TemporallyMaxGapStrategy(LinkingStrategy):
         self.max_gap = max_gap
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        first_link, latest_link = IPAROLinkFactory.get_first_and_latest_links(url) # unpack
-        links = {first_link, latest_link}
-        current_time = IPARODateConverter.str_to_datetime(latest_link.timestamp)
+        first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
         curr_link = latest_link
-        try:
-            # Keep stepping back using max_gap
-            while True:
-                target_time = current_time - self.max_gap
-                curr_link = ipfs.retrieve_closest_iparo(curr_link, target_time, Mode.LATEST_BEFORE)
-                current_time = min(IPARODateConverter.str_to_datetime(curr_link.timestamp), target_time)
-                links.add(curr_link)
-        finally:
-            return links
+        current_time = latest_link.timestamp
+        known_links = {first_link, latest_link}
+
+        links = set()
+        # Keep stepping back using max_gap
+        while curr_link.seq_num > 0:
+            current_time = IPARODateFormat.add_timedelta(current_time, -self.max_gap)
+            curr_link, known_links = ipfs.retrieve_closest_iparo(curr_link, known_links,
+                                                                 current_time, Mode.LATEST_BEFORE)
+            links.add(curr_link)
+
+        links.add(first_link)
+        links.add(latest_link)
+        return links
 
 
 class TemporallyExponentialStrategy(LinkingStrategy):
@@ -191,21 +182,21 @@ class TemporallyExponentialStrategy(LinkingStrategy):
         self.time_unit = time_unit
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        first_link, latest_link = IPAROLinkFactory.get_first_and_latest_links(url)
+        # Assume num_nodes > 1
+        first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
 
         # Exponential time gaps
         gap = self.time_unit
-        current_time = IPARODateConverter.str_to_datetime(latest_link.timestamp)
-        first_time = IPARODateConverter.str_to_datetime(first_link.timestamp)
-        timestamps = {current_time, first_time}
-        while current_time - gap > first_time:
-            timestamps.add(current_time - gap)
+        time_window = IPARODateFormat.diff(latest_iparo.timestamp, first_link.timestamp)
+        gaps = []
+        while gap < time_window:
+            gaps.append(-gap)
             gap *= self.base
-        try:
-            links = IPAROLinkFactory.from_timestamps(latest_link, timestamps)
-        except IPARONotFoundException:
-            links = set()
+        gaps.reverse()
 
-        links.update({first_link, latest_link})
+        timestamps = IPARODateFormat.add_timedeltas(latest_iparo.timestamp, gaps)
+        links, _ = IPAROLinkFactory.from_timestamps(latest_link, {first_link, latest_link}, timestamps)
+        links.add(first_link)
+        links.add(latest_link)
 
         return links

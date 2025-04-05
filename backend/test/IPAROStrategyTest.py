@@ -75,7 +75,8 @@ class IPAROStrategyTest(unittest.TestCase):
                 linked_iparos = strategy.get_candidate_nodes(URL)
             except IPARONotFoundException:
                 linked_iparos = set()
-            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
+            timestamp = datetime.strftime(time1 + timedelta(seconds=i), IPARODateFormat.DATE_FORMAT)
+            iparo = IPARO(content=content, timestamp=timestamp,
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
             cid = ipfs.store(iparo)
             current_numbers = sorted(link.seq_num for link in linked_iparos)

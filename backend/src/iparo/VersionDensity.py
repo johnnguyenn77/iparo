@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from enum import IntEnum
 
 from iparo.IPARO import IPARO
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPARODateFormat import IPARODateFormat
 
 URL = "example.com"
 
@@ -45,7 +45,7 @@ class VersionDensity(ABC):
             interval_frac = self.get_quantile(quantile)
             value = self._interval * interval_frac
             time = self._start_time + value
-            time_string = IPARODateConverter.datetime_to_str(time)
+            time_string = datetime.strftime(time, IPARODateFormat.DATE_FORMAT)
             iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(), linked_iparos=set(),
                           seq_num=-1, url=URL)
             iparos.append(iparo)
@@ -156,7 +156,7 @@ class MultipeakDensity(VersionDensity):
             # Random variable 2 will determine time of "creation".
             _, mean, sd = self.probability_weights[dist_num]
             td = timedelta(seconds=random.normalvariate(mean, sd))
-            time_string = IPARODateConverter.datetime_to_str(self._start_time + td)
+            time_string = IPARODateFormat.add_timedelta(self._start_time.strftime(IPARODateFormat.DATE_FORMAT), td)
             iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(),
                           linked_iparos=set(), seq_num=-1, url=URL)
 

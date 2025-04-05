@@ -1,11 +1,10 @@
 import hashlib
 import pickle
-from datetime import datetime
 from enum import Enum
 
-from iparo.Exceptions import IPARONotFoundException
+from iparo.IPAROException import IPARONotFoundException
 from iparo.IPARO import IPARO
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPARODateFormat import IPARODateFormat
 from iparo.IPAROLink import IPAROLink
 from iparo.IPNS import ipns
 
@@ -58,12 +57,12 @@ class IPFS:
         iparo_bytes = self.data[cid]
         return pickle.loads(iparo_bytes)
 
-    def retrieve_by_url_and_timestamp(self, url: str, target_timestamp: datetime, mode: Mode = Mode.LATEST_BEFORE) -> \
+    def retrieve_by_url_and_timestamp(self, url: str, target_timestamp: str, mode: Mode = Mode.LATEST_BEFORE) -> \
             IPAROLink:
-        link = self.get_latest_link(url)
-        return self.retrieve_closest_iparo(link, target_timestamp, mode)
+        link, _ = self.retrieve_closest_iparo(self.get_latest_link(url), set(), target_timestamp, mode)
+        return link
 
-    def retrieve_nth_iparo(self, link: IPAROLink, number: int) -> IPAROLink:
+    def retrieve_nth_iparo(self, number: int, link: IPAROLink) -> IPAROLink:
         """
         A helper method that enables the retrieval of IPARO using a sequence number
         to save IPARO operations by adding the ability to repeatedly apply the
@@ -81,45 +80,51 @@ class IPFS:
             raise IPARONotFoundException(number)
         next_link = min(candidate_links, key=lambda link: link.seq_num)
 
-        return self.retrieve_nth_iparo(next_link, number)
+        return self.retrieve_nth_iparo(number, next_link)
 
-    def retrieve_closest_iparo(self, link: IPAROLink, timestamp: datetime, mode: Mode = Mode.CLOSEST) -> IPAROLink:
+    def retrieve_closest_iparo(self, curr_link: IPAROLink, known_links: set[IPAROLink], timestamp: str,
+                               mode: Mode = Mode.CLOSEST)\
+            -> tuple[IPAROLink, set[IPAROLink]]:
         """
         A helper method that enables the retrieval of IPARO using a sequence number
         to save IPARO operations by adding the ability to repeatedly apply the
         greedy search method from an IPARO link. Unlike the other method, it only applies
         the closest IPARO.
         """
-        curr_ts = IPARODateConverter.str_to_datetime(link.timestamp)
+
+        curr_ts = curr_link.timestamp
 
         try:
-            if curr_ts == timestamp:
-                return link
-            prev_link = self.retrieve_nth_iparo(link, link.seq_num - 1)
-            prev_ts = IPARODateConverter.str_to_datetime(prev_link.timestamp)
+            # If current link has the exact timestamp or the current link is the first link:
+            if curr_ts == timestamp or curr_link.seq_num == 0:
+                return curr_link, known_links
+            prev_link = self.retrieve_nth_iparo(curr_link.seq_num - 1, curr_link)
+            prev_ts = prev_link.timestamp
             # Calculate time fraction.
-            time_frac = (timestamp - prev_ts) / (curr_ts - prev_ts)
-            if time_frac > 1:
-                raise IPARONotFoundException("Not a valid timestamp")
-            elif time_frac >= 0:
+            time_frac = IPARODateFormat.diff(timestamp, prev_ts) / IPARODateFormat.diff(curr_ts, prev_ts)
+            if time_frac >= 0:
                 if mode == Mode.CLOSEST:
-                    return prev_link if time_frac <= 0.5 else link
+                    chosen_link = prev_link if time_frac <= 0.5 else curr_link
                 elif mode == Mode.EARLIEST_AFTER:
-                    return link if time_frac > 0 else prev_link
-                return prev_link if time_frac < 1 else link
-            else:
-                iparo = self.retrieve(prev_link.cid)
-                candidate_links = iparo.linked_iparos
-                candidate_links.add(prev_link)
-                # Find minimum time
-                next_link = min([link for link in candidate_links if
-                                 IPARODateConverter.str_to_datetime(link.timestamp) >= timestamp],
-                                key=lambda link: IPARODateConverter.str_to_datetime(link.timestamp))
-                return self.retrieve_closest_iparo(next_link, timestamp, mode)
+                    chosen_link = curr_link if time_frac > 0 else prev_link
+                else:
+                    chosen_link = prev_link if time_frac < 1 else curr_link
+                return chosen_link, known_links
+
+            # Go over known links...
+            iparo = self.retrieve(prev_link.cid)
+
+            candidate_links = iparo.linked_iparos
+            candidate_links.add(prev_link)
+
+            known_links.update(candidate_links)
+
+            # Find minimum time greater than the timestamp.
+            next_link = min({link for link in known_links if link.timestamp > timestamp},
+                            key=lambda link: link.timestamp)
+            return self.retrieve_closest_iparo(next_link, known_links, timestamp, mode)
         except IPARONotFoundException as e:
             raise e
-        except ValueError:
-            raise IPARONotFoundException("No previous link")
 
     def retrieve_iparo_by_url_and_number(self, url: str, number: int) -> IPAROLink:
         """
@@ -131,7 +136,7 @@ class IPFS:
         # To avoid a circular dependency on IPAROLinkFactory
         iparo = self.retrieve(cid)
         link = IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp)
-        result = self.retrieve_nth_iparo(link, number)
+        result = self.retrieve_nth_iparo(number, link)
         return result
 
     def get_counts(self) -> dict:
@@ -161,7 +166,7 @@ class IPFS:
             link = self.get_latest_link(url)
             while True:
                 links.append(link)
-                link = self.retrieve_nth_iparo(link, link.seq_num - 1)
+                link = self.retrieve_nth_iparo(link.seq_num - 1, link)
         finally:
             return links
 

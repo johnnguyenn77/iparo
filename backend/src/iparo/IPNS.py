@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from iparo.Exceptions import IPARONotFoundException
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPAROException import IPARONotFoundException
+from iparo.IPARODateFormat import IPARODateFormat
 
 
 class IPNS:
@@ -28,7 +28,8 @@ class IPNS:
             Default is latest.
         """
         self.update_count += 1
-        curr_timestamp = IPARODateConverter.datetime_to_str(datetime.now()) if timestamp == 'latest' else timestamp
+        curr_timestamp = datetime.strftime(datetime.now(), IPARODateFormat.DATE_FORMAT)\
+            if timestamp == 'latest' else timestamp
 
         # /archive/latest/{url} -> value of URL, map it to the CID [default]
         self.__store[url] = cid

@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch, call
 
+from iparo.IPAROException import IPARONotFoundException
 from iparo.IPAROSimulation import IPAROSimulation
 from iparo.LinkingStrategy import *
 from iparo.IPNS import ipns

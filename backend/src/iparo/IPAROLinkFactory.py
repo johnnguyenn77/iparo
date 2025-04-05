@@ -51,35 +51,51 @@ class IPAROLinkFactory:
         curr_link = link
         links = set()
         for index in sorted_indices:
-            curr_link = ipfs.retrieve_nth_iparo(curr_link, index)
+            curr_link = ipfs.retrieve_nth_iparo(index, curr_link)
             links.add(curr_link)
 
         return links
 
     @classmethod
-    def from_timestamps(cls, link: IPAROLink, timestamps: set[datetime]):
+    def from_timestamps(cls, link: IPAROLink, known_links: set[IPAROLink], timestamps: set[str]) -> tuple[set[IPAROLink], set[IPAROLink]]:
         """
         Constructs a list of IPARO links from a set of timestamps.
         """
+        # Question: Would timestamps be set[str] or should it be left as set[datetime]?
         sorted_timestamps = sorted(timestamps, reverse=True)
         links = set()
         for ts in sorted_timestamps:
-            link = ipfs.retrieve_closest_iparo(link, ts)
+            # Question: Should I just add one known link for each time I iterate through?
+            # Or should I just add all the IPARO's links in the list?
+            known_links.add(link)
+            link, known_links = ipfs.retrieve_closest_iparo(link, known_links, ts)
             links.add(link)
 
-        return links
+        return links, known_links
 
     @classmethod
-    def get_first_and_latest_links(self, url) -> tuple[IPAROLink, IPAROLink]:
+    def get_links_to_first_and_latest_nodes(self, url) -> tuple[IPAROLink, IPAROLink, IPARO]:
         """
         A helper method that adds the first and latest links.
         """
-        latest_link = ipfs.get_latest_link(url)
-        first_link = ipfs.retrieve_nth_iparo(latest_link, 0)
-        return first_link, latest_link
+        latest_cid = ipns.get_latest_cid(url)
+        latest_iparo = ipfs.retrieve(latest_cid)
+        latest_link = IPAROLink(seq_num=latest_iparo.seq_num, timestamp=latest_iparo.timestamp, cid=latest_cid)
+        first_link = ipfs.retrieve_nth_iparo(0, latest_link)
+        return first_link, latest_link, latest_iparo
 
     @classmethod
-    def get_latest_node_links(self, url) -> tuple[set[IPAROLink], IPAROLink]:
+    def get_link_to_latest_node(self, url) -> tuple[IPAROLink, IPARO]:
+        """
+        A helper method that adds the first and latest links.
+        """
+        latest_cid = ipns.get_latest_cid(url)
+        latest_iparo = ipfs.retrieve(latest_cid)
+        latest_link = IPAROLink(seq_num=latest_iparo.seq_num, timestamp=latest_iparo.timestamp, cid=latest_cid)
+        return latest_link, latest_iparo
+
+    @classmethod
+    def get_latest_node_links(self, url) -> tuple[set[IPAROLink], IPAROLink, IPARO]:
         """
         A helper method to get the latest link as well as the set of all IPARO links for the latest node.
         """
@@ -89,7 +105,7 @@ class IPAROLinkFactory:
         latest_iparo_link = IPAROLinkFactory.from_cid_iparo(latest_cid, latest_iparo)
         linked_iparos.add(latest_iparo_link)
 
-        return linked_iparos, latest_iparo_link
+        return linked_iparos, latest_iparo_link, latest_iparo
 
 
 

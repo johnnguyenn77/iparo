@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from iparo.Exceptions import IPARONotFoundException
+from iparo.IPAROException import IPARONotFoundException
 from iparo.IPARO import IPARO
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.IPARODateFormat import IPARODateFormat
 from iparo.IPFS import ipfs
 from iparo.IPNS import ipns
 
@@ -10,7 +10,7 @@ from iparo.IPNS import ipns
 class IPAROFactory:
     @classmethod
     def create_node(cls, url: str, content: bytes) -> IPARO:
-        timestamp = IPARODateConverter.datetime_to_str(datetime.now())
+        timestamp = datetime.strftime(datetime.now(), IPARODateFormat.DATE_FORMAT)
         try:
             latest_node = ipfs.retrieve(ipns.get_latest_cid(url))
             seq_num = latest_node.seq_num + 1 if latest_node is not None else 0
