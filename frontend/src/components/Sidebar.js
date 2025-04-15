@@ -45,27 +45,11 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
           
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/submit-new-url">
-              <ListItemIcon>
-                <AddLinkIcon />
-              </ListItemIcon>
-              <ListItemText primary="Submit URL" />
-            </ListItemButton>
-          </ListItem>
         </List>
         
         <Divider />
         
         <List>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/history">
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="All Versions" />
-            </ListItemButton>
-          </ListItem>
           
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/date-lookup">

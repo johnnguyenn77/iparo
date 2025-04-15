@@ -1,45 +1,81 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { 
+  AppBar, Toolbar, Typography, Button, Box, 
+  IconButton, useMediaQuery, useTheme 
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import ArchiveIcon from '@mui/icons-material/Archive';
+import StorageIcon from '@mui/icons-material/Storage';
+import SearchIcon from '@mui/icons-material/Search';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import MenuIcon from '@mui/icons-material/Menu';
 
-function Header() {
+function Header({ toggleSidebar }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
-    <AppBar 
-      position="fixed" 
-      color="primary" 
-      elevation={4}
-      sx={{ 
-        zIndex: (theme) => theme.zIndex.drawer + 1
-      }}
-    >
+    <AppBar position="sticky" elevation={2} sx={{ zIndex: theme.zIndex.drawer + 1 }}>
       <Toolbar>
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleSidebar}
+            edge="start"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        
         <Box 
           component={RouterLink} 
           to="/" 
           sx={{ 
             display: 'flex', 
-            alignItems: 'center',
-            textDecoration: 'none',
-            color: 'inherit',
-            '&:hover': {
-              opacity: 0.9
-            }
+            alignItems: 'center', 
+            textDecoration: 'none', 
+            color: 'inherit' 
           }}
         >
-          <ArchiveIcon sx={{ mr: 2, fontSize: 28 }} />
+          <StorageIcon sx={{ mr: 1 }} />
           <Typography
             variant="h6"
+            noWrap
             component="div"
-            sx={{
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.2rem',
+            sx={{ 
+              fontWeight: 'bold',
+              display: { xs: isMobile ? 'none' : 'block', sm: 'block' }
             }}
           >
-            IPARO SYSTEM
+            IPARO Archive
           </Typography>
         </Box>
+        
+        <Box sx={{ flexGrow: 1 }} />
+        
+        {!isMobile && (
+          <Box sx={{ display: 'flex' }}>
+            <Button
+              component={RouterLink}
+              to="/"
+              color="inherit"
+              startIcon={<SearchIcon />}
+              sx={{ mx: 1 }}
+            >
+              URL Search
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/date-lookup"
+              color="inherit"
+              startIcon={<CalendarTodayIcon />}
+              sx={{ mx: 1 }}
+            >
+              Date Search
+            </Button>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );

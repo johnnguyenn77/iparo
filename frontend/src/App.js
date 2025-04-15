@@ -7,10 +7,11 @@ import { Box } from '@mui/material';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
-import HistoryPage from './pages/HistoryPage';
 import DateLookupPage from './pages/DateLookupPage';
-import SnapshotDisplay from './pages/SnapshotDisplayPage';
-import SubmitNewURLPage from './pages/SubmitNewURLPage';
+import SearchResultsPage from './pages/SearchResultPage';
+import DateLookupResultsPage from './pages/DateLookupResultsPage';
+import SnapshotViewerPage from './pages/SnapshotViewerPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -22,13 +23,14 @@ function App() {
           <Box sx={{ display: 'flex', flexGrow: 1 }}>
             <Sidebar />
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/history" element={<HistoryPage />} />
-                <Route path="/date-lookup" element={<DateLookupPage />} />
-                <Route path="/submit-new-url" element={<SubmitNewURLPage />} />
-                <Route path="/snapshot/:id" element={<SnapshotDisplay />} />
-              </Routes>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/date-lookup" element={<DateLookupPage />} />
+              <Route path="/results" element={<SearchResultsPage />} /> 
+              <Route path="/date-results" element={<DateLookupResultsPage />} /> 
+              <Route path="/view/:id" element={<SnapshotViewerPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
             </Box>
           </Box>
         </Box>
