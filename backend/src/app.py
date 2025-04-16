@@ -16,7 +16,7 @@ IPFS_API_URL = "http://127.0.0.1:5001/api/v0"
 def create_iparo(filename=None):
     """Processes WARC file, creates IPARO objects, and pushes them to IPFS and IPNS."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    warc_path = os.path.join(current_dir, '..', 'samples', 'warcs', '1memento_noContentType.warc')
+    warc_path = os.path.join(current_dir, '..', 'samples', 'warcs', '2mementos.warc')
     
     with open(warc_path, 'rb') as stream:
         for record in ArchiveIterator(stream):
@@ -99,7 +99,7 @@ def resolve_ipns_to_cid(key_name):
     print(f"Resolved IPNS key '{key_name}' to CID: {cid}")
     return cid
 
-def fetch_iparo_from_ipns(cid):
+def fetch_iparo_from_ipfs(cid):
     """Fetch and deserialize an IPARO object from IPFS by CID."""
     response = requests.post(f"{IPFS_API_URL}/cat?arg={cid}")
     if response.status_code != 200:
@@ -113,7 +113,7 @@ ipns_id = get_ipns_name_for_key(key)
 cid = add_iparo_to_ipfs(new_iparo)
 ipns_name = update_ipns(cid, key)
 resolved_cid = resolve_ipns_to_cid(ipns_id)
-iparo_from_ipns = fetch_iparo_from_ipns(resolved_cid)
+iparo_from_ipns = fetch_iparo_from_ipfs(resolved_cid)
 print(iparo_from_ipns)
 print(iparo_from_ipns.__dict__)
 
