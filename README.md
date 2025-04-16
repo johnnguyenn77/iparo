@@ -24,24 +24,24 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
 
 1. **Clone the Repository**
 
-```bash
-git clone https://github.com/johnnguyenn77/iparo.git
-cd iparo
-```
+    ```bash
+    git clone https://github.com/johnnguyenn77/iparo.git
+    cd iparo
+    ```
 
 2. **Running the Jupyter Notebook**
 
-Ensure you have Jupyter Notebook installed. If not, you can install it using:
+    Ensure you have Jupyter Notebook installed. If not, you can install it using:
 
-```bash
-pip install notebook
-```
+    ```bash
+    pip install notebook
+    ```
 
 3. **Launch the Jupyter Notebook**
 
-```bash
-jupyter notebook
-```
+    ```bash
+    jupyter notebook
+    ```
 
 Open the `iparo.ipynb` notebook and follow the instructions to run the cells.
 
@@ -51,23 +51,23 @@ The frontend provides an interactive implementation of the IPARO web archival sy
 
 1. **Navigate to Frontend Directory**
 
-```bash
-cd frontend
-```
+    ```bash
+    cd frontend
+    ```
 
 2. **Install Dependencies and Start Server**
 
-```bash
-npm install
-npm start
-```
+    ```bash
+    npm install
+    npm start
+    ```
 
 After a moment, the frontend server will be running on `localhost:3000`.
 
 ## Contributors
 
-Professor Mat Kelly [@machawk1](https://github.com/machawk1)
-Dr. Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)
+Professor Mat Kelly [@machawk1](https://github.com/machawk1)\
+Dr. Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
 John Nguyen [@johnnguyenn77](https://github.com/johnnguyenn77)
 
 ## License
