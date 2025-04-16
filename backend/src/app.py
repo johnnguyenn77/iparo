@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, request, jsonify
 from iparo.IPARO import IPARO
+from iparo.IPAROLink import IPAROLink
 from io import BytesIO
 from warcio.archiveiterator import ArchiveIterator
 from warcio.recordloader import ArchiveLoadFailed
@@ -14,26 +15,39 @@ IPFS_API_URL = "http://127.0.0.1:5001/api/v0"
 
 
 def create_iparo(filename=None):
-    """Processes WARC file, creates IPARO objects, and pushes them to IPFS and IPNS."""
+    """Processes WARC file, creates IPARO object with incremented seq_num, pushes to IPFS."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
     warc_path = os.path.join(current_dir, '..', 'samples', 'warcs', '2mementos.warc')
-    
+
     with open(warc_path, 'rb') as stream:
         for record in ArchiveIterator(stream):
             if record.rec_type == 'response':
                 url = record.rec_headers.get_header('WARC-Target-URI')
                 timestamp = record.rec_headers.get_header('WARC-Date')
                 content = record.content_stream().read()
-                
+
+                key_name = generate_key_for_url(url)
+                ipns_id = get_ipns_name_for_key(key_name)
+
+                # Attempt to resolve the existing IPNS name to a CID
+                try:
+                    resolved_cid = resolve_ipns_to_cid(ipns_id)
+                    existing_iparo = fetch_iparo_from_ipfs(resolved_cid)
+                    seq_num = existing_iparo.seq_num + 1
+                except Exception:
+                    # If not resolvable, assume it's the first version
+                    seq_num = 0
+
                 iparo_object = IPARO(
                     url=url,
                     timestamp=timestamp,
-                    seq_num=0,
+                    seq_num=seq_num,
                     linked_iparos=set(),
                     content=content,
                     nonce=0
                 )
                 return iparo_object
+
             
             
 def generate_key_for_url(url):
