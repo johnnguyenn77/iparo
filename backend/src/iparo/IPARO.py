@@ -6,7 +6,11 @@ from iparo.IPAROLink import IPAROLink
 class IPARO:
     # Headers
     url: str
-    timestamp: str
+    timestamp: int
+    """
+    The timestamp, in microseconds since 1970, for compatibility with WARC 1.1.
+    """
+
     seq_num: int
     linked_iparos: set[IPAROLink]
     # Body

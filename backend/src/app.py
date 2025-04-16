@@ -1,6 +1,6 @@
 import requests
 from flask import Flask, request, jsonify
-from IPARO import IPARO
+from iparo.IPARO import IPARO
 from io import BytesIO
 from warcio.archiveiterator import ArchiveIterator
 from warcio.recordloader import ArchiveLoadFailed

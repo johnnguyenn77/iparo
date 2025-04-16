@@ -7,8 +7,9 @@ from iparo.IPAROLinkFactory import IPAROLinkFactory
 from iparo.IPFS import ipfs, Mode
 from iparo.IPNS import ipns
 from iparo.LinkingStrategy import SingleStrategy
+from iparo.TimeUnit import TimeUnit
 
-timestamp = datetime.now()
+timestamp = int(1000000 * time.time())
 
 
 class IPFSTest(unittest.TestCase):
@@ -114,8 +115,7 @@ class IPFSTest(unittest.TestCase):
 
     def test_ipfs_should_retrieve_latest_time_before_target_timestamp_by_default(self):
         iparos = add_nodes(100)
-
-        timestamp = datetime.strftime(time1 + timedelta(seconds=55), IPARODateFormat.DATE_FORMAT)
+        timestamp = time1 + 55 * TimeUnit.SECONDS
         link = ipfs.retrieve_by_url_and_timestamp(URL, timestamp)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
@@ -128,7 +128,7 @@ class IPFSTest(unittest.TestCase):
 
     def test_ipfs_should_retrieve_earliest_time_after_target_timestamp(self):
         iparos = add_nodes(100)
-        time = datetime.strftime(time1 + timedelta(seconds=51), IPARODateFormat.DATE_FORMAT)
+        time = time1 + 51 * TimeUnit.SECONDS
 
         link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
         iparo = ipfs.retrieve(link.cid)
@@ -137,7 +137,7 @@ class IPFSTest(unittest.TestCase):
     def test_ipfs_should_retrieve_target_timestamp_if_there_exists_a_cid_with_the_target_timestamp(self):
         iparos = add_nodes(100)
 
-        time = datetime.strftime(time1 + timedelta(seconds=50), IPARODateFormat.DATE_FORMAT)
+        time = int(time1 + 50 * TimeUnit.SECONDS)
 
         link1 = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
         link2 = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
@@ -151,7 +151,7 @@ class IPFSTest(unittest.TestCase):
 
     def test_ipfs_should_retrieve_earlier_time_if_two_closest_timestamps_are_equally_distant(self):
         iparos = add_nodes(100)
-        time = datetime.strftime(time1 + timedelta(seconds=55), IPARODateFormat.DATE_FORMAT)
+        time = int(time1 + 55 * TimeUnit.SECONDS)
 
         link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
@@ -159,14 +159,14 @@ class IPFSTest(unittest.TestCase):
 
     def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_earlier(self):
         iparos = add_nodes(100)
-        time = datetime.strftime(time1 + timedelta(seconds=54), IPARODateFormat.DATE_FORMAT)
+        time = int(time1 + 54 * TimeUnit.SECONDS)
         link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_later(self):
         iparos = add_nodes(100)
-        time = datetime.strftime(time1 + timedelta(seconds=56), IPARODateFormat.DATE_FORMAT)
+        time = int(time1 + 56 * TimeUnit.SECONDS)
 
         link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
@@ -174,7 +174,7 @@ class IPFSTest(unittest.TestCase):
 
     def test_ipfs_should_retrieve_earliest_time_after_timestamp(self):
         iparos = add_nodes(100)
-        time = datetime.strftime(time1 + timedelta(seconds=54), IPARODateFormat.DATE_FORMAT)
+        time = int(time1 + 54 * TimeUnit.SECONDS)
 
         link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
@@ -223,43 +223,43 @@ class IPAROLinkFactoryTest(unittest.TestCase):
     # Test cases:
     # 1. Latest IPARO has exact timestamp.
     def test_can_retrieve_closest_iparo_if_the_closest_iparo_has_exact_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(milliseconds=0))
+        observed_iparo_seq_num = test_closest_iparo(0)
         self.assertEqual(observed_iparo_seq_num, 99)
 
     # 2. Latest IPARO is closest.
     def test_can_retrieve_closest_iparo_if_the_closest_iparo_has_closest_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(milliseconds=-499))
+        observed_iparo_seq_num = test_closest_iparo(-0.499)
         self.assertEqual(observed_iparo_seq_num, 99)
 
     # 3. Previous IPARO has exact timestamp.
     def test_can_retrieve_previous_iparo_if_the_previous_iparo_has_exact_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(seconds=-1))
+        observed_iparo_seq_num = test_closest_iparo(-1)
         self.assertEqual(observed_iparo_seq_num, 98)
 
     # 4. Previous IPARO is closest.
     def test_can_retrieve_previous_iparo_if_the_previous_iparo_has_closest_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(milliseconds=-501))
+        observed_iparo_seq_num = test_closest_iparo(-0.501)
         self.assertEqual(observed_iparo_seq_num, 98)
 
     # 5a. Prior nodes are closer.
     def test_can_retrieve_by_timestamp_on_prior_nodes(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(seconds=-44.1))
+        observed_iparo_seq_num = test_closest_iparo(-44.1)
         self.assertEqual(observed_iparo_seq_num, 55)
 
     # 5b. In particular, if first prior node (i.e. node before previous node) is closest, then
     # it should give the first prior node.
     def test_can_retrieve_by_timestamp_on_first_prior_node(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(seconds=-1.9))
+        observed_iparo_seq_num = test_closest_iparo(-1.9)
         self.assertEqual(observed_iparo_seq_num, 97)
 
     # 6. Timestamp comes after latest node.
     def test_can_return_latest_node_if_timestamp_goes_after_latest_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(milliseconds=1))
+        observed_iparo_seq_num = test_closest_iparo(1)
         self.assertEqual(observed_iparo_seq_num, 99)
 
     # 7. Timestamp comes before earliest node.
     def test_can_return_earliest_node_if_timestamp_goes_before_earliest_timestamp(self):
-        observed_iparo_seq_num = test_closest_iparo(timedelta(minutes=-2))
+        observed_iparo_seq_num = test_closest_iparo(-120)
         self.assertEqual(observed_iparo_seq_num, 0)
 
 

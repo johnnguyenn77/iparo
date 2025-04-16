@@ -1,13 +1,12 @@
 import random
 from abc import abstractmethod, ABC
-from datetime import timedelta
 from math import floor
 
-from iparo.IPARODateFormat import IPARODateFormat
 from iparo.IPAROLink import IPAROLink
 from iparo.IPAROLinkFactory import IPAROLinkFactory
 from iparo.IPFS import ipfs, Mode
 from iparo.IPNS import ipns
+from iparo.TimeUnit import TimeUnit
 
 
 # Make package/renaming with __init__ file
@@ -16,7 +15,7 @@ class LinkingStrategy(ABC):
     """
     The linking strategy determines how the new IPARO is to be linked. The IPARO
     object is first linked using the linking strategy, created (with the links),
-    and then finally stored.
+    and then finally stored. It depends on the implementation of the IPNS and the IPFS.
     """
 
     @abstractmethod
@@ -41,7 +40,6 @@ class ComprehensiveStrategy(LinkingStrategy):
 
 
 class KPreviousStrategy(LinkingStrategy):
-
     def __init__(self, k: int):
         self.k = k
 
@@ -137,13 +135,11 @@ class TemporallyUniformStrategy(LinkingStrategy):
         self.n = n  # Number of uniformly distributed links to create
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
-        # Get Latest Link and Latest CID in one fell swoop
         first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
-        time_window = IPARODateFormat.diff(latest_link.timestamp, first_link.timestamp)
+        time_window = latest_link.timestamp - first_link.timestamp
         first_ts = first_link.timestamp
         # Adds nodes sequenced as 1, 2, ..., n-1
-        timestamps = set(IPARODateFormat.add_timedeltas(first_ts,
-                                                        [i * time_window / self.n for i in range(1, self.n)]))
+        timestamps = {int(first_ts + i * time_window / self.n) for i in range(1, self.n)}
         links, _ = IPAROLinkFactory.from_timestamps(latest_link, {first_link, latest_link}, timestamps)
 
         # Add latest and first links.
@@ -154,7 +150,10 @@ class TemporallyUniformStrategy(LinkingStrategy):
 
 
 class TemporallyMaxGapStrategy(LinkingStrategy):
-    def __init__(self, max_gap: timedelta):
+    def __init__(self, max_gap: float):
+        """
+        The maximum gap is in terms of seconds.
+        """
         self.max_gap = max_gap
 
     def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
@@ -166,7 +165,7 @@ class TemporallyMaxGapStrategy(LinkingStrategy):
         links = set()
         # Keep stepping back using max_gap
         while curr_link.seq_num > 0:
-            current_time = IPARODateFormat.add_timedelta(current_time, -self.max_gap)
+            current_time = current_time - self.max_gap * TimeUnit.SECONDS
             curr_link, known_links = ipfs.retrieve_closest_iparo(curr_link, known_links,
                                                                  current_time, Mode.LATEST_BEFORE)
             links.add(curr_link)
@@ -177,7 +176,7 @@ class TemporallyMaxGapStrategy(LinkingStrategy):
 
 
 class TemporallyExponentialStrategy(LinkingStrategy):
-    def __init__(self, base: float, time_unit: timedelta):
+    def __init__(self, base: float, time_unit: int):
         self.base = base
         self.time_unit = time_unit
 
@@ -187,14 +186,14 @@ class TemporallyExponentialStrategy(LinkingStrategy):
 
         # Exponential time gaps
         gap = self.time_unit
-        time_window = IPARODateFormat.diff(latest_iparo.timestamp, first_link.timestamp)
+        time_window = latest_iparo.timestamp - first_link.timestamp
         gaps = []
         while gap < time_window:
             gaps.append(-gap)
             gap *= self.base
         gaps.reverse()
 
-        timestamps = IPARODateFormat.add_timedeltas(latest_iparo.timestamp, gaps)
+        timestamps = {latest_iparo.timestamp + gap for gap in gaps}
         links, _ = IPAROLinkFactory.from_timestamps(latest_link, {first_link, latest_link}, timestamps)
         links.add(first_link)
         links.add(latest_link)

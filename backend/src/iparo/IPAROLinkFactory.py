@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Optional
 
 from iparo.IPARO import IPARO
@@ -57,16 +56,13 @@ class IPAROLinkFactory:
         return links
 
     @classmethod
-    def from_timestamps(cls, link: IPAROLink, known_links: set[IPAROLink], timestamps: set[str]) -> tuple[set[IPAROLink], set[IPAROLink]]:
+    def from_timestamps(cls, link: IPAROLink, known_links: set[IPAROLink], timestamps: set[int]) -> tuple[set[IPAROLink], set[IPAROLink]]:
         """
         Constructs a list of IPARO links from a set of timestamps.
         """
-        # Question: Would timestamps be set[str] or should it be left as set[datetime]?
         sorted_timestamps = sorted(timestamps, reverse=True)
         links = set()
         for ts in sorted_timestamps:
-            # Question: Should I just add one known link for each time I iterate through?
-            # Or should I just add all the IPARO's links in the list?
             known_links.add(link)
             link, known_links = ipfs.retrieve_closest_iparo(link, known_links, ts)
             links.add(link)
@@ -76,7 +72,9 @@ class IPAROLinkFactory:
     @classmethod
     def get_links_to_first_and_latest_nodes(self, url) -> tuple[IPAROLink, IPAROLink, IPARO]:
         """
-        A helper method that adds the first and latest links.
+        A helper method that adds the first and latest links. There is no waste involved because
+        we are only getting the link to the first node, not the first IPARO object itself, at least
+        in the strategies that use this method.
         """
         latest_cid = ipns.get_latest_cid(url)
         latest_iparo = ipfs.retrieve(latest_cid)

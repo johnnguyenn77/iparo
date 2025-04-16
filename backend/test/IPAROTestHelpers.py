@@ -1,8 +1,10 @@
+import datetime
+
 from iparo import IPARO
 from IPAROTestConstants import *
 from iparo.IPFS import *
 from iparo.LinkingStrategy import *
-from iparo.IPAROFactory import IPAROFactory
+from iparo.TimeUnit import TimeUnit
 
 
 def add_nodes(num_nodes: int):
@@ -14,8 +16,8 @@ def add_nodes(num_nodes: int):
             # todo add specific exception.
         except Exception:
             linked_iparos = set()
-        timestamp = time1 + timedelta(seconds=10 * i)
-        iparo = IPARO(content=content, timestamp=datetime.strftime(timestamp, IPARODateFormat.DATE_FORMAT),
+        timestamp = time1 + 10 * i * TimeUnit.SECONDS
+        iparo = IPARO(content=content, timestamp=timestamp,
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         iparos.append(iparo)
         cid = ipfs.store(iparo)
@@ -39,7 +41,7 @@ def test_strategy(strategy: LinkingStrategy) -> list[int]:
         except IPARONotFoundException:
             linked_iparos = set()
         lengths.append(len(linked_iparos))
-        timestamp = datetime.strftime(time1 + timedelta(seconds=i), IPARODateFormat.DATE_FORMAT)
+        timestamp = time1 + i * TimeUnit.SECONDS
         iparo = IPARO(content=content, timestamp=timestamp,
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         cid = ipfs.store(iparo)
@@ -57,7 +59,7 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
             linked_iparos = strategy.get_candidate_nodes(URL)
         except IPARONotFoundException:
             linked_iparos = set()
-        timestamp = datetime.strftime(time1 + timedelta(seconds=i), IPARODateFormat.DATE_FORMAT)
+        timestamp = time1 + i * TimeUnit.SECONDS
         iparo = IPARO(content=content, timestamp=timestamp, url=URL, linked_iparos=linked_iparos, seq_num=i)
         cid = ipfs.store(iparo)
         ipns.update(URL, cid)
@@ -67,7 +69,7 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
     return lengths, cids, iparos
 
 
-def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_times: list[int]) -> list[datetime]:
+def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_times: list[int]) -> list[int]:
     """
     :param strategy: The strategy to test
     :param relative_times: The times relative to the first node in seconds.
@@ -75,10 +77,8 @@ def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_tim
     """
     for i, dt in enumerate(relative_times):
         content = generate_random_content_string()
-        timestamp = datetime.strftime(time1 + timedelta(seconds=dt), IPARODateFormat.DATE_FORMAT)
-        iparo = IPAROFactory.create_node(URL, content)
-        iparo.timestamp = timestamp
-        iparo.seq_num = i
+        timestamp = int(time1 + dt * TimeUnit.SECONDS)
+        iparo = IPARO(url=URL, content=content, linked_iparos=set(), timestamp=timestamp, seq_num=i)
         try:
             iparo.linked_iparos = strategy.get_candidate_nodes(URL)
         except IPARONotFoundException:
@@ -88,19 +88,20 @@ def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_tim
 
     # Where would the next link go?
     links = strategy.get_candidate_nodes(URL)
-    time = time1.strftime(IPARODateFormat.DATE_FORMAT)
 
-    return sorted([IPARODateFormat.diff(link.timestamp, time) / timedelta(seconds=1) for link in links])
+    return sorted([int((link.timestamp - time1) / TimeUnit.SECONDS) for link in links])
 
 
-def test_closest_iparo(rel_time: timedelta):
+def test_closest_iparo(rel_time: float):
     """
     Helper method for testing what the closest IPARO is to the given relative time.
+
+    :param rel_time: The number of seconds, relative to the link timestamp.
     """
     cid = ipns.get_latest_cid(URL)
     latest_iparo = ipfs.retrieve(cid)
     link = IPAROLinkFactory.from_cid_iparo(cid, latest_iparo)
-    timestamp = IPARODateFormat.add_timedelta(link.timestamp, rel_time)
+    timestamp = int(link.timestamp + rel_time * TimeUnit.SECONDS)
     observed_iparo, _ = ipfs.retrieve_closest_iparo(link, {link}, timestamp)
 
     return observed_iparo.seq_num

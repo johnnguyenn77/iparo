@@ -4,7 +4,6 @@ from enum import Enum
 
 from iparo.IPAROException import IPARONotFoundException
 from iparo.IPARO import IPARO
-from iparo.IPARODateFormat import IPARODateFormat
 from iparo.IPAROLink import IPAROLink
 from iparo.IPNS import ipns
 
@@ -57,7 +56,7 @@ class IPFS:
         iparo_bytes = self.data[cid]
         return pickle.loads(iparo_bytes)
 
-    def retrieve_by_url_and_timestamp(self, url: str, target_timestamp: str, mode: Mode = Mode.LATEST_BEFORE) -> \
+    def retrieve_by_url_and_timestamp(self, url: str, target_timestamp: int, mode: Mode = Mode.LATEST_BEFORE) -> \
             IPAROLink:
         link, _ = self.retrieve_closest_iparo(self.get_latest_link(url), set(), target_timestamp, mode)
         return link
@@ -82,7 +81,7 @@ class IPFS:
 
         return self.retrieve_nth_iparo(number, next_link)
 
-    def retrieve_closest_iparo(self, curr_link: IPAROLink, known_links: set[IPAROLink], timestamp: str,
+    def retrieve_closest_iparo(self, curr_link: IPAROLink, known_links: set[IPAROLink], timestamp: int,
                                mode: Mode = Mode.CLOSEST)\
             -> tuple[IPAROLink, set[IPAROLink]]:
         """
@@ -101,7 +100,7 @@ class IPFS:
             prev_link = self.retrieve_nth_iparo(curr_link.seq_num - 1, curr_link)
             prev_ts = prev_link.timestamp
             # Calculate time fraction.
-            time_frac = IPARODateFormat.diff(timestamp, prev_ts) / IPARODateFormat.diff(curr_ts, prev_ts)
+            time_frac = (timestamp - prev_ts) / (curr_ts - prev_ts)
             if time_frac >= 0:
                 if mode == Mode.CLOSEST:
                     chosen_link = prev_link if time_frac <= 0.5 else curr_link

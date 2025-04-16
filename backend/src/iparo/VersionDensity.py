@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 import math
 import random
-from datetime import datetime, timedelta
+import time
 from enum import IntEnum
 
 from iparo.IPARO import IPARO
-from iparo.IPARODateFormat import IPARODateFormat
+from iparo.TimeUnit import TimeUnit
 
 URL = "example.com"
 
@@ -26,34 +26,48 @@ class VersionDensity(ABC):
     The version density class determines the "shape" of the graph.
     """
 
-    def __init__(self, interval: timedelta = timedelta(seconds=999999)):
+    def __init__(self, interval: float = 999999):
+        """
+        Initialize distribution with start interval.
+
+        Args:
+            interval (float): The number of seconds.
+        """
         # Gets the start time, in microseconds. Note that there is 1 underscore to indicate a protected attribute
         # that can be inherited to other classes.
-        self._start_time = datetime.now().replace(microsecond=0)
+        self._start_time = int(time.time() * TimeUnit.SECONDS)
         self._interval = interval
 
     def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
         """
         Gets the nodes according to a version volume.
-        :param volume: The version volume
-        :return: The list of unlinked IPAROs
+
+        Args:
+            volume: The version volume
+        Returns:
+            The list of unlinked IPAROs
         """
         dq = 1 / (volume - 1) if volume != VersionVolume.SINGLE else 0.0
         iparos = []
         for i in range(volume):
             quantile = i * dq
-            interval_frac = self.get_quantile(quantile)
+            interval_frac = self._get_quantile(quantile)
             value = self._interval * interval_frac
-            time = self._start_time + value
-            time_string = datetime.strftime(time, IPARODateFormat.DATE_FORMAT)
-            iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(), linked_iparos=set(),
+            curr_time = self._start_time + value
+            iparo = IPARO(timestamp=int(curr_time), content=f"Node {i}".encode(), linked_iparos=set(),
                           seq_num=-1, url=URL)
             iparos.append(iparo)
 
         return iparos
 
     @abstractmethod
-    def get_quantile(self, x: float) -> float:
+    def _get_quantile(self, x: float) -> float:
+        """
+        A helper function used to generate a version density. By default, the quantile function
+        is used to "uniformly" space the nodes from a given distribution. It is defined as the
+        time T between the start and end times, given some x between 0 and 1, such that a randomly
+        generated time t has probability x of being "less" than (i.e. earlier than) the given time T.
+        """
         pass
 
 
@@ -62,7 +76,7 @@ class UniformVersionDensity(VersionDensity):
     Uniform version density would mean each node is equally spaced.
     """
 
-    def get_quantile(self, x: float) -> float:
+    def _get_quantile(self, x: float) -> float:
         return x
 
 
@@ -71,16 +85,16 @@ class LinearVersionDensity(VersionDensity):
     The number of nodes per unit time ``t`` is a function ``f(t) = a*t+b.`` for ``0 <= t <= 1``.
     """
 
-    def __init__(self, slope: float, time_interval: timedelta = timedelta(seconds=999999)):
+    def __init__(self, slope: float, time_interval: float = 999999):
         """
         Args:
             slope (float): The slope of the underlying linear density function at the beginning.
-            time_interval (timedelta): The interval of time.
+            time_interval (float): The interval of time, in seconds.
         """
         super().__init__(time_interval)
         self.slope = slope
 
-    def get_quantile(self, x: float) -> float:
+    def _get_quantile(self, x: float) -> float:
         # Get the quadratic equation: 0 = a*x^2/2 + b*x - c. Reason is F(x) is the integral of f(x) with respect to x.
         a = 2 * (1 - self.slope)
         b = self.slope
@@ -97,16 +111,16 @@ class BigHeadLongTailVersionDensity(VersionDensity):
     Thus, the CDF is ``F(x) = ln(1+(a-1)x)/ln(a)``, for all ``a != 1`` and ``a > 0``
     """
 
-    def __init__(self, param: float, time_interval: timedelta = timedelta(seconds=999999)):
+    def __init__(self, param: float, time_interval=999999):
         """
         Args:
             param (float): The parameter of the underlying reciprocal density function at the beginning.
-            time_interval (timedelta): The interval of time.
+            time_interval (float): The interval of time, in seconds.
         """
         super().__init__(time_interval)
         self.param = param
 
-    def get_quantile(self, x: float) -> float:
+    def _get_quantile(self, x: float) -> float:
         # F(x, a) = ln(1+(a-1)x) / ln(a), 0 <= x <= 1, a > 1
         # a^q = e^[ln(a)*ln(1+(a-1)x)/ln(a)]
         # a^q = 1+(a-1)x
@@ -124,11 +138,14 @@ class MultipeakDensity(VersionDensity):
     """
 
     def __init__(self, probability_weights: list[tuple[float, float, float]],
-                 time_interval: timedelta = timedelta(seconds=999999)):
+                 time_interval: int = 999999):
         """
         Args:
-            probability_weights (list[tuple[float, float, float]]): The probability weights. The first float represents the probability weight for the uniform random variate. The second float represents the mean of the normal distribution, and the third float represents the standard deviation.
-            time_interval (timedelta): The interval of time.
+            probability_weights (list[tuple[float, float, float]]): The probability weights. The first float represents
+            the probability weight for the uniform random variate. The second float represents the mean of the normal
+            distribution, and the third float represents the standard deviation.
+
+            time_interval (float): The interval of time in seconds.
         """
         super().__init__(time_interval)
         self.probability_weights = probability_weights
@@ -155,9 +172,8 @@ class MultipeakDensity(VersionDensity):
 
             # Random variable 2 will determine time of "creation".
             _, mean, sd = self.probability_weights[dist_num]
-            td = timedelta(seconds=random.normalvariate(mean, sd))
-            time_string = IPARODateFormat.add_timedelta(self._start_time.strftime(IPARODateFormat.DATE_FORMAT), td)
-            iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(),
+            td = random.normalvariate(mean, sd)
+            iparo = IPARO(timestamp=int(self._start_time + td), content=f"Node {i}".encode(),
                           linked_iparos=set(), seq_num=-1, url=URL)
 
             iparos.append(iparo)
@@ -165,5 +181,5 @@ class MultipeakDensity(VersionDensity):
         iparos.sort(key=lambda iparo: iparo.timestamp)
         return iparos
 
-    def get_quantile(self, x: float) -> float:
+    def _get_quantile(self, x: float) -> float:
         pass
