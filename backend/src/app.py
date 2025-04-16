@@ -2,6 +2,7 @@ import requests
 from flask import Flask, request, jsonify
 from iparo.IPARO import IPARO
 from iparo.IPAROLink import IPAROLink
+from iparo.IPFS import IPFS
 from io import BytesIO
 from warcio.archiveiterator import ArchiveIterator
 from warcio.recordloader import ArchiveLoadFailed
@@ -10,9 +11,9 @@ import pickle
 import hashlib
 
 app = Flask(__name__)
+ipfs = IPFS()
 
 IPFS_API_URL = "http://127.0.0.1:5001/api/v0"
-
 
 def create_iparo(filename=None):
     """Processes WARC file, creates IPARO object with incremented seq_num, pushes to IPFS."""
@@ -26,55 +27,15 @@ def create_iparo(filename=None):
                 timestamp = record.rec_headers.get_header('WARC-Date')
                 content = record.content_stream().read()
 
-                key_name = generate_key_for_url(url)
-                ipns_id = get_ipns_name_for_key(key_name)
-
-                # Attempt to resolve the existing IPNS name to a CID
-                try:
-                    resolved_cid = resolve_ipns_to_cid(ipns_id)
-                    existing_iparo = fetch_iparo_from_ipfs(resolved_cid)
-                    seq_num = existing_iparo.seq_num + 1
-                except Exception:
-                    # If not resolvable, assume it's the first version
-                    seq_num = 0
-
                 iparo_object = IPARO(
                     url=url,
                     timestamp=timestamp,
-                    seq_num=seq_num,
+                    seq_num=0,
                     linked_iparos=set(),
                     content=content,
                     nonce=0
                 )
                 return iparo_object
-
-            
-            
-def generate_key_for_url(url):
-    url_hash = hashlib.sha256(url.encode()).hexdigest()
-    key_name = f"urlkey-{url_hash[:10]}"
-
-    # Check if key already exists
-    existing_keys = requests.post("http://127.0.0.1:5001/api/v0/key/list").json()
-    if key_name not in [k["Name"] for k in existing_keys["Keys"]]:
-        res = requests.post("http://127.0.0.1:5001/api/v0/key/gen", params={
-            "arg": key_name,
-            "type": "rsa",
-            "size": "2048"
-        })
-        print(f"Generated new key: {key_name}")
-    else:
-        print(f"Using existing key: {key_name}")
-
-    return key_name
-
-def get_ipns_name_for_key(key_name):
-    """Returns the IPNS name (PeerID) for a given key."""
-    response = requests.post("http://127.0.0.1:5001/api/v0/key/list").json()
-    for key in response["Keys"]:
-        if key["Name"] == key_name:
-            return key["Id"]
-    raise Exception(f"Key '{key_name}' not found.")
 
 def add_iparo_to_ipfs(iparo_obj):
     pickled_data = pickle.dumps(iparo_obj)
@@ -82,35 +43,33 @@ def add_iparo_to_ipfs(iparo_obj):
         f"{IPFS_API_URL}/add",
         files={"file": ("iparo.pkl", pickled_data)}
     )
-    print("Succesfully add to ipfs")
     print(f"IPFS Hash: {response.json()['Hash']}")
     return response.json()["Hash"]
 
-def update_ipns(ipfs_hash, key_name):
+def update_ipns(cid):
     """Pins an IPFS hash to IPNS using a specific key."""
     response = requests.post(
         f"{IPFS_API_URL}/name/publish",
         params={
-            "arg": f"/ipfs/{ipfs_hash}",
-            "key": key_name
+            "arg": f"/ipfs/{cid}",
         }
     )
     if response.status_code != 200:
         raise Exception(f"Failed to publish to IPNS: {response.text}")
     
-    ipns_name = response.json().get("Name", "Unknown IPNS Name")
-    print(f" Published to IPNS with key '{key_name}': /ipns/{ipns_name}")
-    return ipns_name
+    peer_id = response.json().get("Name", "Unknown IPNS Name")
+    print(f" Published to IPNS: /ipns/{peer_id}")
+    return peer_id
     
-def resolve_ipns_to_cid(key_name):
+def resolve_ipns_to_cid(peer_id):
     """Resolve IPNS key to the current IPFS hash (CID)."""
-    response = requests.post(f"{IPFS_API_URL}/name/resolve", params={"arg": f"/ipns/{key_name}"})
+    response = requests.post(f"{IPFS_API_URL}/name/resolve", params={"arg": f"/ipns/{peer_id}"})
     if response.status_code != 200:
         raise Exception(f"Failed to resolve IPNS: {response.text}")
     
     path = response.json()["Path"]
     cid = path.split("/")[-1]
-    print(f"Resolved IPNS key '{key_name}' to CID: {cid}")
+    print(f"Resolved IPNS key '{peer_id}' to CID: {cid}")
     return cid
 
 def fetch_iparo_from_ipfs(cid):
@@ -122,11 +81,9 @@ def fetch_iparo_from_ipfs(cid):
     return iparo
 
 new_iparo = create_iparo()
-key = generate_key_for_url(new_iparo.url)
-ipns_id = get_ipns_name_for_key(key)
 cid = add_iparo_to_ipfs(new_iparo)
-ipns_name = update_ipns(cid, key)
-resolved_cid = resolve_ipns_to_cid(ipns_id)
+ipns_name = update_ipns(cid)
+resolved_cid = resolve_ipns_to_cid(ipns_name)
 iparo_from_ipns = fetch_iparo_from_ipfs(resolved_cid)
 print(iparo_from_ipns)
 print(iparo_from_ipns.__dict__)
