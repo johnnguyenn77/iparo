@@ -36,8 +36,9 @@ class VersionDensity(ABC):
         # Gets the start time, in microseconds. Note that there is 1 underscore to indicate a protected attribute
         # that can be inherited to other classes.
         self._start_time = int(time.time() * TimeUnit.SECONDS)
-        self._interval = interval
+        self._interval = interval * TimeUnit.SECONDS
 
+    # Consider using generators and random number generators.
     def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
         """
         Gets the nodes according to a version volume.

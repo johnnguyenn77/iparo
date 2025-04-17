@@ -134,12 +134,16 @@ class TemporallyUniformStrategy(LinkingStrategy):
     def __init__(self, n: int):
         self.n = n  # Number of uniformly distributed links to create
 
-    def get_candidate_nodes(self, url: str) -> set[IPAROLink]:
+    # Do latest iparo extraction outside.
+    # Supply known links?
+    def get_candidate_nodes(self, latest_iparo: IPARO, latest_link: IPAROLink) -> set[IPAROLink]:
         first_link, latest_link, latest_iparo = IPAROLinkFactory.get_links_to_first_and_latest_nodes(url)
         time_window = latest_link.timestamp - first_link.timestamp
         first_ts = first_link.timestamp
         # Adds nodes sequenced as 1, 2, ..., n-1
         timestamps = {int(first_ts + i * time_window / self.n) for i in range(1, self.n)}
+
+        # from_timestamps(timestamps: set[int], known_links: set[IPAROLink])
         links, _ = IPAROLinkFactory.from_timestamps(latest_link, {first_link, latest_link}, timestamps)
 
         # Add latest and first links.
@@ -149,7 +153,7 @@ class TemporallyUniformStrategy(LinkingStrategy):
         return links
 
 
-class TemporallyMaxGapStrategy(LinkingStrategy):
+class TemporallyMinGapStrategy(LinkingStrategy):
     def __init__(self, max_gap: float):
         """
         The maximum gap is in terms of seconds.
@@ -163,11 +167,15 @@ class TemporallyMaxGapStrategy(LinkingStrategy):
         known_links = {first_link, latest_link}
 
         links = set()
-        # Keep stepping back using max_gap
+        # Keep stepping back using max_gap (Earliest?)
+        # Example: * * - * - - - - * * - - * *
+        # * = capture, - = no capture
         while curr_link.seq_num > 0:
             current_time = current_time - self.max_gap * TimeUnit.SECONDS
+            # Choose earliest after but with the caveat that if there is no link within that window,
+            # we extend the window.
             curr_link, known_links = ipfs.retrieve_closest_iparo(curr_link, known_links,
-                                                                 current_time, Mode.LATEST_BEFORE)
+                                                                 current_time, Mode.EARLIEST_AFTER)
             links.add(curr_link)
 
         links.add(first_link)

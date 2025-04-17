@@ -5,24 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/iparo/TimeUnit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_14_2025_2_47_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_14_2025_2_47_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_15_2025_12_39_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_15_2025_12_39_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_15_2025_12_43_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_15_2025_12_43_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPARO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPARO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPARODateFormat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROFactory.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROLink.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROLink.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/iparo/IPAROLinkFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROLinkFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPNS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/iparo/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/LinkingStrategy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/iparo/VersionDensity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/VersionDensity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROStrategyTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROStrategyTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTestConstants.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTestConstants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTestHelpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTestHelpers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPFSTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPFSTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/VersionDensityTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/VersionDensityTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,14 +28,10 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="ptl46" />
+        <entry key="$PROJECT_DIR$/.." value="qb42" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="autoscrollToSource" value="true" />
-    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -73,7 +58,7 @@
     "Python.MasterTest.executor": "Run",
     "Python.app.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "git-widget-placeholder": "qb42",
+    "git-widget-placeholder": "ptl46",
     "last_opened_file_path": "C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend/src/iparo/IPFS.py",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
@@ -170,10 +155,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.MasterTest" />
         <item itemvalue="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase" />
         <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
         <item itemvalue="Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest" />
+        <item itemvalue="Python.MasterTest" />
         <item itemvalue="Python.app" />
       </list>
     </recent_temporary>
