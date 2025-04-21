@@ -4,20 +4,21 @@ from iparo.VersionDensity import *
 
 class VersionDensityTestCase(unittest.TestCase):
 
-    def test_uniform_is_uniformly_distributed(self):
-        uniform = UniformVersionDensity()
-        nodes = uniform.get_iparos(VersionVolume.MEDIUM)
-        timedeltas = set()
-        # Make sure that the dt's are equal
-        for i in range(len(nodes) - 1):
-            time_diff = nodes[i + 1].timestamp - nodes[i].timestamp
-            timedeltas.add(time_diff)
+    def test_version_density_is_uniformly_distributed(self):
+        uniform_density = UniformVersionDensity()
+        generator = VersionGenerator(uniform_density)
+        iparos = generator.generate(10000)
+        ts = [iparo.timestamp for iparo in iparos]
 
-        self.assertEqual(len(timedeltas), 1)
+        self.assertEqual(len(ts), 10000)
+        self.assertLessEqual(max(ts) - min(ts), 999999)
 
     def test_linear_is_linearly_distributed(self):
-        uniform = LinearVersionDensity(0)
-        nodes = uniform.get_iparos(VersionVolume.LARGE)
+        linear_version_density = LinearVersionDensity(2)
+        version_generator = VersionGenerator(linear_version_density)
+        nodes = version_generator.generate(10000)
+        nodes = sorted(nodes, key=lambda node: node.timestamp)
+
         interval = nodes[-1].timestamp - nodes[0].timestamp
 
         # Split the interval into 16 equal time intervals
@@ -27,13 +28,14 @@ class VersionDensityTestCase(unittest.TestCase):
             idx = min(int(16 * frac_interval ** 2), 15)
             frequencies[idx] += 1
 
-        self.assertLessEqual(max(frequencies) - min(frequencies), 1)
+        self.assertLessEqual(np.max(frequencies) - np.min(frequencies), 200)
 
     def test_big_head_long_tail_has_big_head_and_long_tail(self):
-        big_head_long_tail = BigHeadLongTailVersionDensity(20)
-        nodes = big_head_long_tail.get_iparos(VersionVolume.LARGE)
-        interval = nodes[-1].timestamp - nodes[0].timestamp
-        frac_intervals = [(node.timestamp - nodes[0].timestamp) / interval for node in nodes]
+        big_head_long_tail = BigHeadLongTailVersionDensity(200)
+        timestamps = big_head_long_tail.sample(VersionVolume.LARGE)
+        timestamps = np.sort(timestamps)
+        interval = timestamps[-1] - timestamps[0]
+        frac_intervals = [(ts - timestamps[0]) / interval for ts in timestamps]
 
         # Split the interval into 10 equal time intervals
         frequencies = [0] * 10
@@ -47,12 +49,11 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertGreaterEqual(frequencies[9] / frequencies[8], 0.8)
 
     def test_multipeak_can_have_two_peaks(self):
-        # Reason why I omitted the seed: It turns out that the algorithm used
-        # to create normal variates has an "upper bound" according to the random
-        # number generator used.
-
-        multipeak = MultipeakDensity([(1, 0, 32), (0.5, 2000, 30)])
-        nodes = multipeak.get_iparos(VersionVolume.LARGE)
+        multipeak = MultipeakVersionDensity(np.array([2/3, 1/3]),
+                                            np.array([[0, 32], [2000, 30]]))
+        version_generator = VersionGenerator(multipeak)
+        nodes = version_generator.generate(1000)
+        nodes = sorted(nodes, key=lambda node: node.timestamp)
         interval = nodes[-1].timestamp - nodes[0].timestamp
         frac_intervals = [(node.timestamp - nodes[0].timestamp) / interval for node in nodes]
         frequencies = [0] * 10

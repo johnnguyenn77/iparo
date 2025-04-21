@@ -28,22 +28,22 @@ class IPFSTest(unittest.TestCase):
         self.assertDictEqual(ipfs.data, {})
 
     def test_ipfs_should_store_one_iparo(self):
-        cid = ipfs.store(iparo1)
+        cid, _ = ipfs.store(iparo1)
         self.assertIn(cid, ipfs.data)
 
     def test_ipfs_should_retrieve_iparos(self):
-        cid = ipfs.store(iparo1)
+        cid, _ = ipfs.store(iparo1)
         iparo = ipfs.retrieve(cid)
         self.assertEqual(iparo, iparo1)
 
     def test_ipfs_should_count_retrievals(self):
-        cid = ipfs.store(iparo1)
+        cid, _ = ipfs.store(iparo1)
         ipfs.retrieve(cid)
         self.assertEqual(ipfs.retrieve_count, 1)
 
     def test_ipfs_should_retrieve_iparos_twice(self):
-        cid = ipfs.store(iparo1)
-        cid2 = ipfs.store(iparo2)
+        cid, _ = ipfs.store(iparo1)
+        cid2, _ = ipfs.store(iparo2)
         node1 = ipfs.retrieve(cid)
         node2 = ipfs.retrieve(cid2)
         self.assertEqual(node1, iparo1)
@@ -53,22 +53,22 @@ class IPFSTest(unittest.TestCase):
     # That is, different IPAROs can have the same CIDs, but the same IPARO cannot have
     # two different CIDs. We can see this in more detail when we get there.
     def test_different_cids_should_yield_different_iparos(self):
-        cid = ipfs.store(iparo1)
-        cid2 = ipfs.store(iparo2)
+        cid, _ = ipfs.store(iparo1)
+        cid2, _ = ipfs.store(iparo2)
         node1 = ipfs.retrieve(cid)
         node2 = ipfs.retrieve(cid2)
         self.assertNotEqual(node1, node2)
 
     def test_ipfs_should_update_retrieval_counts_twice(self):
-        cid = ipfs.store(iparo1)
-        cid2 = ipfs.store(iparo2)
+        cid, _ = ipfs.store(iparo1)
+        cid2, _ = ipfs.store(iparo2)
         ipfs.retrieve(cid)
         ipfs.retrieve(cid2)
         self.assertEqual(ipfs.retrieve_count, 2)
 
     def test_ipfs_should_store_two_iparos(self):
-        cid = ipfs.store(iparo1)
-        cid2 = ipfs.store(iparo2)
+        cid, _ = ipfs.store(iparo1)
+        cid2, _ = ipfs.store(iparo2)
         self.assertIn(cid, ipfs.data)
         self.assertIn(cid2, ipfs.data)
 
@@ -77,17 +77,17 @@ class IPFSTest(unittest.TestCase):
         self.assertEqual(len(cids), 0)
 
     def test_ipfs_versions_should_update_on_one_insert(self):
-        cid = ipfs.store(iparo1)
+        cid, _ = ipfs.store(iparo1)
         ipns.update(URL, cid)
         cids = ipfs.get_all_iparos(URL)
         self.assertEqual(len(cids), 1)
 
     def test_ipfs_versions_should_update_on_two_inserts(self):
-        cid = ipfs.store(iparo1)
+        cid, _ = ipfs.store(iparo1)
         ipns.update(URL, cid)
 
         iparo2.linked_iparos = {IPAROLinkFactory.from_cid_iparo(cid, iparo1)}
-        cid2 = ipfs.store(iparo2)
+        cid2, _ = ipfs.store(iparo2)
         ipns.update(URL, cid2)
         cids = {link.cid for link in ipfs.get_all_links(URL)}
         self.assertSetEqual(cids, {cid, cid2})
@@ -116,21 +116,22 @@ class IPFSTest(unittest.TestCase):
     def test_ipfs_should_retrieve_latest_time_before_target_timestamp_by_default(self):
         iparos = add_nodes(100)
         timestamp = time1 + 55 * TimeUnit.SECONDS
-        link = ipfs.retrieve_by_url_and_timestamp(URL, timestamp)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, timestamp)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_raise_error_if_no_iparo_is_inserted_into_ipfs(self):
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1, Mode.CLOSEST))
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1,
-                                                                                             Mode.EARLIEST_AFTER))
-        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_by_url_and_timestamp(URL, time1))
+        self.assertRaises(IPARONotFoundException,
+                          lambda: ipfs.retrieve_iparo_by_url_and_timestamp(URL, time1, Mode.CLOSEST))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_iparo_by_url_and_timestamp(URL, time1,
+                                                                                                   Mode.EARLIEST_AFTER))
+        self.assertRaises(IPARONotFoundException, lambda: ipfs.retrieve_iparo_by_url_and_timestamp(URL, time1))
 
     def test_ipfs_should_retrieve_earliest_time_after_target_timestamp(self):
         iparos = add_nodes(100)
         time = time1 + 51 * TimeUnit.SECONDS
 
-        link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[6])
 
@@ -139,9 +140,9 @@ class IPFSTest(unittest.TestCase):
 
         time = int(time1 + 50 * TimeUnit.SECONDS)
 
-        link1 = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
-        link2 = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
-        link3 = ipfs.retrieve_by_url_and_timestamp(URL, time)
+        link1 = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.EARLIEST_AFTER)
+        link2 = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.CLOSEST)
+        link3 = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time)
 
         links = {link1, link2, link3}
         iparo = ipfs.retrieve(link1.cid)
@@ -153,14 +154,14 @@ class IPFSTest(unittest.TestCase):
         iparos = add_nodes(100)
         time = int(time1 + 55 * TimeUnit.SECONDS)
 
-        link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
     def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_earlier(self):
         iparos = add_nodes(100)
         time = int(time1 + 54 * TimeUnit.SECONDS)
-        link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
@@ -168,7 +169,7 @@ class IPFSTest(unittest.TestCase):
         iparos = add_nodes(100)
         time = int(time1 + 56 * TimeUnit.SECONDS)
 
-        link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[6])
 
@@ -176,7 +177,7 @@ class IPFSTest(unittest.TestCase):
         iparos = add_nodes(100)
         time = int(time1 + 54 * TimeUnit.SECONDS)
 
-        link = ipfs.retrieve_by_url_and_timestamp(URL, time, Mode.CLOSEST)
+        link = ipfs.retrieve_iparo_by_url_and_timestamp(URL, time, Mode.CLOSEST)
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
@@ -207,7 +208,7 @@ class IPAROLinkFactoryTest(unittest.TestCase):
         self.assertEqual(fetched_link, expected_fetched_link)
 
     def test_can_get_multiple_indices_in_iparo(self):
-        links = [ipfs.retrieve_iparo_by_url_and_number(URL, i*i) for i in range(10)]
+        links = [ipfs.retrieve_iparo_by_url_and_number(URL, i * i) for i in range(10)]
         indices = {i * i for i in range(10)}
         cid = ipns.get_latest_cid(URL)
         iparo = ipfs.retrieve(cid)

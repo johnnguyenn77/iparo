@@ -42,9 +42,10 @@ class IPAROSimulationTest(unittest.TestCase):
                               ipfs.store_count, ipfs.retrieve_count], [0] * 4)
 
     def test_simulation_can_reset_data_with_no_trace_of_input(self):
+        url = self.simulation.url
         self.simulation.reset(reset_data=True)
-        self.assertRaises(IPARONotFoundException, lambda: ipns.get_latest_cid(URL))
-        self.assertEqual(len(ipfs.get_all_links(URL)), 0)
+        self.assertRaises(IPARONotFoundException, lambda: ipns.get_latest_cid(url))
+        self.assertEqual(len(ipfs.get_all_links(url)), 0)
 
     def test_simulation_can_be_exported_as_graph(self):
         graph = self.simulation.as_graph()

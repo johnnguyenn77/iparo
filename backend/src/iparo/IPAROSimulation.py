@@ -1,4 +1,5 @@
 from iparo.IPAROException import IPARONotFoundException
+from iparo.IPNS import ipns
 from iparo.LinkingStrategy import *
 
 import networkx as nx
@@ -14,10 +15,11 @@ class IPAROSimulation:
     """
 
     def __init__(self, linking_strategy: LinkingStrategy, version_density: VersionDensity,
-                 version_volume: VersionVolume):
+                 version_volume: VersionVolume, url: str = "example.com"):
         self.linking_strategy = linking_strategy
         self.version_density = version_density
         self.version_volume = version_volume
+        self.url = url
 
         # Debug variables for testing.
         self.ipfs_store_results: dict[str, int] = dict()
@@ -28,18 +30,22 @@ class IPAROSimulation:
     def run(self, k: int, verbose=True):
         """
         Sets up the testing environment for an IPARO simulation, and then
-        performs k random.
+        performs k random retrievals.
         """
-        nodes = self.version_density.get_iparos(self.version_volume)
+        generator = VersionGenerator(self.version_density)
+        nodes = generator.generate(k, self.url)
         # Link the IPAROs in the IPFS
         for i, node in enumerate(nodes):
+            if i == 2:
+                pass
             node.seq_num = i
             try:
-                node.linked_iparos = self.linking_strategy.get_candidate_nodes(URL)
+                first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
+                node.linked_iparos = self.linking_strategy.get_candidate_nodes(latest_link, latest_node, first_link)
             except IPARONotFoundException:
                 node.linked_iparos = set()
-            cid = ipfs.store(node)
-            ipns.update(URL, cid)
+            cid, _ = ipfs.store(node)
+            ipns.update(self.url, cid)
 
         self.ipfs_store_results = ipfs.get_counts()
         self.ipns_store_results = ipns.get_counts()
@@ -48,13 +54,13 @@ class IPAROSimulation:
         IPAROSimulation.reset()
 
         # Get node number from latest CID
-        latest_cid = ipns.get_latest_cid(URL)
+        latest_cid = ipns.get_latest_cid(self.url)
         latest_node = ipfs.retrieve(latest_cid)
         for i in range(k):
             selected_index = random.randint(0, latest_node.seq_num - 1)
 
             # The intent is to find separate numbers, where the numbers are not known until at runtime.
-            ipfs.retrieve_iparo_by_url_and_number(URL, selected_index)
+            ipfs.retrieve_iparo_by_url_and_number(self.url, selected_index)
         if verbose:
             IPAROSimulation.print_counts("Retrieve")
 
@@ -78,7 +84,7 @@ class IPAROSimulation:
         """
         # Do comprehensive
         nx_graph = nx.DiGraph()
-        for iparo in ipfs.get_all_iparos(URL):
+        for iparo in ipfs.get_all_iparos(self.url):
             curr_num = iparo.seq_num
             nx_graph.add_node(curr_num)
             for link in iparo.linked_iparos:
