@@ -12,24 +12,24 @@ from iparo.VersionDensity import *
 class IPAROSimulationTest(unittest.TestCase):
 
     def setUp(self):
-        IPAROSimulation.reset(reset_data=True)
         linking_strategy = TemporallyUniformStrategy(2)
         self.simulation = IPAROSimulation(linking_strategy=linking_strategy,
                                           version_volume=VersionVolume.MEDIUM,
                                           version_density=UniformVersionDensity())
         self.simulation.run(100, verbose=False)
 
+    def tearDown(self):
+        self.simulation.reset(reset_data=True)
+
     def test_simulation_has_ipns_store_results(self):
-        self.assertIsInstance(self.simulation.ipfs_store_results, dict)
+        self.assertIsInstance(self.simulation.store_results, dict)
 
-    def test_simulation_has_ipfs_store_results(self):
-        self.assertIsInstance(self.simulation.ipns_store_results, dict)
+    def test_simulation_has_ipfs_retrieve_number_results(self):
+        self.assertIsInstance(self.simulation.retrieve_number_results, dict)
 
-    def test_simulation_has_ipns_retrieve_results(self):
-        self.assertIsInstance(self.simulation.ipns_retrieve_results, dict)
+    def test_simulation_has_ipns_retrieve_datetime_results(self):
+        self.assertIsInstance(self.simulation.retrieve_date_results, dict)
 
-    def test_simulation_has_ipfs_retrieve_results(self):
-        self.assertIsInstance(self.simulation.ipns_retrieve_results, dict)
 
     def test_simulation_can_reset(self):
         self.simulation.reset()

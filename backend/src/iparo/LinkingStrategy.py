@@ -29,14 +29,27 @@ class LinkingStrategy(ABC):
         """
         pass
 
+    @abstractmethod
+    def __str__(self):
+        """
+        The name of the linking strategy, used for simulations.
+        """
+        pass
+
 
 class SingleStrategy(LinkingStrategy):
 
-    def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
+    def __str__(self):
+        return "Single"
+
+    def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: None = None) -> set[IPAROLink]:
         return {latest_link}
 
 
 class ComprehensiveStrategy(LinkingStrategy):
+
+    def __str__(self):
+        return "Comprehensive"
 
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         latest_node_links = latest_iparo.linked_iparos
@@ -48,6 +61,9 @@ class ComprehensiveStrategy(LinkingStrategy):
 class KPreviousStrategy(LinkingStrategy):
     def __init__(self, k: int):
         self.k = k
+
+    def __str__(self):
+        return f"{self.k}-Previous"
 
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         linked_iparos = latest_iparo.linked_iparos.copy()
@@ -63,6 +79,9 @@ class PreviousStrategy(KPreviousStrategy):
 
     def __init__(self):
         super().__init__(1)
+
+    def __str__(self):
+        return "Previous"
 
 
 class KRandomStrategy(LinkingStrategy):
@@ -84,6 +103,8 @@ class KRandomStrategy(LinkingStrategy):
         links.add(latest_link)
         return links
 
+    def __str__(self):
+        return f"{self.k}-Random"
 
 class SequentialExponentialStrategy(LinkingStrategy):
 
@@ -100,6 +121,9 @@ class SequentialExponentialStrategy(LinkingStrategy):
         links = IPAROLinkFactory.from_indices(latest_link, indices)
         return links
 
+    def __str__(self):
+        return f"Base-{self.k} Sequential Exponential"
+
 
 class SequentialUniformNPriorStrategy(LinkingStrategy):
 
@@ -109,6 +133,9 @@ class SequentialUniformNPriorStrategy(LinkingStrategy):
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         indices: set[int] = {latest_iparo.seq_num * i // (self.n + 1) for i in range(self.n + 2)}
         return IPAROLinkFactory.from_indices(latest_link, indices)
+
+    def __str__(self):
+        return f"Sequential Uniform {self.n}-Prior"
 
 
 class SequentialSMaxGapStrategy(LinkingStrategy):
@@ -121,15 +148,21 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
         # Sequentially add nodes with no more than S hops between them
         start_seq_num = latest_link.seq_num - self.s
 
-        # range(start, 0, -s) -> From start to 0 (exclusive), going down in step of size s.
-        node_indices = set(range(start_seq_num, 0, -self.s))
-
-        # Add 0 to the node indices.
-        node_indices.add(0)
-        links = IPAROLinkFactory.from_indices(latest_link, node_indices)
+        # It turns out you can use the previous link to retrieve S-max-gap
+        if start_seq_num >= 0:
+            prev_link = ipfs.retrieve_nth_iparo(start_seq_num + 1, latest_link)
+            prev_iparo = ipfs.retrieve(prev_link.cid)
+            # Add 0 to the node indices.
+            links = prev_iparo.linked_iparos.copy()
+        else:
+            links = set()
+        links.add(first_link)
         links.add(latest_link)
 
         return links
+
+    def __str__(self):
+        return f"Sequential {self.s}-Max-Gap"
 
 
 class TemporallyUniformStrategy(LinkingStrategy):
@@ -150,6 +183,8 @@ class TemporallyUniformStrategy(LinkingStrategy):
 
         return links
 
+    def __str__(self):
+        return f"Temporally Uniform ({self.n} Nodes)"
 
 class TemporallyMinGapStrategy(LinkingStrategy):
     def __init__(self, min_gap: float):
@@ -185,6 +220,9 @@ class TemporallyMinGapStrategy(LinkingStrategy):
         links.add(latest_link)
         return links
 
+    def __str__(self):
+        return f"Temporally Min Gap ({self.min_gap} Seconds)"
+
 
 class TemporallyExponentialStrategy(LinkingStrategy):
     def __init__(self, base: float, time_unit: int):
@@ -207,3 +245,6 @@ class TemporallyExponentialStrategy(LinkingStrategy):
         links.add(latest_link)
 
         return links
+
+    def __str__(self):
+        return f"Temporally Exponential ({self.time_unit} Second(s), Base {self.base})"

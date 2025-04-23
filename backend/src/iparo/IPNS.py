@@ -1,3 +1,4 @@
+import gc
 import time
 
 from iparo.TimeUnit import TimeUnit
@@ -82,6 +83,8 @@ class IPNS:
         """
         Resets the data.
         """
+        del self.__store
+        gc.collect()
         self.__store: dict[str, str] = {}
 
     def reset_counts(self):

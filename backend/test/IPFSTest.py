@@ -1,7 +1,7 @@
 import unittest
 
 from IPAROTestConstants import *
-from IPAROTestHelpers import add_nodes, test_strategy, test_closest_iparo
+from IPAROTestHelpers import add_nodes, test_strategy, test_closest_iparo, generate_random_content_string
 from iparo.IPAROException import IPARONotFoundException
 from iparo.IPAROLinkFactory import IPAROLinkFactory
 from iparo.IPFS import ipfs, Mode
@@ -165,7 +165,7 @@ class IPFSTest(unittest.TestCase):
         iparo = ipfs.retrieve(link.cid)
         self.assertEqual(iparo, iparos[5])
 
-    def test_ipfs_should_retrieve_earlier_time_if_closest_timestamp_is_later(self):
+    def test_ipfs_should_retrieve_later_time_if_closest_timestamp_is_later(self):
         iparos = add_nodes(100)
         time = int(time1 + 56 * TimeUnit.SECONDS)
 
@@ -262,6 +262,18 @@ class IPAROLinkFactoryTest(unittest.TestCase):
     def test_can_return_earliest_node_if_timestamp_goes_before_earliest_timestamp(self):
         observed_iparo_seq_num = test_closest_iparo(-120)
         self.assertEqual(observed_iparo_seq_num, 0)
+
+    # 8. Previous and current timestamp are the same
+    def test_can_retrieve_closest_iparo_if_previous_and_current_both_have_exact_timestamps(self):
+        content = generate_random_content_string()
+        first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+        linked_iparos = SingleStrategy().get_candidate_nodes(latest_link, latest_iparo, first_link)
+        timestamp = time1 + 99 * TimeUnit.SECONDS
+        iparo = IPARO(linked_iparos=linked_iparos, seq_num=100, timestamp=timestamp, url=URL, content=content)
+        cid, _ = ipfs.store(iparo)
+        ipns.update(URL, cid)
+        observed_iparo_seq_num = test_closest_iparo(-10)
+        self.assertEqual(observed_iparo_seq_num, 89)
 
 
 if __name__ == '__main__':

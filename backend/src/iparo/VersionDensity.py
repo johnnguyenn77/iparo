@@ -22,6 +22,13 @@ class VersionVolume(IntEnum):
 class VersionDensity(ABC):
 
     @abstractmethod
+    def __str__(self):
+        """
+        Used for naming a version density.
+        """
+        pass
+
+    @abstractmethod
     def sample(self, n: int) -> np.ndarray:
         """
         Samples n times
@@ -31,12 +38,12 @@ class VersionDensity(ABC):
         pass
 
 
-class IntervalVersionDensity(VersionDensity):
+class IntervalVersionDensity(VersionDensity, ABC):
     """
     A class that inherits from VersionDensity by adding the interval attribute.
     """
 
-    def __init__(self, interval: float = 999999):
+    def __init__(self, interval: float = 1000):
         self._interval = interval
 
 
@@ -62,8 +69,11 @@ class VersionGenerator:
 
 class UniformVersionDensity(IntervalVersionDensity):
 
-    def __init__(self, interval: float = 999999):
+    def __init__(self, interval: float = 1000):
         super().__init__(interval)
+
+    def __str__(self):
+        return "Uniform"
 
     def sample(self, n: int):
         return np.random.uniform(high=self._interval, size=n)
@@ -75,7 +85,10 @@ class LinearVersionDensity(IntervalVersionDensity):
     and ``0 <= t <= 1``.
     """
 
-    def __init__(self, slope: float, interval: float = 999999):
+    def __str__(self):
+        return "Linear"  # Might change later
+
+    def __init__(self, slope: float, interval: float = 1000):
         """
         Constructor
         :param slope: A number between -2 and 2, referring to the linear coefficient of the PDF.
@@ -109,7 +122,10 @@ class BigHeadLongTailVersionDensity(IntervalVersionDensity):
     Generates a reciprocal distribution as the probability density function.
     """
 
-    def __init__(self, param: float, interval: float = 999999):
+    def __str__(self):
+        return "BHLT"  # Might change later
+
+    def __init__(self, param: float, interval: float = 1000):
         """
         :param param: The parameter that is a positive number not equal to 1.
         """
@@ -127,6 +143,9 @@ class MultipeakVersionDensity(VersionDensity):
     A distribution with multiple peaks. For this version, I will use a normal distribution
     with varying standard deviations.
     """
+
+    def __str__(self):
+        return "Multipeak"  # Might change later
 
     def __init__(self, weights: np.ndarray, distributions: np.ndarray):
         """
