@@ -275,6 +275,19 @@ class IPAROLinkFactoryTest(unittest.TestCase):
         observed_iparo_seq_num = test_closest_iparo(-10)
         self.assertEqual(observed_iparo_seq_num, 89)
 
+    def test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node(self):
+        ipfs.reset_counts()
+        link, iparo = ipfs.get_link_to_latest_node(URL)
+        ipfs.retrieve_nth_iparo(99, link)
+        self.assertEqual(ipfs.get_counts()["retrieve"], 1)
+
+
+    def test_single_strategy_lookup_requires_100_lookups(self):
+        ipfs.reset_counts()
+        link, iparo = ipfs.get_link_to_latest_node(URL)
+        ipfs.retrieve_nth_iparo(0, link)
+        self.assertLessEqual(ipfs.get_counts()["retrieve"], 100)
+
 
 if __name__ == '__main__':
     unittest.main()

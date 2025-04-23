@@ -99,8 +99,6 @@ class IPFS:
         # It is assumed that there is a link to the previous node.
         if link.seq_num < number:
             raise IPARONotFoundException(number)
-        elif link.seq_num == number:
-            return link
 
         curr_link = link
         while curr_link.seq_num != number:
@@ -157,10 +155,7 @@ class IPFS:
         """
         Retrieves the IPARO CID corresponding to a given sequence number and a URL.
         """
-        cid = ipns.get_latest_cid(url)
-
-        iparo = self.retrieve(cid)
-        link = IPAROLink(cid=cid, seq_num=iparo.seq_num, timestamp=iparo.timestamp)
+        link, iparo = self.get_link_to_latest_node(url)
         result = self.retrieve_nth_iparo(number, link)
         return result
 

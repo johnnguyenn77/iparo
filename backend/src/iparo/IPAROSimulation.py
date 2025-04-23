@@ -61,9 +61,9 @@ class IPAROSimulation:
 
         if verbose:
             IPAROSimulation.print_counts("Store")
-        self.reset()
         print("Retrieve")
         for t in range(k):
+            self.reset()
             first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
             # Get Mean and standard deviation
             selected_index = random.randint(0, latest_node.seq_num - 1)
