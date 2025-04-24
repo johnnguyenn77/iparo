@@ -1,7 +1,5 @@
 import os
 
-import numpy as np
-
 from iparo.IPAROException import IPARONotFoundException
 from iparo.IPNS import ipns
 from iparo.LinkingStrategy import *
@@ -36,7 +34,7 @@ class IPAROSimulation:
         Sets up the testing environment for an IPARO simulation, and then
         performs 100 uniform random date retrievals and 100 uniform random number retrievals.
         """
-        print(f"{self.linking_strategy} - {self.version_volume}")
+        print(f"{self.linking_strategy} - {self.version_density} - {self.version_volume}")
         print("Store")
         generator = VersionGenerator(self.version_density)
         nodes = generator.generate(self.version_volume, self.url)
@@ -214,10 +212,10 @@ if __name__ == "__main__":
             store_counts = np.zeros((4, 4))
 
             # 2 types of IPFS/IPNS operations to count (get, retrieve)
-            means = np.zeros((2, 4))
-            sds = np.zeros((2, 4))
             num_links = np.zeros(4)
             for version_density in version_densities:
+                retrieve_number_data = []
+                retrieve_date_data = []
                 simulation.version_density = version_density
                 for j, volume in enumerate(volumes):
                     simulation.version_volume = volume
@@ -228,10 +226,8 @@ if __name__ == "__main__":
                     curr_retrieve_number_results = np.array(simulation.retrieve_number_results["retrieve"],
                                                             dtype=np.float64)
                     curr_retrieve_date_results = np.array(simulation.retrieve_date_results["retrieve"], dtype=np.float64)
-                    means[0, j] = curr_retrieve_number_results.mean()
-                    sds[0, j] = curr_retrieve_number_results.std()
-                    means[1, j] = curr_retrieve_date_results.mean()
-                    sds[1, j] = curr_retrieve_date_results.std()
+                    retrieve_number_data.append(curr_retrieve_number_results)
+                    retrieve_date_data.append(curr_retrieve_date_results)
                     num_links[j] = simulation.num_links
                     simulation.reset(reset_data=True)
 
@@ -239,14 +235,14 @@ if __name__ == "__main__":
 
                 # Plot storage
                 fig, axes = plt.subplots(2, 2)
-                fig.suptitle(f"Store - Number of Operations - {str(strategy)}", wrap=True)
+                fig.suptitle(f"Storage Performance of {str(strategy)} ({str(version_density)})", wrap=True)
 
                 axes[0, 0].set_title("IPNS Get")
                 axes[0, 1].set_title("IPNS Update")
                 axes[1, 0].set_title("IPFS Store")
                 axes[1, 1].set_title("IPFS Retrieve")
 
-                fig.supxlabel("Version Volume")
+                fig.supxlabel("Version Volume (Number of Nodes)")
                 fig.supylabel("Operation Counts")
                 for i in range(2):
                     for j in range(2):
@@ -254,31 +250,30 @@ if __name__ == "__main__":
                         axes[i, j].set_xscale("log")
                         axes[i, j].set_yscale("log")
                 fig.tight_layout()
-                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Store - Number of Operations.png")
+                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Store.png")
                 plt.close(fig)
                 # Plot retrievals
 
                 fig, axes = plt.subplots(2)
-                for i in range(2):
-                    axes[i].errorbar(volumes, means[i, :], yerr=sds[i, :])
-                    axes[i].set_xscale("log")
-                    axes[i].set_yscale("log", nonpositive="mask")
-
+                axes[0].boxplot(retrieve_number_data, tick_labels=volumes)
+                axes[1].boxplot(retrieve_date_data, tick_labels=volumes)
+                axes[0].set_yscale("log")
+                axes[1].set_yscale("log")
                 axes[0].set_ylabel("Retrieve by Number")
                 axes[1].set_ylabel("Retrieve by Date")
 
-                fig.suptitle(f"Retrieve - Number of Operations - {str(strategy)}", wrap=True)
-                fig.supxlabel("Version Volume")
-                fig.supylabel("Operation Counts")
+                fig.suptitle(f"Retrieval Performance of {str(strategy)} ({str(version_density)})", wrap=True)
+                fig.supxlabel("Version Volume (Number of Nodes)")
+                fig.supylabel("IPFS Retrieval Operation Count")
                 fig.tight_layout()
-                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Retrieve - Number of Operations.png")
+                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Retrieve.png")
                 plt.close(fig)
 
                 # Plot link consumption over time
                 fig, ax = plt.subplots()
-                ax.set_title(f"Version Volume vs. Number of Links - {str(strategy)}", wrap=True)
+                ax.set_title(f"Version Volume vs. Number of Links - {str(strategy)} ({str(version_density)})", wrap=True)
                 ax.set_xscale("log")
-                ax.set_xlabel("Version Volume")
+                ax.set_xlabel("Version Volume (Number of Nodes)")
                 ax.set_yscale("log")
                 ax.set_ylabel("Number of Links")
                 ax.plot(volumes, num_links)

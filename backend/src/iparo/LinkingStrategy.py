@@ -52,7 +52,7 @@ class ComprehensiveStrategy(LinkingStrategy):
         return "Comprehensive"
 
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
-        latest_node_links = latest_iparo.linked_iparos
+        latest_node_links = latest_iparo.linked_iparos.copy()
         latest_node_links.add(latest_link)
 
         return latest_node_links
