@@ -255,8 +255,8 @@ if __name__ == "__main__":
                 # Plot retrievals
 
                 fig, axes = plt.subplots(2)
-                axes[0].boxplot(retrieve_number_data, tick_labels=volumes)
-                axes[1].boxplot(retrieve_date_data, tick_labels=volumes)
+                axes[0].boxplot(retrieve_number_data, tick_labels=volumes, showmeans=True)
+                axes[1].boxplot(retrieve_date_data, tick_labels=volumes, showmeans=True)
                 axes[0].set_yscale("log")
                 axes[1].set_yscale("log")
                 axes[0].set_ylabel("Retrieve by Number")
