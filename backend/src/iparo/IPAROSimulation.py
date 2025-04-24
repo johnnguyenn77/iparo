@@ -61,10 +61,10 @@ class IPAROSimulation:
             IPAROSimulation.print_counts("Store")
         print("Retrieve")
         for t in range(k):
+            # This operation does not count.
             self.reset()
-            first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
-            # Get Mean and standard deviation
-            selected_index = random.randint(0, latest_node.seq_num - 1)
+            # Get summary statistics
+            selected_index = random.randint(0, volume - 1)
 
             # The intent is to find separate numbers, where the numbers are not known until at runtime.
             ipfs.retrieve_iparo_by_url_and_number(self.url, selected_index)
@@ -74,8 +74,10 @@ class IPAROSimulation:
             if verbose:
                 IPAROSimulation.print_counts("Retrieve")
 
-            self.reset()
+            # Choose a random timestamp. This should not get penalized.
+            first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
             selected_timestamp = random.randint(first_node.timestamp, latest_node.timestamp)
+            self.reset()
             ipfs.retrieve_iparo_by_url_and_timestamp(self.url, selected_timestamp)
             self.add_counts("retrieve_date", ipfs.get_counts(), ipns.get_counts())
 

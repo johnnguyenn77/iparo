@@ -50,6 +50,7 @@
     "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
     "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.test_simulation_has_ipns_store_results.executor": "Run",
     "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
+    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_comprehensive_strategy_should_only_take_two_ipfs_accesses.executor": "Run",
     "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node.executor": "Run",
     "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals.executor": "Run",
     "Python tests.Python tests for IPFSTest.IPAROLinkFactoryTest.test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node.executor": "Run",
@@ -102,7 +103,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for IPFSTest.IPAROLinkFactoryTest.test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for IPAROStrategyTest.IPAROStrategyTest.test_comprehensive_strategy_should_only_take_two_ipfs_accesses" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -113,7 +114,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPFSTest.IPAROLinkFactoryTest.test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node&quot;" />
+      <option name="_new_target" value="&quot;IPAROStrategyTest.IPAROStrategyTest.test_comprehensive_strategy_should_only_take_two_ipfs_accesses&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -165,10 +166,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.IPAROSimulation" />
+        <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_comprehensive_strategy_should_only_take_two_ipfs_accesses" />
         <item itemvalue="Python tests.Python tests in IPFSTest.py" />
         <item itemvalue="Python tests.Python tests for IPFSTest.IPAROLinkFactoryTest.test_single_strategy_lookup_requires_100_lookups" />
         <item itemvalue="Python tests.Python tests for IPFSTest.IPAROLinkFactoryTest.test_single_strategy_lookup_requires_99_lookups" />
-        <item itemvalue="Python tests.Python tests for IPFSTest.IPAROLinkFactoryTest.test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node" />
       </list>
     </recent_temporary>
   </component>
