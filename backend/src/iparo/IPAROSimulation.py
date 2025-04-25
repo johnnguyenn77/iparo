@@ -64,7 +64,7 @@ class IPAROSimulation:
             # This operation does not count.
             self.reset()
             # Get summary statistics
-            selected_index = random.randint(0, volume - 1)
+            selected_index = random.randint(0, self.version_volume - 1)
 
             # The intent is to find separate numbers, where the numbers are not known until at runtime.
             ipfs.retrieve_iparo_by_url_and_number(self.url, selected_index)
@@ -242,8 +242,8 @@ if __name__ == "__main__":
 
                 axes[0, 0].set_title("IPNS Get")
                 axes[0, 1].set_title("IPNS Update")
-                axes[1, 0].set_title("IPFS Store")
-                axes[1, 1].set_title("IPFS Retrieve")
+                axes[1, 0].set_title("IPFS Retrieve")
+                axes[1, 1].set_title("IPFS Store")
 
                 fig.supxlabel("Version Volume (Number of Nodes)")
                 fig.supylabel("Operation Counts")

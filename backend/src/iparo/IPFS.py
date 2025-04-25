@@ -86,10 +86,6 @@ class IPFS:
             first_link = latest_link
         return first_link, latest_link, latest_iparo
 
-    def retrieve_latest_node(self, url: str) -> tuple[IPAROLink, IPARO]:
-        cid = ipns.get_latest_cid(url)
-        return cid, self.retrieve(cid)
-
     def retrieve_nth_iparo(self, number: int, link: IPAROLink) -> IPAROLink:
         """
         A method that enables the retrieval of IPARO using a sequence number
