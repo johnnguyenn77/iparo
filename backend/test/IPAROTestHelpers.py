@@ -1,5 +1,3 @@
-import datetime
-
 from iparo import IPARO
 from IPAROTestConstants import *
 from iparo.IPFS import *

@@ -24,7 +24,7 @@ class LinkingStrategy(ABC):
         Gets the candidate nodes from the latest link, the latest IPARO, and the first link.
         :param latest_link: The link to the latest node.
         :param latest_iparo: The latest IPARO object.
-        :param first_link: The link to the first node.
+        :param first_link: The link to the first node if it is directly linked to the latest node, None otherwise.
         :returns: The set of candidate links that will be stored in the newly created IPARO.
         """
         pass
@@ -42,7 +42,7 @@ class SingleStrategy(LinkingStrategy):
     def __str__(self):
         return "Single"
 
-    def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: None = None) -> set[IPAROLink]:
+    def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         return {latest_link}
 
 
@@ -105,6 +105,7 @@ class KRandomStrategy(LinkingStrategy):
 
     def __str__(self):
         return f"{self.k}-Random"
+
 
 class SequentialExponentialStrategy(LinkingStrategy):
 
@@ -185,6 +186,7 @@ class TemporallyUniformStrategy(LinkingStrategy):
 
     def __str__(self):
         return f"Temporally Uniform ({self.n} Nodes)"
+
 
 class TemporallyMinGapStrategy(LinkingStrategy):
     def __init__(self, min_gap: float):

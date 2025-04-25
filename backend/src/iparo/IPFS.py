@@ -94,7 +94,7 @@ class IPFS:
         """
         A method that enables the retrieval of IPARO using a sequence number
         to save IPARO operations by adding the ability to repeatedly apply the
-        greedy search method. For bulk retrieval, use IPAROLinkFactory.
+        greedy search method. For bulk retrieval, use the IPAROLinkFactory.
         """
         # It is assumed that there is a link to the previous node.
         if link.seq_num < number:
@@ -149,7 +149,6 @@ class IPFS:
             # Find minimum time greater than the timestamp.
             next_link = min(candidate_links, key=lambda link: (link.timestamp, link.seq_num))
             curr_link = next_link
-
 
     def retrieve_iparo_by_url_and_number(self, url: str, number: int) -> IPAROLink:
         """

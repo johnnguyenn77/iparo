@@ -166,11 +166,11 @@ if __name__ == "__main__":
                                TemporallyUniformStrategy(4),
                                TemporallyUniformStrategy(8),
                                TemporallyUniformStrategy(16)],
-        "Temporally Min Gap": [TemporallyMinGapStrategy(1),
-                               TemporallyMinGapStrategy(2),
-                               TemporallyMinGapStrategy(4),
-                               TemporallyMinGapStrategy(8),
-                               TemporallyMinGapStrategy(16)],
+        "Temporally Min Gap": [TemporallyMinGapStrategy(10),
+                               TemporallyMinGapStrategy(20),
+                               TemporallyMinGapStrategy(40),
+                               TemporallyMinGapStrategy(80),
+                               TemporallyMinGapStrategy(160)],
         "Temporally Exponential (Base)": [TemporallyExponentialStrategy(1.25, 10),
                                           TemporallyExponentialStrategy(1.5, 10),
                                           TemporallyExponentialStrategy(2, 10),
@@ -187,8 +187,8 @@ if __name__ == "__main__":
     version_densities = [
         UniformVersionDensity(1000),
         LinearVersionDensity(2, 1000),
-        BigHeadLongTailVersionDensity(5, 1),
-        MultipeakVersionDensity(np.array([0.5, 0.5]), np.array([[0, 50], [52, 102]])),
+        BigHeadLongTailVersionDensity(5, 1000),
+        MultipeakVersionDensity(np.array([0.5, 0.5]), np.array([[0, 50], [200, 100]])),
     ]
     os.chdir("../..")
 
@@ -204,7 +204,6 @@ if __name__ == "__main__":
             os.makedirs(os.path.join(name, str(density)), exist_ok=True)
 
     for name, strategies in linking_strategies.items():
-        # Do volume
         for strategy in strategies:
             simulation = IPAROSimulation(linking_strategy=strategy,
                                          version_volume=VersionVolume.MEDIUM,
@@ -213,8 +212,10 @@ if __name__ == "__main__":
             # 4 types of IPFS/IPNS operations to count, 4 version volumes
             store_counts = np.zeros((4, 4))
 
-            # 2 types of IPFS/IPNS operations to count (get, retrieve)
+            # Count number of links
             num_links = np.zeros(4)
+
+            # Count number of retrievals
             for version_density in version_densities:
                 retrieve_number_data = []
                 retrieve_date_data = []
@@ -273,7 +274,7 @@ if __name__ == "__main__":
 
                 # Plot link consumption over time
                 fig, ax = plt.subplots()
-                ax.set_title(f"Version Volume vs. Number of Links - {str(strategy)} ({str(version_density)})", wrap=True)
+                ax.set_title(f"Number of Links - {str(strategy)} [{str(version_density)}]", wrap=True)
                 ax.set_xscale("log")
                 ax.set_xlabel("Version Volume (Number of Nodes)")
                 ax.set_yscale("log")
@@ -282,6 +283,8 @@ if __name__ == "__main__":
                 fig.tight_layout()
                 fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Links.png")
                 plt.close(fig)
+
+
 
     # nx.draw_networkx(simulation.as_graph(), arrows=True)
     # plt.show()

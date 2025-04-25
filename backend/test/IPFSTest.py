@@ -197,14 +197,14 @@ class IPAROLinkFactoryTest(unittest.TestCase):
         cid = ipns.get_latest_cid(URL)
         iparo = ipfs.retrieve(cid)
         link = IPAROLinkFactory.from_cid_iparo(cid, iparo)
-        self.assertEqual(ipfs.retrieve_nth_iparo(99, link), link)
+        self.assertEqual(ipfs.retrieve_nth_iparo(99, link)[0], link)
 
     def test_can_get_nth_iparo_if_iparo_seq_num_is_less_than_input_seq_num(self):
         link = ipfs.retrieve_iparo_by_url_and_number(URL, 55)
         expected_fetched_link = ipfs.retrieve_iparo_by_url_and_number(URL, 44)
         iparo = ipfs.retrieve(link.cid)
         link = IPAROLinkFactory.from_cid_iparo(link.cid, iparo)
-        fetched_link = ipfs.retrieve_nth_iparo(44, link)
+        fetched_link, _ = ipfs.retrieve_nth_iparo(44, link)
         self.assertEqual(fetched_link, expected_fetched_link)
 
     def test_can_get_multiple_indices_in_iparo(self):
@@ -278,14 +278,14 @@ class IPAROLinkFactoryTest(unittest.TestCase):
     def test_retrieve_nth_iparo_only_requires_one_lookup_for_latest_node(self):
         ipfs.reset_counts()
         link, iparo = ipfs.get_link_to_latest_node(URL)
-        ipfs.retrieve_nth_iparo(99, link)
+        ipfs.retrieve_nth_iparo(99, link, {link})
         self.assertEqual(ipfs.get_counts()["retrieve"], 1)
 
 
     def test_single_strategy_lookup_requires_100_lookups(self):
         ipfs.reset_counts()
         link, iparo = ipfs.get_link_to_latest_node(URL)
-        ipfs.retrieve_nth_iparo(0, link)
+        ipfs.retrieve_nth_iparo(0, link, {link})
         self.assertLessEqual(ipfs.get_counts()["retrieve"], 100)
 
 
