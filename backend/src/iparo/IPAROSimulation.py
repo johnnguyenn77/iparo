@@ -8,7 +8,6 @@ import networkx as nx
 
 from iparo.VersionDensity import *
 from iparo.IPFS import ipfs
-import matplotlib.pyplot as plt
 
 
 class IPAROSimulation:
@@ -25,9 +24,6 @@ class IPAROSimulation:
 
         # Debug variables for testing.
         self.num_links = 0
-        self.store_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
-        self.retrieve_number_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
-        self.retrieve_date_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
 
     def run(self, k: int, verbose=True):
         """
@@ -55,31 +51,48 @@ class IPAROSimulation:
                 first_node = node
             ipns.update(self.url, cid)
 
-        self.add_counts("store", ipfs.get_counts(), ipns.get_counts())
+        # Columns: ["strategy", "volume", "density", "num_links", "store_ipns_get",
+        #           "store_ipns_update", "store_ipfs_retrieve", "store_ipfs_store"]
+        row = [str(x) for x in [self.linking_strategy, self.version_volume, self.version_density,
+                                self.num_links, ipns.get_count, ipns.update_count,
+                                ipfs.retrieve_count, ipfs.store_count]]
+
+        # "a+" means append to the file.
+        with open("results_store.csv", "a+") as file:
+            file.write("\t".join(row) + "\n")
 
         if verbose:
             IPAROSimulation.print_counts("Store")
         print("Retrieve")
-        for t in range(k):
-            # This operation does not count.
-            self.reset()
-            # Get summary statistics
-            selected_index = random.randint(0, self.version_volume - 1)
 
-            # The intent is to find separate numbers, where the numbers are not known until at runtime.
-            ipfs.retrieve_iparo_by_url_and_number(self.url, selected_index)
+        # Columns: ["strategy_name", "type", "volume", "density", "ipfs_retrieve_count"]
+        with open("results_retrieve.csv", "a+") as file:
+            for t in range(k):
+                # This operation does not count.
+                self.reset()
+                # Get summary statistics
+                selected_index = random.randint(0, self.version_volume - 1)
 
-            self.add_counts("retrieve_number", ipfs.get_counts(), ipns.get_counts())
-            # Get counts for retrieve
-            if verbose:
-                IPAROSimulation.print_counts("Retrieve")
+                # The intent is to find separate numbers, where the numbers are not known until at runtime.
+                ipfs.retrieve_iparo_by_url_and_number(self.url, selected_index)
 
-            # Choose a random timestamp. This should not get penalized.
-            first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
-            selected_timestamp = random.randint(first_node.timestamp, latest_node.timestamp)
-            self.reset()
-            ipfs.retrieve_iparo_by_url_and_timestamp(self.url, selected_timestamp)
-            self.add_counts("retrieve_date", ipfs.get_counts(), ipns.get_counts())
+                row = [str(x) for x in [self.linking_strategy, "number", self.version_volume,
+                                        self.version_density, ipfs.retrieve_count]]
+
+                file.write("\t".join(row) + "\n")
+                # Get counts for retrieve
+                if verbose:
+                    IPAROSimulation.print_counts("Retrieve")
+
+                # Choose a random timestamp. This should not get penalized.
+                first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
+                selected_timestamp = random.randint(first_node.timestamp, latest_node.timestamp)
+                self.reset()
+                ipfs.retrieve_iparo_by_url_and_timestamp(self.url, selected_timestamp)
+
+                row = [str(x) for x in [self.linking_strategy, "date", self.version_volume,
+                                        self.version_density, ipfs.retrieve_count]]
+                file.write("\t".join(row) + "\n")
 
     @classmethod
     def print_counts(cls, header: str):
@@ -112,31 +125,8 @@ class IPAROSimulation:
             ipfs.reset_data()
             ipns.reset_data()
             self.num_links = 0
-            self.store_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
-            self.retrieve_number_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
-            self.retrieve_date_results: dict[str, list[int]] = {"get": [], "update": [], "store": [], "retrieve": []}
         ipfs.reset_counts()
         ipns.reset_counts()
-
-    def add_counts(self, phase: str, ipfs_counts: dict[str, int], ipns_counts: dict[str, int]):
-        """
-        Adds counts to the result dictionary.
-
-        :param phase: The phase that we are adding the results to, either "store", "retrieve_date", or "retrieve_number"
-        :param ipfs_counts: The IPFS counts
-        :param ipns_counts: The IPNS counts
-        """
-        if phase == "store":
-            results_dict = self.store_results
-        elif phase == "retrieve_date":
-            results_dict = self.retrieve_date_results
-        else:
-            results_dict = self.retrieve_number_results
-        for key in ipfs_counts.keys():
-            results_dict[key].append(ipfs_counts[key])
-
-        for key in ipns_counts.keys():
-            results_dict[key].append(ipns_counts[key])
 
 
 if __name__ == "__main__":
@@ -184,6 +174,8 @@ if __name__ == "__main__":
                                                TemporallyExponentialStrategy(2, 16),
                                                TemporallyExponentialStrategy(2, 32)],
     }
+
+
     version_densities = [
         UniformVersionDensity(1000),
         LinearVersionDensity(2, 1000),
@@ -195,6 +187,16 @@ if __name__ == "__main__":
     # Make a separate folder called "results"
     os.makedirs("results", exist_ok=True)
     os.chdir("results")
+
+    # Write to file.
+    with open("results_store.csv", "w+") as file:
+        headers = ["strategy", "volume", "density", "num_links", "store_ipns_get",
+                   "store_ipns_update", "store_ipfs_retrieve", "store_ipfs_store"]
+        file.write("\t".join(headers) + "\n")
+
+    with open("results_retrieve.csv", "w+") as file:
+        headers = ["strategy_name", "type", "volume", "density", "ipfs_retrieve_count"]
+        file.write("\t".join(headers) + "\n")
 
     keys = ["get", "update", "retrieve", "store"]
     volumes = [volume for volume in VersionVolume if volume > 1]
@@ -223,68 +225,6 @@ if __name__ == "__main__":
                 for j, volume in enumerate(volumes):
                     simulation.version_volume = volume
                     simulation.run(100, verbose=False)
-                    for i, key in enumerate(keys):
-                        store_counts[i, j] = simulation.store_results[key][0]
-
-                    curr_retrieve_number_results = np.array(simulation.retrieve_number_results["retrieve"],
-                                                            dtype=np.float64)
-                    curr_retrieve_date_results = np.array(simulation.retrieve_date_results["retrieve"], dtype=np.float64)
-                    retrieve_number_data.append(curr_retrieve_number_results)
-                    retrieve_date_data.append(curr_retrieve_date_results)
-                    num_links[j] = simulation.num_links
                     simulation.reset(reset_data=True)
-
-                # Plot number of different types of operations for each strategy
-
-                # Plot storage
-                fig, axes = plt.subplots(2, 2)
-                fig.suptitle(f"Storage Performance of {str(strategy)} ({str(version_density)})", wrap=True)
-
-                axes[0, 0].set_title("IPNS Get")
-                axes[0, 1].set_title("IPNS Update")
-                axes[1, 0].set_title("IPFS Retrieve")
-                axes[1, 1].set_title("IPFS Store")
-
-                fig.supxlabel("Version Volume (Number of Nodes)")
-                fig.supylabel("Operation Counts")
-                for i in range(2):
-                    for j in range(2):
-                        axes[i, j].plot(volumes, store_counts[2 * i + j, :])
-                        axes[i, j].set_xscale("log")
-                        axes[i, j].set_yscale("log")
-                fig.tight_layout()
-                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Store.png")
-                plt.close(fig)
-                # Plot retrievals
-
-                fig, axes = plt.subplots(2)
-                axes[0].boxplot(retrieve_number_data, tick_labels=volumes, showmeans=True)
-                axes[1].boxplot(retrieve_date_data, tick_labels=volumes, showmeans=True)
-                axes[0].set_yscale("log")
-                axes[1].set_yscale("log")
-                axes[0].set_ylabel("Retrieve by Number")
-                axes[1].set_ylabel("Retrieve by Date")
-
-                fig.suptitle(f"Retrieval Performance of {str(strategy)} ({str(version_density)})", wrap=True)
-                fig.supxlabel("Version Volume (Number of Nodes)")
-                fig.supylabel("IPFS Retrieval Operation Count")
-                fig.tight_layout()
-                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Retrieve.png")
-                plt.close(fig)
-
-                # Plot link consumption over time
-                fig, ax = plt.subplots()
-                ax.set_title(f"Number of Links - {str(strategy)} [{str(version_density)}]", wrap=True)
-                ax.set_xscale("log")
-                ax.set_xlabel("Version Volume (Number of Nodes)")
-                ax.set_yscale("log")
-                ax.set_ylabel("Number of Links")
-                ax.plot(volumes, num_links)
-                fig.tight_layout()
-                fig.savefig(f"{name}/{str(version_density)}/{str(strategy)} - Links.png")
-                plt.close(fig)
-
-
-
     # nx.draw_networkx(simulation.as_graph(), arrows=True)
     # plt.show()

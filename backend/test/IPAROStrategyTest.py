@@ -19,6 +19,13 @@ class IPAROStrategyTest(unittest.TestCase):
         expected_lengths = [min(i, 1) for i in range(100)]
         self.assertListEqual(lengths, expected_lengths)
 
+    def test_every_strategy_should_require_only_one_ipns_call(self):
+        test_strategy(SingleStrategy())
+        ipns.reset_counts()
+        latest_link, latest_iparo = ipfs.get_link_to_latest_node(URL)
+        ipfs.retrieve_nth_iparo(10, latest_link)
+        self.assertEqual(ipns.get_counts()["get"], 1)
+
     def test_comprehensive_strategy_should_link_to_all_previous_nodes(self):
         lengths = test_strategy(ComprehensiveStrategy())
         expected_lengths = list(range(100))
