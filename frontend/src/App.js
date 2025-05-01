@@ -12,6 +12,11 @@ import SearchResultsPage from './pages/SearchResultPage';
 import DateLookupResultsPage from './pages/DateLookupResultsPage';
 import SnapshotViewerPage from './pages/SnapshotViewerPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { initReconstructive } from './services/archiveService';
+
+initReconstructive()
+  .then(() => console.log('SW registered'))
+  .catch(console.error);
 
 function App() {
   return (
