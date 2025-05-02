@@ -8,12 +8,10 @@ app = Flask(__name__)
 ipfs = IPFS()
 ipns = IPNS()
 
-
-
 new_iparo = IPAROFactory.create_iparo_from_warc()
 cid = ipfs.store(new_iparo)
 print(cid)
-url_key = get
+url_key = ipns.generate_key_for_url(new_iparo.url)
 ipns_name = ipns.update(url_key, cid)
 resolved_cid = ipns.resolve_cid(ipns_name)
 print(resolved_cid)

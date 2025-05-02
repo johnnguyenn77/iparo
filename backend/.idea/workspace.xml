@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/system/IPARO.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/IPAROFactory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/IPAROLink.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/IPNS.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/Utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/system/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_18_2025_2_58_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_18_2025_2_58_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_4_18_2025_2_58_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROStrategyTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROStrategyTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
