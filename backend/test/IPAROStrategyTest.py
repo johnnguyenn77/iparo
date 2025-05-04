@@ -1,6 +1,8 @@
 import math
 from math import ceil, log2
 import unittest
+from itertools import takewhile, count
+
 from IPAROTestHelpers import *
 
 
@@ -16,6 +18,13 @@ class IPAROStrategyTest(unittest.TestCase):
         lengths = test_strategy(SingleStrategy())
         expected_lengths = [min(i, 1) for i in range(100)]
         self.assertListEqual(lengths, expected_lengths)
+
+    def test_every_strategy_should_require_only_one_ipns_call(self):
+        test_strategy(SingleStrategy())
+        ipns.reset_counts()
+        latest_link, latest_iparo = ipfs.get_link_to_latest_node(URL)
+        ipfs.retrieve_nth_iparo(10, latest_link)
+        self.assertEqual(ipns.get_counts()["get"], 1)
 
     def test_comprehensive_strategy_should_link_to_all_previous_nodes(self):
         lengths = test_strategy(ComprehensiveStrategy())
@@ -41,10 +50,10 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(lengths, expected_lengths)
 
     def test_random_strategy_should_respect_limits(self):
-        lengths = test_strategy(KRandomStrategy(k_min=5, k_max=10))
+        lengths = test_strategy(KRandomStrategy(10))
 
         self.assertLessEqual(max(lengths), 12)
-        self.assertLessEqual(min(lengths[1:]), 1)
+        self.assertEqual(min(lengths[1:]), 1)
 
     def test_exponential_strategy_should_have_logarithmic_number_of_links(self):
         strategy = SequentialExponentialStrategy(k=2)
@@ -57,27 +66,27 @@ class IPAROStrategyTest(unittest.TestCase):
     def test_exponential_strategy_should_have_the_right_nodes(self):
         strategy = SequentialExponentialStrategy(k=2)
 
-        def get_sequence_numbers(k: int):
-            if k == 0:
-                return []
-            numbers = {0}
-            i = 0
-            s = k - 1
-            while s >= 0:
-                numbers.add(int(s))
-                i += 1
-                s = k - math.exp2(i)
-
-            return sorted(numbers)
+        def get_sequence_numbers(n):
+            if n == 0:
+                return {}
+            # Node N maps to N - 1, N - 2, N - 4, and so on, until we hit 0.
+            numbers = set(takewhile(lambda x: x > 0, map(lambda x: int(n - math.exp2(x)), count())))
+            numbers.update({0, n-1})  # Obviously, we want to add the previous and latest nodes.
+            return numbers
 
         sequence_numbers = []
-        expected_sequence_numbers = [get_sequence_numbers(i) for i in range(100)]
+        expected_sequence_numbers = [sorted(get_sequence_numbers(i)) for i in range(100)]
         for i in range(100):
             content = generate_random_content_string()
-            linked_iparos = strategy.get_candidate_nodes(URL)
-            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
+            try:
+                first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+                linked_iparos = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+            except IPARONotFoundException:
+                linked_iparos = set()
+            timestamp = time1 + i * TimeUnit.SECONDS
+            iparo = IPARO(content=content, timestamp=timestamp,
                           url=URL, seq_num=i, linked_iparos=linked_iparos)
-            cid = ipfs.store(iparo)
+            cid, _ = ipfs.store(iparo)
             current_numbers = sorted(link.seq_num for link in linked_iparos)
             sequence_numbers.append(current_numbers)
 
@@ -103,8 +112,8 @@ class IPAROStrategyTest(unittest.TestCase):
             if i <= 2:
                 expected_lengths.append(i)
             else:
-                additional_links = max(0, (i - 3) // s)
-                expected_lengths.append(3 + additional_links)
+                additional_links = max(0, (i - 2) // s)
+                expected_lengths.append(2 + additional_links)
 
         self.assertListEqual(lengths, expected_lengths)
 
@@ -117,17 +126,7 @@ class IPAROStrategyTest(unittest.TestCase):
                 self.assertLessEqual(gap, s)
 
     def test_sequential_s_max_gap_strategy_should_be_at_most_s_hops_away(self):
-        strategy = SequentialSMaxGapStrategy(5)
-
-        # Get 100 nodes.
-        for i in range(100):
-            content = generate_random_content_string()
-            linked_iparos = strategy.get_candidate_nodes(URL)
-            iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
-                          url=URL, linked_iparos=linked_iparos, seq_num=i)
-            cid = ipfs.store(iparo)
-            ipns.update(URL, cid)
-
+        test_strategy(SequentialSMaxGapStrategy(5))
         # Now use BFS
         latest_cid = ipns.get_latest_cid(URL)
         frontier = [latest_cid]
@@ -143,12 +142,11 @@ class IPAROStrategyTest(unittest.TestCase):
         # Iterate over BFS values
         self.assertLessEqual(max(bfs_values.values()), 5)
 
-
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
         # 0, 10, 11, ..., 44, 50
         relative_times = [(i * 10 + j) for i in range(5) for j in range(i+1)]
         relative_times.append(50)
-        timestamps = test_strategy_with_time_distribution(TemporallyUniformStrategy(4), relative_times)
+        timestamps = test_strategy_with_time_distribution(TemporallyUniformStrategy(5), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [10*i for i in range(6)]
 
@@ -159,9 +157,9 @@ class IPAROStrategyTest(unittest.TestCase):
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
         timestamps = test_strategy_with_time_distribution(
-            TemporallyMaxGapStrategy(timedelta(seconds=500)), relative_times)
+            TemporallyMinGapStrategy(500), relative_times)
 
-        expected_timestamps = [0, 801, 1600]
+        expected_timestamps = [0, 800, 1200, 1600]
 
         self.assertListEqual(timestamps, expected_timestamps)
 
@@ -170,7 +168,7 @@ class IPAROStrategyTest(unittest.TestCase):
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
         timestamps = test_strategy_with_time_distribution(
-            TemporallyExponentialStrategy(2, timedelta(seconds=100)), relative_times)
+            TemporallyExponentialStrategy(2, 100 * TimeUnit.SECONDS), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [0, 800, 1200, 1400, 1500, 1600]
 

@@ -1,6 +1,6 @@
-__all__ = ["IPAROLink", "IPARO", "IPAROSimulation", "IPARODateConverter", "IPAROFactory",
+__all__ = ["IPAROLink", "IPAROException", "IPARO", "IPAROSimulation",
            "IPAROLinkFactory", "IPFS", "IPNS", "LinkingStrategy", "VersionDensity"]
 
 # Import the submodules
-from . import (IPAROLink, IPARO, IPAROSimulation, IPARODateConverter,
-               IPAROFactory, IPAROLinkFactory, IPFS, IPNS, LinkingStrategy, VersionDensity)
+from . import (IPAROLink, IPARO, IPAROException, IPAROSimulation,
+               IPAROLinkFactory, IPFS, IPNS, LinkingStrategy, VersionDensity)

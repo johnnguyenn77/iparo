@@ -7,5 +7,5 @@ class IPAROLink:
     Defines the IPARO Link class that has a sequence number, a datetime, and a CID.
     """
     seq_num: int
-    timestamp: int
+    timestamp: str
     cid: str

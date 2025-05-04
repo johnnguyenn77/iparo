@@ -1,13 +1,11 @@
-import math
 import random
-from abc import ABC
-from datetime import datetime, timedelta
+import time
+from abc import abstractmethod, ABC
 from enum import IntEnum
 
+import numpy as np
 from iparo.IPARO import IPARO
-from iparo.IPARODateConverter import IPARODateConverter
-
-URL = "example.com"
+from iparo.TimeUnit import TimeUnit
 
 
 class VersionVolume(IntEnum):
@@ -22,142 +20,159 @@ class VersionVolume(IntEnum):
 
 
 class VersionDensity(ABC):
+
+    @abstractmethod
+    def __str__(self):
+        """
+        Used for naming a version density.
+        """
+        pass
+
+    @abstractmethod
+    def sample(self, n: int) -> np.ndarray:
+        """
+        Samples n times
+        :param n: The number of times to sample
+        :returns: An n-element ``numpy`` array containing the samples.
+        """
+        pass
+
+
+class IntervalVersionDensity(VersionDensity, ABC):
     """
-    The version density class determines the "shape" of the graph.
+    A class that inherits from VersionDensity by adding the interval attribute.
     """
 
-    def __init__(self, interval: timedelta = timedelta(seconds=999999)):
-        # Gets the start time, in microseconds. Note that there is 1 underscore to indicate a protected attribute
-        # that can be inherited to other classes.
-        self._start_time = datetime.now().replace(microsecond=0)
+    def __init__(self, interval: float = 1000):
         self._interval = interval
 
-    def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
-        """
-        Gets the nodes according to a version volume.
-        :param volume: The version volume
-        :return: The list of unlinked IPAROs
-        """
-        dq = 1 / (volume - 1) if volume != VersionVolume.SINGLE else 0.0
-        iparos = []
-        for i in range(volume):
-            quantile = i * dq
-            interval_frac = self.get_quantile(quantile)
-            value = self._interval * interval_frac
-            time = self._start_time + value
-            time_string = IPARODateConverter.datetime_to_str(time)
-            iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(), linked_iparos=set(),
-                          seq_num=-1, url=URL)
-            iparos.append(iparo)
 
-        return iparos
-
-    def get_quantile(self, x: float) -> float:
-        return x
-
-
-class UniformVersionDensity(VersionDensity):
+class VersionGenerator:
     """
-    Uniform version density would mean each node is equally spaced.
-    """
-    pass
-
-
-class LinearVersionDensity(VersionDensity):
-    """
-    The number of nodes per unit time ``t`` is a function ``f(t) = a*t+b.`` for ``0 <= t <= 1``.
+    The version generator determines how the densities are to be generated.
     """
 
-    def __init__(self, slope: float, time_interval: timedelta = timedelta(seconds=999999)):
+    def __init__(self, density: VersionDensity):
         """
-        Args:
-            slope (float): The slope of the underlying linear density function at the beginning.
-            time_interval (timedelta): The interval of time.
+        Initializes with a generator.
         """
-        super().__init__(time_interval)
+        self.density = density
+        self.start_time = int(time.time() * TimeUnit.SECONDS)
+
+    def generate(self, n: int, url: str = "example.com") -> list[IPARO]:
+        timestamps = np.sort(np.int64(self.start_time + self.density.sample(n)))
+        contents = [bytes([random.randint(32, 126) for _ in range(100)]) for _ in range(n)]
+        iparo = [IPARO(url=url, timestamp=timestamp, linked_iparos=set(), seq_num=-1, content=iparo_content)
+                 for (timestamp, iparo_content) in zip(timestamps, contents)]
+        return iparo
+
+
+class UniformVersionDensity(IntervalVersionDensity):
+
+    def __init__(self, interval: float = 1000):
+        super().__init__(interval)
+
+    def __str__(self):
+        return "Uniform"
+
+    def sample(self, n: int):
+        return np.random.uniform(high=self._interval, size=n)
+
+
+class LinearVersionDensity(IntervalVersionDensity):
+    """
+    The number of nodes per unit time ``t`` is a function ``f(t) = a*t+b.`` where ``0 <= b <= 1``
+    and ``0 <= t <= 1``.
+    """
+
+    def __str__(self):
+        return "Linear"  # Might change later
+
+    def __init__(self, slope: float, interval: float = 1000):
+        """
+        Constructor
+        :param slope: A number between -2 and 2, referring to the linear coefficient of the PDF.
+        :param interval: The time interval.
+        """
+        super().__init__(interval)
         self.slope = slope
 
-    def get_quantile(self, x: float) -> float:
-        # Get the quadratic equation: 0 = a*x^2/2 + b*x - c. Reason is F(x) is the integral of f(x) with respect to x.
-        a = 2 * (1 - self.slope)
-        b = self.slope
-        c = x
+    def sample(self, n: int):
+        # Probability of generating the triangular distribution.
+        # If negative, choose the triangular distribution with mode 0,
+        # if positive, choose the triangular distribution with mode self._interval.
+        interval = self._interval
+        weight_triangular = self.slope / 2
+        probabilities = np.array([1 - abs(weight_triangular),
+                                  max(weight_triangular, 0),
+                                  max(-weight_triangular, 0)])
 
-        # Use the "modified" quadratic formula (-b + sqrt(b^2 + 4(a/2)(-c))) / (2a/2) = (-b + sqrt(b^2 + 2ac)) / a.
-        # This is the quadratic function with a' = a/2 and c' = -c
-        return (-b + math.sqrt(b ** 2 + 2 * a * c)) / a
+        chosen_distributions = np.random.choice(3, size=n,
+                                                p=probabilities)
+        choices = np.vstack((np.random.uniform(high=interval, size=n),
+                            np.random.triangular(left=0, mode=interval, right=interval, size=n),
+                            np.random.triangular(left=0, mode=0, right=interval, size=n)))
+
+        results = choices[chosen_distributions, np.arange(n)]
+        return results
 
 
-class BigHeadLongTailVersionDensity(VersionDensity):
+class BigHeadLongTailVersionDensity(IntervalVersionDensity):
     """
-    A big head and long tail distribution. For this version, I will use the modified reciprocal distribution.
-    Thus, the CDF is ``F(x) = ln(1+(a-1)x)/ln(a)``, for all ``a != 1`` and ``a > 0``
+    Generates a reciprocal distribution as the probability density function.
     """
 
-    def __init__(self, param: float, time_interval: timedelta = timedelta(seconds=999999)):
+    def __str__(self):
+        return "BHLT"  # Might change later
+
+    def __init__(self, param: float, interval: float = 1000):
         """
-        Args:
-            param (float): The parameter of the underlying reciprocal density function at the beginning.
-            time_interval (timedelta): The interval of time.
+        :param param: The parameter that is a positive number not equal to 1.
         """
-        super().__init__(time_interval)
+        super().__init__(interval)
         self.param = param
 
-    def get_quantile(self, x: float) -> float:
-        # F(x, a) = ln(1+(a-1)x) / ln(a), 0 <= x <= 1, a > 1
-        # a^q = e^[ln(a)*ln(1+(a-1)x)/ln(a)]
-        # a^q = 1+(a-1)x
-        # a^q - 1 = (a-1)x
-        # q*ln(a) - 1 = (a-1)x
-        # -> F^-1(q, a) = (a^q - 1) / (a-1)
-        return (math.pow(self.param, x) - 1) / (self.param - 1)
+    def sample(self, n: int):
+        uniform_random_numbers = np.random.uniform(size=n)
+        result = self._interval * (self.param ** uniform_random_numbers - 1) / (self.param - 1)
+        return result
 
 
-class MultipeakDensity(VersionDensity):
+class MultipeakVersionDensity(VersionDensity):
     """
-    A big head and long tail distribution. For this version, I will use a uniform random variable to
-    select which normal distribution to use, and then condition a normal random variate from there.
-    Unlike the other distributions, this one uses random variates because there is no quantile distribution.
+    A distribution with multiple peaks. For this version, I will use a normal distribution
+    with varying standard deviations.
     """
 
-    def __init__(self, probability_weights: list[tuple[float, float, float]],
-                 time_interval: timedelta = timedelta(seconds=999999)):
+    def __str__(self):
+        return "Multipeak"  # Might change later
+
+    def __init__(self, weights: np.ndarray, distributions: np.ndarray):
         """
-        Args:
-            probability_weights (list[tuple[float, float, float]]): The probability weights. The first float represents the probability weight for the uniform random variate. The second float represents the mean of the normal distribution, and the third float represents the standard deviation.
-            time_interval (timedelta): The interval of time.
+        Constructor
+
+        :param weights: The weights (which must be non-negative)
+        :param distributions: An array that is N x 2, where N is the number of weights.
+        The first column contains all the means, and the second column contains all the standard
+        deviations.
+
+
         """
-        super().__init__(time_interval)
-        self.probability_weights = probability_weights
+        self.weights = weights
+        self.distributions = distributions
 
-    def get_iparos(self, volume: VersionVolume) -> list[IPARO]:
-        sum_weights = 0
-        probs = []
-        # Two pass (first to know the sum of the weights
-        for weight, _, _ in self.probability_weights:
-            sum_weights += weight
-            probs.append(sum_weights)
+    def sample(self, n: int):
+        n_distributions = len(self.distributions)
 
-        probs = [weight / sum_weights for weight in probs]
-        iparos = []
+        # Make an array of all the possible distributions
+        arr = np.zeros((n_distributions, n))
+        for i in range(n_distributions):
+            mu, sigma = self.distributions[i, :]
+            arr[i, :] = np.random.normal(loc=mu, scale=sigma, size=n)
 
-        for i in range(volume):
-            # Random variable 1
-            rv1 = random.random()
+        # Normalize
+        self.weights /= np.sum(self.weights)
+        choices = np.random.choice(np.arange(n_distributions), size=n, p=self.weights)
+        results = arr[choices, np.arange(n)]
 
-            # Assumption: probs is sorted
-            dist_num = 0
-            while probs[dist_num] < rv1:
-                dist_num += 1
-
-            # Random variable 2 will determine time of "creation".
-            _, mean, sd = self.probability_weights[dist_num]
-            td = timedelta(seconds=random.normalvariate(mean, sd))
-            time_string = IPARODateConverter.datetime_to_str(self._start_time + td)
-            iparo = IPARO(timestamp=time_string, content=f"Node {i}".encode(),
-                          linked_iparos=set(), seq_num=-1, url=URL)
-
-            iparos.append(iparo)
-
-        iparos.sort(key=lambda iparo: iparo.timestamp)
-        return iparos
+        return results

@@ -1,19 +1,26 @@
 from iparo import IPARO
 from IPAROTestConstants import *
+from iparo.IPFS import *
 from iparo.LinkingStrategy import *
-from iparo.IPAROFactory import IPAROFactory
+from iparo.TimeUnit import TimeUnit
 
 
 def add_nodes(num_nodes: int):
     iparos = []
     for i in range(num_nodes):
         content = generate_random_content_string()
-        linked_iparos = SingleStrategy().get_candidate_nodes(URL)
-        timestamp = time1 + timedelta(seconds=10 * i)
-        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(timestamp),
+        try:
+            strategy = SingleStrategy()
+            first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+            # todo add specific exception.
+        except IPARONotFoundException:
+            linked_iparos = set()
+        timestamp = time1 + 10 * i * TimeUnit.SECONDS
+        iparo = IPARO(content=content, timestamp=timestamp,
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
         iparos.append(iparo)
-        cid = ipfs.store(iparo)
+        cid, _ = ipfs.store(iparo)
 
         ipns.update(URL, cid)
     return iparos
@@ -29,11 +36,16 @@ def test_strategy(strategy: LinkingStrategy) -> list[int]:
     lengths = []
     for i in range(100):
         content = generate_random_content_string()
-        linked_iparos = strategy.get_candidate_nodes(URL)
+        try:
+            first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+        except IPARONotFoundException:
+            linked_iparos = set()
         lengths.append(len(linked_iparos))
-        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
+        timestamp = time1 + i * TimeUnit.SECONDS
+        iparo = IPARO(content=content, timestamp=timestamp,
                       url=URL, linked_iparos=linked_iparos, seq_num=i)
-        cid = ipfs.store(iparo)
+        cid, _ = ipfs.store(iparo)
         ipns.update(URL, cid)
     return lengths
 
@@ -44,10 +56,14 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
     iparos = []
     for i in range(100):
         content = generate_random_content_string()
-        linked_iparos = strategy.get_candidate_nodes(URL)
-        iparo = IPARO(content=content, timestamp=IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=i)),
-                      url=URL, linked_iparos=linked_iparos, seq_num=i)
-        cid = ipfs.store(iparo)
+        try:
+            first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+        except IPARONotFoundException:
+            linked_iparos = set()
+        timestamp = time1 + i * TimeUnit.SECONDS
+        iparo = IPARO(content=content, timestamp=timestamp, url=URL, linked_iparos=linked_iparos, seq_num=i)
+        cid, _ = ipfs.store(iparo)
         ipns.update(URL, cid)
         iparos.append(iparo)
         cids.append(cid)
@@ -55,7 +71,7 @@ def test_strategy_verbose(strategy: LinkingStrategy) -> tuple[list[int], list[st
     return lengths, cids, iparos
 
 
-def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_times: list[int]) -> list[datetime]:
+def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_times: list[int]) -> list[int]:
     """
     :param strategy: The strategy to test
     :param relative_times: The times relative to the first node in seconds.
@@ -63,15 +79,33 @@ def test_strategy_with_time_distribution(strategy: LinkingStrategy, relative_tim
     """
     for i, dt in enumerate(relative_times):
         content = generate_random_content_string()
-        timestamp = IPARODateConverter.datetime_to_str(time1 + timedelta(seconds=dt))
-        iparo = IPAROFactory.create_node(URL, content)
-        iparo.timestamp = timestamp
-        iparo.seq_num = i
-        iparo.linked_iparos = strategy.get_candidate_nodes(URL)
-        cid = ipfs.store(iparo)
+        timestamp = int(time1 + dt * TimeUnit.SECONDS)
+        try:
+            first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+            linked_iparos = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+        except IPARONotFoundException:
+            linked_iparos = set()
+
+        iparo = IPARO(url=URL, content=content, linked_iparos=linked_iparos, timestamp=timestamp, seq_num=i)
+        cid, _ = ipfs.store(iparo)
         ipns.update(URL, cid)
 
     # Where would the next link go?
-    links = strategy.get_candidate_nodes(URL)
 
-    return sorted((IPARODateConverter.str_to_datetime(link.timestamp) - time1) / timedelta(seconds=1) for link in links)
+    first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+    links = strategy.get_candidate_nodes(latest_link, latest_iparo, first_link)
+
+    return sorted([int((link.timestamp - time1) / TimeUnit.SECONDS) for link in links])
+
+
+def test_closest_iparo(rel_time: float):
+    """
+    Helper method for testing what the closest IPARO is to the given relative time.
+
+    :param rel_time: The number of seconds, relative to the link timestamp.
+    """
+    first_link, latest_link, latest_iparo = ipfs.get_links_to_first_and_latest_nodes(URL)
+    timestamp = int(latest_link.timestamp + rel_time * TimeUnit.SECONDS)
+    observed_iparo, _ = ipfs.retrieve_closest_iparo(latest_link, {latest_link, first_link}, timestamp)
+
+    return observed_iparo.seq_num

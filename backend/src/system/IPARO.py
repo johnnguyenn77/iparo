@@ -2,15 +2,11 @@ from dataclasses import dataclass
 from iparo.IPAROLink import IPAROLink
 
 
-@dataclass
+@dataclass(frozen=True)
 class IPARO:
     # Headers
     url: str
-    timestamp: int
-    """
-    The timestamp, in microseconds since 1970, for compatibility with WARC 1.1.
-    """
-
+    timestamp: str
     seq_num: int
     linked_iparos: set[IPAROLink]
     # Body

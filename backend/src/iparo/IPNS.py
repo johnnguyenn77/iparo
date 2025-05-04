@@ -1,7 +1,8 @@
-from datetime import datetime
-from typing import Optional
+import gc
+import time
 
-from iparo.IPARODateConverter import IPARODateConverter
+from iparo.TimeUnit import TimeUnit
+from iparo.IPAROException import IPARONotFoundException
 
 
 class IPNS:
@@ -12,7 +13,7 @@ class IPNS:
         and counters for tracking operations.
         """
         self.__store: dict[str, str] = {}
-        self.__versions: dict[tuple[str, str], str] = {}
+        self.__versions: dict[tuple[str, int], str] = {}
         self.update_count = 0
         self.get_count = 0
 
@@ -28,7 +29,7 @@ class IPNS:
             Default is latest.
         """
         self.update_count += 1
-        curr_timestamp = IPARODateConverter.datetime_to_str(datetime.now()) if timestamp == 'latest' else timestamp
+        curr_timestamp = int(time.time() * TimeUnit.SECONDS) if timestamp == 'latest' else int(timestamp)
 
         # /archive/latest/{url} -> value of URL, map it to the CID [default]
         self.__store[url] = cid
@@ -37,7 +38,7 @@ class IPNS:
         self.__versions[(url, curr_timestamp)] = cid
 
     # Optional parameter: datetime ([un]serialized), default value is latest.
-    def get_latest_cid(self, url: str) -> Optional[str]:
+    def get_latest_cid(self, url: str) -> str:
         """
         Retrieves the latest CID for a given URL if it exists, else None.
 
@@ -46,11 +47,16 @@ class IPNS:
 
         Returns:
             str: The CID of the latest capture for the given URL if it exists, else None.
+
+        Exceptions:
+            EmptyError: If the URL is not found.
         """
         self.get_count += 1
-        return self.__store.get(url)
+        if url not in self.__store:
+            raise IPARONotFoundException(url)
+        return self.__store[url]
 
-    def get_cid(self, url: str, timestamp: str) -> Optional[str]:
+    def get_cid(self, url: str, timestamp: int) -> str:
         """
         Retrieves the CID for a given timestamp.
 
@@ -62,7 +68,7 @@ class IPNS:
             str: The CID of the latest capture for the given URL if it exists, else None.
         """
         self.get_count += 1
-        return self.__versions.get((url, timestamp))
+        return self.__versions[(url, timestamp)]
 
     def get_counts(self):
         """
@@ -77,6 +83,8 @@ class IPNS:
         """
         Resets the data.
         """
+        del self.__store
+        gc.collect()
         self.__store: dict[str, str] = {}
 
     def reset_counts(self):
