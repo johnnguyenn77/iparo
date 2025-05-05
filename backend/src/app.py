@@ -8,16 +8,11 @@ app = Flask(__name__)
 ipfs = IPFS()
 ipns = IPNS()
 
-new_iparo = IPAROFactory.create_iparo_from_warc()
-cid = ipfs.store(new_iparo)
-print(cid)
-url_key = ipns.generate_key_for_url(new_iparo.url)
-ipns_name = ipns.update(url_key, cid)
-resolved_cid = ipns.resolve_cid(ipns_name)
-print(resolved_cid)
-iparo_from_ipns = ipfs.retrieve(resolved_cid)
-print(iparo_from_ipns)
-print(iparo_from_ipns.__dict__)
+# track key and peer_id of websites
+ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns)
+
+for url, peer_id in enumerate(ipns_records.items()):
+    print(url, peer_id)
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
