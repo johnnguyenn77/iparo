@@ -43,7 +43,7 @@ class IPNS:
             raise Exception(f"Failed to publish to IPNS: {response.text}")
 
         peer_id = response.json().get("Name", "Unknown IPNS Name")
-        print(f" Published to IPNS: /ipns/{peer_id}")
+        print(f"Published to IPNS: /ipns/{peer_id}")
         return peer_id
 
     def resolve_cid(self, peer_id):
