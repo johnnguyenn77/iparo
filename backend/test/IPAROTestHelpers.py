@@ -1,8 +1,8 @@
-from iparo import IPARO
+from simulation import IPARO
 from IPAROTestConstants import *
-from iparo.IPFS import *
-from iparo.LinkingStrategy import *
-from iparo.TimeUnit import TimeUnit
+from simulation.IPFS import *
+from simulation.LinkingStrategy import *
+from simulation.TimeUnit import TimeUnit
 
 
 def add_nodes(num_nodes: int):
