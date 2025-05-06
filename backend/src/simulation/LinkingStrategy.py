@@ -2,11 +2,11 @@ import random
 from abc import abstractmethod, ABC
 from math import floor
 
-from iparo.IPARO import IPARO
-from iparo.IPAROLink import IPAROLink
-from iparo.IPAROLinkFactory import IPAROLinkFactory
-from iparo.IPFS import ipfs, Mode
-from iparo.TimeUnit import TimeUnit
+from simulation.IPARO import IPARO
+from simulation.IPAROLink import IPAROLink
+from simulation.IPAROLinkFactory import IPAROLinkFactory
+from simulation.IPFS import ipfs, Mode
+from simulation.TimeUnit import TimeUnit
 
 
 # Make package/renaming with __init__ file

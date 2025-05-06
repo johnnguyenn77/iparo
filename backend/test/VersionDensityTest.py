@@ -1,5 +1,5 @@
 import unittest
-from iparo.VersionDensity import *
+from simulation.VersionDensity import *
 
 
 class VersionDensityTestCase(unittest.TestCase):

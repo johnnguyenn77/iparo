@@ -1,8 +1,8 @@
 from typing import Optional
 
-from iparo.IPARO import IPARO
-from iparo.IPAROLink import IPAROLink
-from iparo.IPFS import ipfs, Mode
+from simulation.IPARO import IPARO
+from simulation.IPAROLink import IPAROLink
+from simulation.IPFS import ipfs, Mode
 
 
 class IPAROLinkFactory:

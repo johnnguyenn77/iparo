@@ -1,16 +1,16 @@
 import os
 
-from iparo.IPAROException import IPARONotFoundException
-from iparo.IPNS import ipns
-from iparo.LinkingStrategy import *
+from simulation.IPAROException import IPARONotFoundException
+from simulation.IPNS import ipns
+from simulation.LinkingStrategy import *
 
 import networkx as nx
 
-from iparo.VersionDensity import *
-from iparo.IPFS import ipfs
+from simulation.VersionDensity import *
+from simulation.IPFS import ipfs
 
 
-class IPAROSimulation:
+class IPAROSimulationWriter:
     """
     The class for the testing environment.
     """
@@ -62,7 +62,7 @@ class IPAROSimulation:
             file.write("\t".join(row) + "\n")
 
         if verbose:
-            IPAROSimulation.print_counts("Store")
+            IPAROSimulationWriter.print_counts("Store")
         print("Retrieve")
 
         # Columns: ["strategy_name", "type", "volume", "density", "ipfs_retrieve_count"]
@@ -82,7 +82,7 @@ class IPAROSimulation:
                 file.write("\t".join(row) + "\n")
                 # Get counts for retrieve
                 if verbose:
-                    IPAROSimulation.print_counts("Retrieve")
+                    IPAROSimulationWriter.print_counts("Retrieve")
 
                 # Choose a random timestamp. This should not get penalized.
                 first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
@@ -105,19 +105,19 @@ class IPAROSimulation:
         print("IPNS Counts:")
         print(ipns.get_counts())
 
-    def as_graph(self):
-        """
-        Creates a DiGraph object out of the current nodes in the IPFS.
-        """
-        # Do comprehensive
-        nx_graph = nx.DiGraph()
-        for iparo in ipfs.get_all_iparos(self.url):
-            curr_num = iparo.seq_num
-            nx_graph.add_node(curr_num)
-            for link in iparo.linked_iparos:
-                nx_graph.add_edge(curr_num, link.seq_num)
-
-        return nx_graph
+    # def as_graph(self):
+    #     """
+    #     Creates a DiGraph object out of the current nodes in the IPFS.
+    #     """
+    #     # Do comprehensive
+    #     nx_graph = nx.DiGraph()
+    #     for iparo in ipfs.get_all_iparos(self.url):
+    #         curr_num = iparo.seq_num
+    #         nx_graph.add_node(curr_num)
+    #         for link in iparo.linked_iparos:
+    #             nx_graph.add_edge(curr_num, link.seq_num)
+    #
+    #     return nx_graph
 
     def reset(self, reset_data=False):
         """Resets the counts (and optionally, the data) from the IPNS and IPFS."""
@@ -207,9 +207,9 @@ if __name__ == "__main__":
 
     for name, strategies in linking_strategies.items():
         for strategy in strategies:
-            simulation = IPAROSimulation(linking_strategy=strategy,
-                                         version_volume=VersionVolume.MEDIUM,
-                                         version_density=UniformVersionDensity())
+            simulation = IPAROSimulationWriter(linking_strategy=strategy,
+                                               version_volume=VersionVolume.MEDIUM,
+                                               version_density=UniformVersionDensity())
             # 3 types of operations to test (store, retrieve by number, retrieve by date),
             # 4 types of IPFS/IPNS operations to count, 4 version volumes
             store_counts = np.zeros((4, 4))
