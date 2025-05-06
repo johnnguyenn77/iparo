@@ -1,12 +1,10 @@
 from warcio import ArchiveIterator
 import os
-import time
 from system.IPARO import IPARO
-from system.IPAROLink import IPAROLink
 
 class IPAROFactory:
     @classmethod
-    def create_and_store_iparos(cls, ipfs, ipns, filename=None):
+    def create_and_store_iparos(cls, ipfs, ipns, iparo_link_factory, filename=None):
         """Processes WARC file, creates and stores IPARO objects with proper version chaining."""
         warc_path = os.path.join('..', 'samples', 'warcs', '2mementos.warc')
 
@@ -34,11 +32,9 @@ class IPAROFactory:
 
                     if latest_node and latest_node.url == url:
                         seq_num = latest_node.seq_num + 1
-                        linked_iparos.add(IPAROLink(
-                                seq_num=latest_node.seq_num,
-                                timestamp=latest_node.timestamp,
-                                cid=resolved_cid.split('/', 2)[-1]
-                            ))
+                        link = iparo_link_factory.from_cid_iparo(resolved_cid.split('/', 2)[-1], latest_node)
+                        linked_iparos.add(link)
+
 
                         print(f"Found previous IPARO for {url}, current linked_iparoes: {linked_iparos}")
                     else:
