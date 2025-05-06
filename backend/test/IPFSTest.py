@@ -2,12 +2,12 @@ import unittest
 
 from IPAROTestConstants import *
 from IPAROTestHelpers import add_nodes, test_strategy, test_closest_iparo, generate_random_content_string
-from iparo.IPAROException import IPARONotFoundException
-from iparo.IPAROLinkFactory import IPAROLinkFactory
-from iparo.IPFS import ipfs, Mode
-from iparo.IPNS import ipns
-from iparo.LinkingStrategy import SingleStrategy
-from iparo.TimeUnit import TimeUnit
+from simulation.IPAROException import IPARONotFoundException
+from simulation.IPAROLinkFactory import IPAROLinkFactory
+from simulation.IPFS import ipfs, Mode
+from simulation.IPNS import ipns
+from simulation.LinkingStrategy import SingleStrategy
+from simulation.TimeUnit import TimeUnit
 
 timestamp = int(1000000 * time.time())
 

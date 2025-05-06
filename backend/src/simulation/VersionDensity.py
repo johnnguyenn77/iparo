@@ -4,8 +4,8 @@ from abc import abstractmethod, ABC
 from enum import IntEnum
 
 import numpy as np
-from iparo.IPARO import IPARO
-from iparo.TimeUnit import TimeUnit
+from simulation.IPARO import IPARO
+from simulation.TimeUnit import TimeUnit
 
 
 class VersionVolume(IntEnum):
