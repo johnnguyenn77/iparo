@@ -17,6 +17,7 @@ class IPAROFactory:
 
                 url = record.rec_headers.get_header('WARC-Target-URI')
                 timestamp = record.rec_headers.get_header('WARC-Date')
+                content_type = record.rec_headers.get_header('Content-Type')
                 content = record.content_stream().read()
 
                 key_url = ipns.generate_key_for_url(url)
@@ -48,6 +49,7 @@ class IPAROFactory:
                     timestamp=timestamp,
                     seq_num=seq_num,
                     linked_iparos=frozenset(linked_iparos),
+                    content_type=content_type,
                     content=content,
                     nonce=0
                 )

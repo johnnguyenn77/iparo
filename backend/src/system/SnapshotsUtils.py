@@ -2,14 +2,14 @@ from system.IPARO import IPARO
 from system.IPNS import IPNS
 from system.IPFS import IPFS
 
-def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: dict) -> list[IPARO]:
+def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: dict) -> dict[str, IPARO]:
     peer_id = ipns_records.get(url)
     if not peer_id:
         raise ValueError("This website has not been archived")
 
     start_cid = ipns.resolve_cid(peer_id)
     visited = set()
-    snapshots = []
+    snapshots = {}
 
     def dfs(cid):
         if cid in visited:
@@ -17,10 +17,11 @@ def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: di
         visited.add(cid)
 
         iparo = ipfs.retrieve(cid)
-        snapshots.append(iparo)
+        snapshots[cid] = iparo
 
         for link in iparo.linked_iparos:
             dfs(link.cid)
 
     dfs(start_cid)
-    return sorted(snapshots, key=lambda x: x.seq_num)
+
+    return dict(sorted(snapshots.items(), key=lambda item: item[1].seq_num))

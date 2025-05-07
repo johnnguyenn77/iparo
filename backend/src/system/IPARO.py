@@ -9,6 +9,7 @@ class IPARO:
     timestamp: str
     seq_num: int
     linked_iparos: set[IPAROLink]
+    content_type: str
     # Body
     content: bytes
     # Trailer

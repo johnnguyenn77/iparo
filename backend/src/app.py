@@ -36,17 +36,18 @@ def get_latest_snapshot():
     peer_id = ipns_records.get(url)
     
     if not peer_id:
-        return jsonify({"error": "This website never archived"}), 404
+        return jsonify({"error": "This website has never been archived"}), 404
     
     cid = ipns.resolve_cid(peer_id)
     iparo = ipfs.retrieve(cid)
     
     return jsonify({
         "cid": cid,
-        "timestamp": iparo.timestamp,
         "url": iparo.url,
-        "content": iparo.content.decode("utf-8")
-    })
+        "timestamp": iparo.timestamp,
+        "seq_num": iparo.seq_num,
+        "content_type": iparo.content_type
+    }), 200
 
 
 @app.route("/api/snapshots", methods=["GET"])
@@ -59,18 +60,36 @@ def get_all_snapshots():
         snapshots = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)
         return jsonify([
             {
-                "timestamp": iparo.timestamp,
+                "cid": cid,
                 "url": iparo.url,
-                "seq_num": iparo.seq_num
-            } for iparo in snapshots
-        ])
+                "timestamp": iparo.timestamp,
+                "seq_num": iparo.seq_num,
+                "content_type": iparo.content_type
+            } for cid, iparo in snapshots.items()
+        ]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/snapshot/<cid>", methods=["GET"])
-def get_snapshot_metadata(cid):
-    pass
+@app.route("/api/snapshots/count", methods=["GET"])
+def get_url_version_count():
+    url = request.args.get("url")
+    if not url:
+        return jsonify({"error": "Missing 'url' query parameter"}), 400
+    
+    peer_id = ipns_records.get(url)
+    
+    if not peer_id:
+        return jsonify({"error": "This website has never been archived"}), 404
+    
+    cid = ipns.resolve_cid(peer_id)
+    iparo = ipfs.retrieve(cid)
+    version_count = iparo.seq_num + 1
+    
+    return jsonify({
+        "url": iparo.url,
+        "total_count": version_count
+    }), 200
 
 
 @app.route("/api/archive/<cid>/content", methods=["GET"])
