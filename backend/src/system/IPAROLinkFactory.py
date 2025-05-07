@@ -1,8 +1,8 @@
 from typing import Optional
 
-from iparo.IPARO import IPARO
-from iparo.IPAROLink import IPAROLink
-from iparo.IPFS import ipfs, Mode
+from system.IPARO import IPARO
+from system.IPAROLink import IPAROLink
+from system.IPFS import IPFS
 
 
 class IPAROLinkFactory:
@@ -19,7 +19,7 @@ class IPAROLinkFactory:
         :param cid: The CID of the IPARO.
         :return: The link to the IPARO if the CID is present.
         """
-        iparo = ipfs.retrieve(cid)
+        iparo = IPFS.retrieve(cid)
         if iparo is None:
             return None
         return IPAROLink(seq_num=iparo.seq_num, timestamp=iparo.timestamp, cid=cid)
@@ -49,23 +49,7 @@ class IPAROLinkFactory:
         curr_link = link
         links = set()
         for index in sorted_indices:
-            curr_link = ipfs.retrieve_nth_iparo(index, curr_link)
+            curr_link = IPFS.retrieve_nth_iparo(index, curr_link)
             links.add(curr_link)
 
         return links
-
-    @classmethod
-    def from_timestamps(cls, timestamps: set[int], known_links: set[IPAROLink], mode: Mode = Mode.CLOSEST) -> tuple[set[IPAROLink], set[IPAROLink]]:
-        """
-        Constructs a list of IPARO links from a set of timestamps.
-        """
-        sorted_timestamps = sorted(timestamps, reverse=True)
-
-        # Get latest link = link with the maximum timestamp
-        link = max([link for link in known_links], key=lambda link: link.seq_num)
-        links = set()
-        for ts in sorted_timestamps:
-            link, known_links = ipfs.retrieve_closest_iparo(link, known_links, ts, mode)
-            links.add(link)
-
-        return links, known_links

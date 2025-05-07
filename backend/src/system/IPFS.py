@@ -3,6 +3,9 @@ import pickle
 import requests
 
 from system.Utils import Utils
+from system.IPARO import IPARO
+from system.IPAROLink import IPAROLink
+from system.IPNS import IPNS
 
 class IPFS:
     def store(self, iparo_obj):

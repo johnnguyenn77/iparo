@@ -4,7 +4,6 @@ import requests
 
 from system.Utils import Utils
 
-
 class IPNS:
 
     def generate_key_for_url(self, url):
@@ -23,6 +22,7 @@ class IPNS:
             print(f"Using existing key: {key_name}")
 
         return key_name
+    
     def get_name_for_key(self, key_name):
         response = requests.post(f"{Utils.IPFS_API_URL}/key/list").json()
         for key in response["Keys"]:
