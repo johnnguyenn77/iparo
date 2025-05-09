@@ -9,7 +9,7 @@ class IPARO:
     timestamp: str
     seq_num: int
     linked_iparos: set[IPAROLink]
-    content_type: str
+    content_type: str # frontend request
     # Body
     content: bytes
     # Trailer
