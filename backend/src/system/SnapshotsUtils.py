@@ -11,7 +11,7 @@ def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: di
     visited = set()
     snapshots = {}
 
-    def dfs(cid):
+    def get_all_cids(cid):
         if cid in visited:
             return
         visited.add(cid)
@@ -20,8 +20,8 @@ def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: di
         snapshots[cid] = iparo
 
         for link in iparo.linked_iparos:
-            dfs(link.cid)
+            get_all_cids(link.cid)
 
-    dfs(start_cid)
+    get_all_cids(start_cid)
 
     return dict(sorted(snapshots.items(), key=lambda item: item[1].seq_num))

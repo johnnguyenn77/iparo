@@ -94,7 +94,18 @@ def get_url_version_count():
 
 @app.route("/api/archive/<cid>/content", methods=["GET"])
 def get_snapshot_content(cid):
-    pass
+    if not cid:
+        return jsonify({"error": "Missing 'cid' path parameter"}), 400
+
+    try:
+        iparo = ipfs.retrieve(cid)
+        print(iparo.content)
+        return jsonify({
+            "url": iparo.url,
+            "content": iparo.content.decode('utf-8')
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/archive/<cid>/<path:subpath>", methods=["GET"])
