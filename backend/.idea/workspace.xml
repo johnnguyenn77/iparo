@@ -5,27 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/system/IPAROException.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPAROSimulationTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPAROStrategyTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPAROTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPAROTestConstants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPAROTestHelpers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPFSTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/IPNSTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/MasterTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/simulation/VersionDensityTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/system/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROSimulationTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROStrategyTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTestConstants.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTestHelpers.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPFSTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPNSTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/MasterTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/VersionDensityTest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
