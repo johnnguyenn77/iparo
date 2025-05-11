@@ -1,14 +1,15 @@
 from dataclasses import dataclass
-from iparo.IPAROLink import IPAROLink
+from system.IPAROLink import IPAROLink
 
 
-@dataclass
+@dataclass(frozen=True)
 class IPARO:
     # Headers
     url: str
     timestamp: str
     seq_num: int
     linked_iparos: set[IPAROLink]
+    content_type: str # frontend request
     # Body
     content: bytes
     # Trailer

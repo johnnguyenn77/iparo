@@ -1,5 +1,6 @@
 import unittest
 
+import IPAROSimulationTest
 import IPAROStrategyTest
 import IPAROTest
 import IPFSTest
@@ -14,6 +15,7 @@ if __name__ == '__main__':
     suite.addTests(loader.loadTestsFromModule(IPFSTest))
     suite.addTests(loader.loadTestsFromModule(IPAROStrategyTest))
     suite.addTests(loader.loadTestsFromModule(VersionDensityTest))
+    suite.addTests(loader.loadTestsFromModule(IPAROSimulationTest))
 
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)

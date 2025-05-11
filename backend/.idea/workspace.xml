@@ -5,21 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/iparo/IPARODateFormat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/Exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/Exceptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPARODateConverter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROLinkFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROLinkFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPAROSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/IPNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/IPNS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/LinkingStrategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/VersionDensity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/VersionDensity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/iparo/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/iparo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPARO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPARO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROException.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROException.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROLink.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROLink.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROLinkFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROLinkFactory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPAROSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulationWriter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPFS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/IPNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPNS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/TimeUnit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/TimeUnit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/VersionDensity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/VersionDensity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/iparo/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/system/IPARO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPARO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/system/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/IPAROSimulationTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROSimulationTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROStrategyTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROStrategyTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/IPAROTestConstants.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTestConstants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/IPAROTestHelpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROTestHelpers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/IPFSTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPFSTest.py" afterDir="false" />
@@ -39,6 +40,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="qb42" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo">{
@@ -49,30 +55,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor": "Run",
-    "Python tests.Python tests in IPAROStrategyTest.py.executor": "Run",
-    "Python tests.Python tests in IPAROTest.py.executor": "Run",
-    "Python tests.Python tests in IPFSTest.py.executor": "Run",
-    "Python tests.Python tests in IPNSTest.py.executor": "Run",
-    "Python tests.Python tests in test.executor": "Run",
-    "Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_raise_exception_if_timestamp_goes_after_latest_timestamp.executor": "Debug",
-    "Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_retrieve_by_timestamp_on_first_prior_node.executor": "Run",
-    "Python.IPAROSimulation.executor": "Run",
-    "Python.MasterTest.executor": "Run",
-    "Python.app.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "git-widget-placeholder": "ptl46",
-    "last_opened_file_path": "C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend/src/iparo/IPFS.py",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPAROStrategyTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPAROTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPFSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPNSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_raise_exception_if_timestamp_goes_after_latest_timestamp.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_retrieve_by_timestamp_on_first_prior_node.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulation.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MasterTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ptl46&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend/src/iparo/IPFS.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.MasterTest">
-    <configuration name="MasterTest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+}</component>
+  <component name="RunManager" selected="Python.app">
+    <configuration name="IPAROSimulationConcurrent" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,11 +87,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/iparo" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/MasterTest.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/iparo/IPAROSimulationConcurrent.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -94,7 +100,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -103,11 +109,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -116,53 +122,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docs" factoryName="Docutils task">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="docutils_input_file" value="" />
-      <option name="docutils_output_file" value="" />
-      <option name="docutils_params" value="" />
-      <option name="docutils_task" value="" />
-      <option name="docutils_open_in_browser" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docs" factoryName="Sphinx task">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="docutils_input_file" value="" />
-      <option name="docutils_output_file" value="" />
-      <option name="docutils_params" value="" />
-      <option name="docutils_task" value="" />
-      <option name="docutils_open_in_browser" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for IPAROSimulationTest.IPAROSimulationTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for IPAROStrategyTest.IPAROStrategyTest.test_every_strategy_should_require_only_one_ipns_call" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -173,11 +133,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPAROSimulationTest.IPAROSimulationTest&quot;" />
+      <option name="_new_target" value="&quot;IPAROStrategyTest.IPAROStrategyTest.test_every_strategy_should_require_only_one_ipns_call&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for IPAROStrategyTest.IPAROStrategyTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests in IPAROStrategyTest.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -188,11 +148,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPAROStrategyTest.IPAROStrategyTest&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/IPAROStrategyTest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests in IPFSTest.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -203,32 +163,17 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for VersionDensityTest.VersionDensityTestCase" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;VersionDensityTest.VersionDensityTestCase&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/IPFSTest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.MasterTest" />
-        <item itemvalue="Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest" />
-        <item itemvalue="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase" />
-        <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
-        <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python tests.Python tests in IPFSTest.py" />
+        <item itemvalue="Python tests.Python tests in IPAROStrategyTest.py" />
+        <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_every_strategy_should_require_only_one_ipns_call" />
+        <item itemvalue="Python.IPAROSimulationConcurrent" />
       </list>
     </recent_temporary>
   </component>
@@ -249,21 +194,5 @@
       <updated>1742230161614</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/IPAROTestHelpers.py</url>
-          <line>103</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test/IPAROTestHelpers.py</url>
-          <line>89</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

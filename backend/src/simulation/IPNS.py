@@ -1,7 +1,8 @@
-from datetime import datetime
+import gc
+import time
 
-from iparo.IPAROException import IPARONotFoundException
-from iparo.IPARODateFormat import IPARODateFormat
+from simulation.TimeUnit import TimeUnit
+from simulation.IPAROException import IPARONotFoundException
 
 
 class IPNS:
@@ -12,7 +13,7 @@ class IPNS:
         and counters for tracking operations.
         """
         self.__store: dict[str, str] = {}
-        self.__versions: dict[tuple[str, str], str] = {}
+        self.__versions: dict[tuple[str, int], str] = {}
         self.update_count = 0
         self.get_count = 0
 
@@ -28,8 +29,7 @@ class IPNS:
             Default is latest.
         """
         self.update_count += 1
-        curr_timestamp = datetime.strftime(datetime.now(), IPARODateFormat.DATE_FORMAT)\
-            if timestamp == 'latest' else timestamp
+        curr_timestamp = int(time.time() * TimeUnit.SECONDS) if timestamp == 'latest' else int(timestamp)
 
         # /archive/latest/{url} -> value of URL, map it to the CID [default]
         self.__store[url] = cid
@@ -56,7 +56,7 @@ class IPNS:
             raise IPARONotFoundException(url)
         return self.__store[url]
 
-    def get_cid(self, url: str, timestamp: str) -> str:
+    def get_cid(self, url: str, timestamp: int) -> str:
         """
         Retrieves the CID for a given timestamp.
 
@@ -83,6 +83,8 @@ class IPNS:
         """
         Resets the data.
         """
+        del self.__store
+        gc.collect()
         self.__store: dict[str, str] = {}
 
     def reset_counts(self):
