@@ -1,14 +1,18 @@
 import pickle
 from datetime import datetime
+from enum import Enum
 
 import requests
 
-from simulation.IPFS import Mode
 from system.IPARO import IPARO
 from system.IPAROException import IPARONotFoundException
 from system.IPAROLink import IPAROLink
 from system.Utils import Utils
 
+class Mode(Enum):
+    LATEST_BEFORE = 0,
+    CLOSEST = 1,
+    EARLIEST_AFTER = 2
 
 class IPFS:
     def store(self, iparo_obj: IPARO):
