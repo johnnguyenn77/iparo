@@ -6,7 +6,11 @@ class IPAROFactory:
     @classmethod
     def create_and_store_iparos(cls, ipfs, ipns, iparo_link_factory, filename=None):
         """Processes WARC file, creates and stores IPARO objects with proper version chaining."""
-        warc_path = os.path.join('..', 'samples', 'warcs', '2mementos.warc')
+        # Resolve samples/warcs folder relative to project root
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        warc_dir = os.path.join(project_root, 'samples', 'warcs')
+        warc_filename = filename or '2mementos.warc'
+        warc_path = os.path.join(warc_dir, warc_filename)
 
         key_name = {}
 

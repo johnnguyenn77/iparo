@@ -1,161 +1,21 @@
-from flask import Flask, request, jsonify, send_file
-import datetime
-import io
-import mimetypes
+from flask import Flask, request, jsonify, abort, make_response
 import os
+import hashlib
 from system.IPAROFactory import IPAROFactory
 from system.IPFS import IPFS
 from system.IPAROLinkFactory import IPAROLinkFactory
 from system.IPNS import IPNS
 from system.IPARO import IPARO
 from system.SnapshotsUtils import get_all_snapshots_for_url
-
+from warcio.archiveiterator import ArchiveIterator
+from warcio.exceptions import ArchiveLoadFailed
+from flask import Flask, request, jsonify, abort, make_response
+from urllib.parse import urlparse, urljoin
+import re 
+import requests  # add requests library
+from datetime import datetime
 
 app = Flask(__name__)
-_snapshots = []      # only HTML snapshots go here
-_snapshot_data = {}  # all responses go here
-_seen_html_keys = set()      # ← add this
-
-def load_warcs():
-    base = os.path.join(os.path.dirname(__file__), '..', 'samples', 'warcs')
-    for fname in os.listdir(base):
-        # include both uncompressed (.warc) and compressed (.warc.gz) archives
-        if not (fname.endswith('.warc') or fname.endswith('.warc.gz')):
-            continue
-        path = os.path.join(base, fname)
-        with open(path, 'rb') as stream:
-            it = ArchiveIterator(stream)
-            while True:
-                try:
-                    rec = next(it)
-                except StopIteration:
-                    break
-                except ArchiveLoadFailed:
-                    continue
-
-                if rec.rec_type != 'response' or rec.http_headers is None:
-                    continue
-
-                url = rec.rec_headers.get_header('WARC-Target-URI')
-                ts  = rec.rec_headers.get_header('WARC-Date')
-                ct  = rec.http_headers.get_header('Content-Type') or 'application/octet-stream'
-                body = rec.content_stream().read()
-                key  = hashlib.sha256(f'{url}|{ts}'.encode()).hexdigest()
-
-                # Store every response
-                _snapshot_data[key] = {
-                    'body': body,
-                    'content_type': ct,
-                    'url': url,
-                    'timestamp': ts
-                }
-
-                # Only index each HTML memento once
-                if ct.startswith('text/html') and key not in _seen_html_keys:
-                    _seen_html_keys.add(key)
-                    _snapshots.append({
-                        'id': key,
-                        'url': url,
-                        'timestamp': ts,
-                        'content_type': ct
-                    })
-
-# load all warcs on startup
-load_warcs()
-
-@app.route('/api/snapshots')
-def list_snapshots():
-    url = request.args.get('url')
-    results = [s for s in _snapshots if s['url'] == url] if url else _snapshots
-    return jsonify(results)
-
-@app.route('/api/snapshots/date')
-def snapshots_by_date():
-    url   = request.args.get('url')
-    date  = request.args.get('date')
-    limit = int(request.args.get('limit', 3))
-    matches = [s for s in _snapshots
-               if s['url'] == url and s['timestamp'].startswith(date)]
-    return jsonify(matches[:limit])
-
-@app.route('/api/snapshot/<snap_id>')
-def get_snapshot(snap_id):
-    snap = next((s for s in _snapshots if s['id'] == snap_id), None)
-    if not snap:
-        abort(404)
-    return jsonify({
-        'id': snap['id'],
-        'url': snap['url'],
-        'timestamp': snap['timestamp'],
-        'title': snap['url'],
-        'mementoUrl': f'/api/archive/{snap_id}/content'
-    })
-
-@app.route('/api/archive/<snap_id>/', defaults={'path':'content'})
-@app.route('/api/archive/<snap_id>/<path:path>')
-def archive_resource(snap_id, path):
-    # find the HTML snapshot metadata
-    snap = next((s for s in _snapshots if s['id'] == snap_id), None)
-    if not snap:
-        abort(404)
-
-    ts = snap['timestamp']
-    # main HTML content
-    if path == 'content':
-        rec = _snapshot_data.get(snap_id)
-    else:
-        # compute directory base for correct URL resolution
-        parsed = urlparse(snap['url'])
-        if parsed.path.endswith('/'):
-            base_dir = snap['url']
-        else:
-            head, _, _ = parsed.path.rpartition('/')
-            base_dir = f"{parsed.scheme}://{parsed.netloc}{head}/"
-        resource_url = urljoin(base_dir, path)
-        # try exact match by timestamp
-        key = hashlib.sha256(f'{resource_url}|{ts}'.encode()).hexdigest()
-        rec = _snapshot_data.get(key)
-        # fallback to any record with matching URL
-        if rec is None:
-            rec = next((r for r in _snapshot_data.values() if r['url'] == resource_url), None)
-
-    if not rec:
-        abort(404)
-
-    body = rec['body']
-    ct   = rec['content_type']
-
-    if ct.startswith('text/html'):
-        html = body.decode('utf-8', errors='ignore')
-        # ensure standards mode
-        if not html.lstrip().lower().startswith('<!doctype'):
-            html = '<!DOCTYPE html>\n' + html
-        # inject <base> into existing <head>
-        def add_base(m):
-            return m.group(1) + f"\n  <base href=\"/api/archive/{snap_id}/\" />"
-        html, count = re.subn(r'(<head[^>]*>)', add_base, html, count=1, flags=re.IGNORECASE)
-        if count == 0:
-            # fallback wrap if no <head> found
-            html = (
-                '<!DOCTYPE html>\n'
-                '<html lang="en">\n'
-                '<head>\n'
-                '  <meta charset="utf-8"/>\n'
-                f'  <base href="/api/archive/{snap_id}/" />\n'
-                '</head>\n'
-                f'{html}\n'
-                '</html>'
-            )
-        resp = make_response(html)
-        resp.headers['Content-Type'] = 'text/html; charset=utf-8'
-    else:
-        resp = make_response(body)
-        resp.headers['Content-Type'] = ct
-
-    return resp
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3001, debug=True)
 
 ipfs = IPFS()
 ipns = IPNS()
@@ -236,6 +96,22 @@ def get_url_version_count():
     }), 200
 
 
+@app.route("/api/snapshot/<cid>", methods=["GET"])
+def get_snapshot_metadata(cid):
+    if not cid:
+        return jsonify({"error": "Missing 'cid' path parameter"}), 400
+    try:
+        iparo = ipfs.retrieve(cid)
+        return jsonify({
+            "id": cid,
+            "url": iparo.url,
+            "timestamp": iparo.timestamp,
+            "mementoUrl": f"/api/archive/{cid}/content"
+        }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route("/api/archive/<cid>/content", methods=["GET"])
 def get_snapshot_content(cid):
     if not cid:
@@ -243,21 +119,69 @@ def get_snapshot_content(cid):
 
     try:
         iparo = ipfs.retrieve(cid)
-        print(iparo.content)
-        return jsonify({
-            "url": iparo.url,
-            "content": iparo.content.decode('utf-8')
-        }), 200
+        # Strip HTTP headers from raw WARC response record
+        raw = iparo.content
+        sep = b"\r\n\r\n"
+        body = raw.split(sep, 1)[1] if sep in raw else raw
+        response = make_response(body)
+        response.headers['Content-Type'] = 'text/html; charset=utf-8'
+        return response
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/archive/<cid>/<path:subpath>", methods=["GET"])
 def get_snapshot_resource(cid, subpath):
-    pass
+    if not cid or not subpath:
+        return jsonify({"error": "Missing parameters"}), 400
+    try:
+        iparo = ipfs.retrieve(cid)
+        # Construct full URL of resource
+        original_base = iparo.url
+        target_url = urljoin(original_base, subpath)
+        # Fetch resource from live web
+        resp = requests.get(target_url, timeout=10)
+        if resp.status_code != 200:
+            return jsonify({"error": f"Resource fetch failed with status {resp.status_code}"}), resp.status_code
+        # Stream content back
+        response = make_response(resp.content)
+        response.headers['Content-Type'] = resp.headers.get('Content-Type', 'application/octet-stream')
+        return response
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/snapshots/date", methods=["GET"])
+def get_snapshots_by_date():
+    url = request.args.get("url")
+    date_str = request.args.get("date")
+    limit = request.args.get("limit", type=int, default=3)
+    if not url or not date_str:
+        return jsonify({"error": "Missing 'url' or 'date' parameter"}), 400
+    try:
+        all_snaps = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)
+        # Parse target date (YYYY-MM-DD)
+        target = datetime.fromisoformat(date_str)
+        # Compute deltas
+        snaps = []
+        for cid, iparo in all_snaps.items():
+            ts = datetime.fromisoformat(iparo.timestamp)
+            delta = abs((ts - target).total_seconds())
+            snaps.append((delta, cid, iparo))
+        # Sort by closest
+        snaps.sort(key=lambda x: x[0])
+        # Take top limit
+        selected = snaps[:limit]
+        return jsonify([
+            { "cid": cid, "url": iparo.url, "timestamp": iparo.timestamp }
+            for _, cid, iparo in selected
+        ]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
     for url, peer_id in ipns_records.items():
         print(f"{url} -> {peer_id}")
-    app.run(debug=True, use_reloader=False)
+    # Run on port 5002 to avoid conflicts with macOS AirPlay ports
+    app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False)

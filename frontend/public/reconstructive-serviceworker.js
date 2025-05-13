@@ -35,4 +35,12 @@ try {
 // Existing event listeners...
 self.addEventListener('install',  e => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-self.addEventListener('fetch',   e => rc && rc.reroute(e));
+// Bypass Reconstructive for API calls to avoid blocking backend endpoints
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+  if (url.pathname.startsWith('/api/')) {
+    // Let the browser handle API requests normally
+    return;
+  }
+  rc && rc.reroute(e);
+});

@@ -12,48 +12,52 @@ import ShareIcon        from '@mui/icons-material/Share';
 import { fetchSnapshotById, initReconstructive } from '../services/archiveService';
 
 export default function SnapshotViewerPage() {
-  const { id } = useParams()
-  const [snapshot, setSnapshot] = useState(null)
-  const [loading, setLoading]   = useState(true)
-  const [error, setError]       = useState(null)
-  const [ready, setReady]       = useState(false)
-  const iframeRef = useRef()
+  const { id } = useParams();
+  const [loading, setLoading]   = useState(true);
+  const [snapshot, setSnapshot] = useState(null);
+  const [error, setError]       = useState(null);
+  const [ready, setReady]       = useState(false);
+  const iframeRef               = useRef(null);
 
   useEffect(() => {
     initReconstructive()
-      .then(active => setReady(active))
-      .catch(console.error)
+      .then(() => setReady(true))
+      .catch(() => setError('Failed to initialize archive viewer.'));
+  }, []);
 
+  useEffect(() => {
     fetchSnapshotById(id)
       .then(data => setSnapshot(data))
       .catch(() => setError('Failed to load archived version.'))
-      .finally(() => setLoading(false))
-  }, [id])
+      .finally(() => setLoading(false));
+  }, [id]);
 
-  const formatDate = s =>
+  const formatDate = (s) =>
     new Date(s).toLocaleDateString(undefined, {
       year:'numeric',month:'long',day:'numeric',
       hour:'2-digit',minute:'2-digit'
-    })
+    });
 
-  if (loading) return <Box sx={{textAlign:'center',m:4}}><CircularProgress/></Box>
-  if (error)   return <Alert severity="error">{error}</Alert>
+  if (loading) return <CircularProgress sx={{ m: 4 }} />;
+  if (error)   return <Alert severity="error">{error}</Alert>;
 
   return (
-    <Box sx={{ py:4 }}>
+    <Box sx={{ py: 4 }}>
       <Container maxWidth="lg">
-        <Breadcrumbs sx={{ mb:3 }}>
+        <Breadcrumbs sx={{ mb: 3 }}>
           <MuiLink component={Link} to="/" color="inherit">Home</MuiLink>
-          <MuiLink component={Link} to={`/results?url=${encodeURIComponent(snapshot.url)}`} color="inherit">Search Results</MuiLink>
+          <MuiLink component={Link} to="/results" color="inherit">Search Results</MuiLink>
           <Typography color="text.primary">Archived Page</Typography>
         </Breadcrumbs>
 
         <Paper sx={{ p:3, borderRadius:2, mb:3 }}>
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={8}>
-              <Typography variant="h5" gutterBottom>{snapshot.title}</Typography>
+              <Typography variant="h5" gutterBottom>
+                {snapshot.title}
+              </Typography>
               <Box sx={{ display:'flex', alignItems:'center' }}>
-                <CalendarTodayIcon sx={{ mr:1 }}/>
+                <CalendarTodayIcon sx={{ mr:1 }} />
                 <Typography>{formatDate(snapshot.timestamp)}</Typography>
               </Box>
               <Typography variant="body2" sx={{ wordBreak:'break-all' }}>
@@ -61,22 +65,16 @@ export default function SnapshotViewerPage() {
               </Typography>
             </Grid>
             <Grid item xs={12} md={4} sx={{ textAlign:'right' }}>
-              <Button component={Link}
-                      to={`/results?url=${encodeURIComponent(snapshot.url)}`}
-                      startIcon={<HistoryIcon/>}>
+              <Button component={Link} to={`/results?url=${encodeURIComponent(snapshot.url)}`} startIcon={<HistoryIcon />}>
                 All Versions
               </Button>
-              <IconButton href={snapshot.url} target="_blank">
-                <OpenInNewIcon/>
-              </IconButton>
-              <IconButton onClick={()=>navigator.clipboard.writeText(window.location.href)}>
-                <ShareIcon/>
-              </IconButton>
+              <IconButton href={snapshot.url} target="_blank"><OpenInNewIcon /></IconButton>
+              <IconButton onClick={() => navigator.clipboard.writeText(window.location.href)}><ShareIcon /></IconButton>
             </Grid>
           </Grid>
-          <Divider sx={{ my:2 }}/>
+          <Divider sx={{ my:2 }} />
           <Typography variant="caption">Snapshot ID: {snapshot.id}</Typography>
-          <Button component={Link} to={-1} startIcon={<ArrowBackIcon/>}>
+          <Button component={Link} to={-1} startIcon={<ArrowBackIcon />}>
             Back to Results
           </Button>
         </Paper>
@@ -92,11 +90,11 @@ export default function SnapshotViewerPage() {
                 ref={iframeRef}
                 src={snapshot.mementoUrl}
                 title={`Archive of ${snapshot.url}`}
-                style={{ width:'100%', height:'100%', border:'none' }}
+                style={{ width:'100%',height:'100%',border:'none' }}
               />
             ) : (
-              <Box sx={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%' }}>
-                <CircularProgress/>
+              <Box sx={{ display:'flex',alignItems:'center',justifyContent:'center',height:'100%' }}>
+                <CircularProgress />
                 <Typography sx={{ ml:2 }}>Initializing archive viewer…</Typography>
               </Box>
             )}
@@ -104,5 +102,5 @@ export default function SnapshotViewerPage() {
         </Paper>
       </Container>
     </Box>
-  )
+  );
 }
