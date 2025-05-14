@@ -124,7 +124,7 @@ class IPFS:
         Based on the sequence number.
         """
         # Step 1. Clamp the target sequence number.
-        target_seq_num = min(limit, iparo.seq_num + limit // 2, latest_link.seq_num)
+        target_seq_num = min(max(limit, iparo.seq_num + limit // 2), latest_link.seq_num)
 
         # Step 2. Get later links from the known links.
         known_link = min({link for link in known_links if link.seq_num >= target_seq_num}, key=lambda iparo: iparo.seq_num)
