@@ -1,0 +1,37 @@
+Index: src/app.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import Flask, request, jsonify, send_file\r\nimport datetime\r\nimport io\r\nimport mimetypes\r\nimport os\r\nfrom system.IPAROFactory import IPAROFactory\r\nfrom system.IPFS import IPFS\r\nfrom system.IPAROLinkFactory import IPAROLinkFactory\r\nfrom system.IPNS import IPNS\r\nfrom system.IPARO import IPARO\r\nfrom system.SnapshotsUtils import get_all_snapshots_for_url\r\n\r\n\r\napp = Flask(__name__)\r\n\r\nipfs = IPFS()\r\nipns = IPNS()\r\niparo_link_factory = IPAROLinkFactory()\r\n\r\n@app.route(\"/\")\r\ndef index():\r\n    return \"Welcome to the IPARO Web Server\"\r\n\r\n\r\n@app.route(\"/archive\", methods=[\"POST\"])\r\ndef archive():\r\n    pass\r\n\r\n\r\n@app.route(\"/api/recent_snapshot\", methods=[\"GET\"])\r\ndef get_latest_snapshot():\r\n    url = request.args.get(\"url\")\r\n    if not url:\r\n        return jsonify({\"error\": \"Missing 'url'\"}), 400\r\n    \r\n    peer_id = ipns_records.get(url)\r\n    \r\n    if not peer_id:\r\n        return jsonify({\"error\": \"This website has never been archived\"}), 404\r\n    \r\n    cid = ipns.resolve_cid(peer_id)\r\n    iparo = ipfs.retrieve(cid)\r\n    \r\n    return jsonify({\r\n        \"cid\": cid,\r\n        \"url\": iparo.url,\r\n        \"timestamp\": iparo.timestamp,\r\n        \"seq_num\": iparo.seq_num,\r\n        \"content_type\": iparo.content_type\r\n    }), 200\r\n\r\n\r\n@app.route(\"/api/snapshots\", methods=[\"GET\"])\r\ndef get_all_snapshots():\r\n    url = request.args.get(\"url\")\r\n    if not url:\r\n        return jsonify({\"error\": \"Missing 'url'\"}), 400\r\n\r\n    try:\r\n        snapshots = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)\r\n        return jsonify([\r\n            {\r\n                \"cid\": cid,\r\n                \"url\": iparo.url,\r\n                \"timestamp\": iparo.timestamp,\r\n                \"seq_num\": iparo.seq_num,\r\n                \"content_type\": iparo.content_type\r\n            } for cid, iparo in snapshots.items()\r\n        ]), 200\r\n    except Exception as e:\r\n        return jsonify({\"error\": str(e)}), 500\r\n\r\n\r\n@app.route(\"/api/snapshots/count\", methods=[\"GET\"])\r\ndef get_url_version_count():\r\n    url = request.args.get(\"url\")\r\n    if not url:\r\n        return jsonify({\"error\": \"Missing 'url' query parameter\"}), 400\r\n    \r\n    peer_id = ipns_records.get(url)\r\n    \r\n    if not peer_id:\r\n        return jsonify({\"error\": \"This website has never been archived\"}), 404\r\n    \r\n    cid = ipns.resolve_cid(peer_id)\r\n    iparo = ipfs.retrieve(cid)\r\n    version_count = iparo.seq_num + 1\r\n    \r\n    return jsonify({\r\n        \"url\": iparo.url,\r\n        \"total_count\": version_count\r\n    }), 200\r\n\r\n\r\n@app.route(\"/api/archive/<cid>/content\", methods=[\"GET\"])\r\ndef get_snapshot_content(cid):\r\n    if not cid:\r\n        return jsonify({\"error\": \"Missing 'cid' path parameter\"}), 400\r\n\r\n    try:\r\n        iparo = ipfs.retrieve(cid)\r\n        print(iparo.content)\r\n        return jsonify({\r\n            \"url\": iparo.url,\r\n            \"content\": iparo.content.decode('utf-8')\r\n        }), 200\r\n    except Exception as e:\r\n        return jsonify({\"error\": str(e)}), 500\r\n\r\n\r\n@app.route(\"/api/archive/<cid>/<path:subpath>\", methods=[\"GET\"])\r\ndef get_snapshot_resource(cid, subpath):\r\n    pass\r\n\r\nif __name__ == \"__main__\":\r\n    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)\r\n    for url, peer_id in ipns_records.items():\r\n        print(f\"{url} -> {peer_id}\")\r\n    app.run(debug=True, use_reloader=False)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/app.py b/src/app.py
+--- a/src/app.py	(revision 384753b8a86edf1fb853e3e9c28a775bfd6020b3)
++++ b/src/app.py	(date 1746987213051)
+@@ -112,6 +112,26 @@
+ def get_snapshot_resource(cid, subpath):
+     pass
+ 
++
++@app.route("/api/snapshots/date", methods=["GET"])
++def get_url_versions_by_date(cid, subpath):
++    url: str = request.args.get("url")
++    date: str = request.args.get("date")
++    try:
++        limit: int = request.args.get("limit", 3, type=int)
++    except:
++        return jsonify({"error": "Limit is not a valid number."}), 400
++    if not url or not date:
++        return jsonify({"error": "Missing 'url' or 'date'"}), 400
++
++
++    try:
++        get
++    except Exception as e:
++        return jsonify({"error": str(e)}), 500
++
++
++
+ if __name__ == "__main__":
+     ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+     for url, peer_id in ipns_records.items():

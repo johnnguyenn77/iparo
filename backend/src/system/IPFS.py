@@ -32,7 +32,7 @@ class IPFS:
         iparo = pickle.loads(response.content)
         return iparo
 
-    def retrieve_by_number(self, latest_link: IPAROLink, num: int) -> tuple[str, IPARO]:
+    def retrieve_by_number(self, latest_link: IPAROLink, num: int) -> tuple[IPAROLink, IPARO]:
         """Fetch an IPARO with the desired sequence number, using a link to the latest node."""
         curr_link = latest_link
         if num < 0 or num > latest_link.seq_num:
@@ -43,7 +43,7 @@ class IPFS:
                             key=lambda link: link.seq_num)
 
         iparo = self.retrieve(curr_link.cid)
-        return curr_link.cid, iparo
+        return curr_link, iparo
 
     def retrieve_by_date(self, latest_link: IPAROLink, target_timestamp: str, mode: Mode) -> tuple[IPAROLink, IPARO, set[IPAROLink]]:
         """Fetch an IPARO with the closest timestamp, using a link to the latest node. For
@@ -94,7 +94,7 @@ class IPFS:
 
         # Scenario 4: prev_ts < curr_ts
         # Calculate ratio to see if it's closer or not.
-        r = (target_ts - curr_ts) / (curr_ts - prev_ts)
+        r = (target_ts - prev_ts) / (curr_ts - prev_ts)
         if mode == Mode.CLOSEST:
             link = prev_link if r < 0.5 else curr_link
         elif mode == Mode.LATEST_BEFORE:
@@ -106,19 +106,34 @@ class IPFS:
 
         return link, iparo, known_links
 
-    def retrieve_all_iparos_in_range(self, earliest_cid: str, link: IPAROLink,
-                                     iparo: IPARO) -> dict[str, IPARO]:
+    def retrieve_all_iparos_in_seq_range(self, latest_link: IPAROLink, latest_iparo, earliest_seq_num: int) -> dict[IPAROLink, IPARO]:
+        # Step 5: Iterate through loop
+        iparos: dict[IPAROLink, IPARO] = {latest_link: latest_iparo}
+        curr_link = max(latest_iparo.linked_iparos, key=lambda link: link.seq_num)
+        while curr_link.seq_num >= earliest_seq_num:
+            iparo = self.retrieve(curr_link.cid)
+            iparos[curr_link] = iparo
+            candidate_links = iparo.linked_iparos
+            curr_link = max(candidate_links, key=lambda link: link.seq_num)
+
+        return iparos
+
+    def retrieve_closest_iparos(self, iparo: IPARO, latest_link: IPAROLink, known_links: set[IPAROLink], limit: int) -> dict[str, IPARO]:
         """
-        Retrieves all IPAROs in range with their CIDs, up to earliest_cid.
+        Retrieves all IPAROs in range with their CIDs of the IPARO object, up to limit. Limit must be >= 1.
+        Based on the sequence number.
         """
-        snapshots = {link.cid: iparo}
-        # Get all CIDs up to earliest CID.
-        while link.cid != earliest_cid:
-            link = max(iparo.linked_iparos, key=lambda iparo: iparo.seq_num)
-            iparo = self.retrieve(link.cid)
-            snapshots[link.cid] = iparo
-        # Get earliest CID
-        iparo = self.retrieve(earliest_cid)
-        snapshots[earliest_cid] = iparo
+        # Step 1. Clamp the target sequence number.
+        target_seq_num = max(limit, min(iparo.seq_num + limit // 2, latest_link.seq_num))
+
+        # Step 2. Get later links from the known links.
+        known_link = min({link for link in known_links if link.seq_num >= target_seq_num}, key=lambda iparo: iparo.seq_num)
+
+        # Step 3. Perform retrieval to get latest link in the set.
+        target_link, target_iparo = self.retrieve_by_number(known_link, target_seq_num)
+
+        # Step 4: Sequential Range
+        iparos = self.retrieve_all_iparos_in_seq_range(target_link, target_iparo, target_seq_num - limit)
+        snapshots = {link.cid: iparo for link, iparo in iparos}
 
         return snapshots

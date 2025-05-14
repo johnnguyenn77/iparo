@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_11_2025_2_13_PM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_11_2025_2_13_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/system/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" afterDir="false" />
     </list>
@@ -37,28 +40,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor": "Run",
-    "Python tests.Python tests in IPAROStrategyTest.py.executor": "Run",
-    "Python tests.Python tests in IPAROTest.py.executor": "Run",
-    "Python tests.Python tests in IPFSTest.py.executor": "Run",
-    "Python tests.Python tests in IPNSTest.py.executor": "Run",
-    "Python tests.Python tests in test.executor": "Run",
-    "Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_raise_exception_if_timestamp_goes_after_latest_timestamp.executor": "Debug",
-    "Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_retrieve_by_timestamp_on_first_prior_node.executor": "Run",
-    "Python.IPAROSimulation.executor": "Run",
-    "Python.MasterTest.executor": "Run",
-    "Python.app.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "git-widget-placeholder": "ptl46",
-    "last_opened_file_path": "C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend/test/system",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.test_single_strategy_should_link_to_only_one_node.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPAROStrategyTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPAROTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPFSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPNSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_raise_exception_if_timestamp_goes_after_latest_timestamp.executor&quot;: &quot;Debug&quot;,
+    &quot;Python tests.Unittests for IPFSTest.IPAROLinkFactoryTest.test_can_retrieve_by_timestamp_on_first_prior_node.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulation.executor&quot;: &quot;Run&quot;,
+    &quot;Python.MasterTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.steganography.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ptl46&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend/test/system&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\test\system" />
@@ -106,6 +110,29 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/app.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="steganography" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../MATLAB" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../MATLAB/steganography.py" />
+      <option name="PARAMETERS" value="bat_encoded.bmp" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -191,7 +218,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/app.py</url>
-          <line>20</line>
+          <line>19</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
