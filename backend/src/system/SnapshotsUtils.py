@@ -67,5 +67,5 @@ def retrieve_closest_iparos(url: str, ipns: IPNS, ipfs: IPFS, date: str, ipns_re
     # so we don't have to travel all the way back.
     link, iparo, known_links = ipfs.retrieve_by_date(latest_link, date, Mode.CLOSEST)
     iparos = ipfs.retrieve_closest_iparos(iparo, latest_link, known_links, limit)
-    
+
     return iparos

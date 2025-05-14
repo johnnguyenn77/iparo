@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/system/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
