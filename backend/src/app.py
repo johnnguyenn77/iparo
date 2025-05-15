@@ -137,9 +137,9 @@ def get_url_versions_by_date():
         return jsonify({"error": str(e)}), 500
 
 
-
 if __name__ == "__main__":
     ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
     for url, peer_id in ipns_records.items():
         print(f"{url} -> {peer_id}")
+
     app.run(debug=True, use_reloader=False)
