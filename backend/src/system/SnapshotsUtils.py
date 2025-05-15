@@ -61,11 +61,15 @@ def retrieve_closest_iparos(url: str, ipns: IPNS, ipfs: IPFS, date: str, ipns_re
     """
     latest_link, _ = check_latest_cid(url, ipns, ipfs, ipns_records)
 
-    timestamp = datetime.strptime(date, "%Y-%m-%d")
+    # Need to convert the YYYY-mm-dd into timestamp
+    timestamp = datetime.strptime(date, "%Y-%m-%d").isoformat()
+
+    # And convert timestamp into string. (Python uses +00:00 instead of Z as suffix, so I had to change it).
+    time_string = timestamp.replace("+00:00", "Z")
 
     # We want all the known links for the closest timestamp,
     # so we don't have to travel all the way back.
-    link, iparo, known_links = ipfs.retrieve_by_date(latest_link, timestamp.isoformat(), Mode.CLOSEST)
-    iparos = ipfs.retrieve_closest_iparos(iparo, latest_link, known_links, limit)
+    link, iparo, known_links = ipfs.retrieve_by_date(latest_link, time_string, Mode.CLOSEST)
 
+    iparos = ipfs.retrieve_closest_iparos(iparo, latest_link, known_links, limit)
     return iparos
