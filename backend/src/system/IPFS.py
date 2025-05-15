@@ -58,7 +58,7 @@ class IPFS:
         # Scenario 2: There is no previous node.
         if latest_link.timestamp <= target_timestamp or latest_link.seq_num == 0:
             iparo = self.retrieve(latest_link.cid)
-            return latest_link, iparo, set()
+            return latest_link, iparo, {latest_link}
 
         # Otherwise, we assume that a previous node exists and target timestamp < current timestamp.
         curr_link = latest_link
@@ -134,6 +134,6 @@ class IPFS:
 
         # Step 4: Sequential Range
         iparos = self.retrieve_all_iparos_in_seq_range(target_link, target_iparo, max(0, target_seq_num - limit))
-        snapshots = {link.cid: iparo for link, iparo in iparos}
+        snapshots = {link.cid: iparo for link, iparo in iparos.items()}
 
         return snapshots
