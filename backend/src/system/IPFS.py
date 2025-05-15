@@ -133,7 +133,7 @@ class IPFS:
         target_link, target_iparo = self.retrieve_by_number(known_link, target_seq_num)
 
         # Step 4: Sequential Range
-        iparos = self.retrieve_all_iparos_in_seq_range(target_link, target_iparo, max(0, target_seq_num - limit))
+        iparos = self.retrieve_all_iparos_in_seq_range(target_link, target_iparo, max(0, target_seq_num - limit + 1))
         snapshots = {link.cid: iparo for link, iparo in iparos.items()}
 
         return snapshots
