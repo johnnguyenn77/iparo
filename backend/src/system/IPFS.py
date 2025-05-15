@@ -80,10 +80,12 @@ class IPFS:
                 return curr_link, iparo, known_links  # No way to get closer than current link at this point.
             # To test prev_link condition.
             candidate_links = {link for link in iparo.linked_iparos if link.timestamp >= target_timestamp}
+            prev_link = max(iparo.linked_iparos, key=lambda link: link.seq_num)
+            if not candidate_links:
+                break
             known_links.update(candidate_links)
-            prev_link = max(candidate_links, key=lambda link: link.seq_num)
 
-        curr_ts = datetime.fromisoformat(latest_link.timestamp)
+        curr_ts = datetime.fromisoformat(curr_link.timestamp)
         prev_ts = datetime.fromisoformat(prev_link.timestamp)
         target_ts = datetime.fromisoformat(target_timestamp)
 
