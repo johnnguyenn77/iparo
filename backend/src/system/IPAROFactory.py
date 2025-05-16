@@ -9,7 +9,7 @@ class IPAROFactory:
         # Resolve samples/warcs folder relative to project root
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
         warc_dir = os.path.join(project_root, 'samples', 'warcs')
-        warc_filename = filename or '2mementos.warc'
+        warc_filename = filename or 'frogTest.warc'
         warc_path = os.path.join(warc_dir, warc_filename)
 
         key_name = {}
