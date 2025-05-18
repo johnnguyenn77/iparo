@@ -4,6 +4,10 @@ import unittest
 from itertools import takewhile, count
 
 from IPAROTestHelpers import *
+from src.simulation.IPAROException import IPARONotFoundException
+from src.simulation.LinkingStrategy import *
+from src.simulation.IPNS import ipns
+from src.simulation.IPFS import ipfs
 
 
 class IPAROStrategyTest(unittest.TestCase):

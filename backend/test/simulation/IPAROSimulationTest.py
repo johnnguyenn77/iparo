@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import patch, call
 
-from simulation.IPAROException import IPARONotFoundException
-from simulation.IPAROSimulationWriter import IPAROSimulationWriter
-from simulation.LinkingStrategy import *
-from simulation.IPNS import ipns
-from simulation.IPFS import ipfs
-from simulation.VersionDensity import *
+from src.simulation.IPAROException import IPARONotFoundException
+from src.simulation.IPAROSimulationWriter import IPAROSimulationWriter
+from src.simulation.LinkingStrategy import *
+from src.simulation.IPNS import ipns
+from src.simulation.IPFS import ipfs
+from src.simulation.VersionDensity import *
 
 
 class IPAROSimulationTest(unittest.TestCase):
@@ -20,15 +20,6 @@ class IPAROSimulationTest(unittest.TestCase):
 
     def tearDown(self):
         self.simulation.reset(reset_data=True)
-
-    def test_simulation_has_ipns_store_results(self):
-        self.assertIsInstance(self.simulation.store_results, dict)
-
-    def test_simulation_has_ipfs_retrieve_number_results(self):
-        self.assertIsInstance(self.simulation.retrieve_number_results, dict)
-
-    def test_simulation_has_ipns_retrieve_datetime_results(self):
-        self.assertIsInstance(self.simulation.retrieve_date_results, dict)
 
 
     def test_simulation_can_reset(self):

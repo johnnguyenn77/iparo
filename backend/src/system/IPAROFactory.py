@@ -1,6 +1,7 @@
 from warcio import ArchiveIterator
 import os
-from system.IPARO import IPARO
+from src.system.IPARO import IPARO
+
 
 class IPAROFactory:
     @classmethod
@@ -35,7 +36,6 @@ class IPAROFactory:
                         seq_num = latest_node.seq_num + 1
                         link = iparo_link_factory.from_cid_iparo(resolved_cid.split('/', 2)[-1], latest_node)
                         linked_iparos.add(link)
-
 
                         print(f"Found previous IPARO for {url}, current linked_iparoes: {linked_iparos}")
                     else:
