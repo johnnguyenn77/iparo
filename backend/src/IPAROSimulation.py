@@ -5,8 +5,8 @@ import altair as alt
 st.title("IPARO Simulation")
 
 
-df_store = pd.read_csv("../../results/results_store.csv", delimiter="\t")
-df_retrieve = pd.read_csv("../../results/results_retrieve.csv", delimiter="\t")
+df_store = pd.read_csv("../results/results_store.csv", delimiter="\t")
+df_retrieve = pd.read_csv("../results/results_retrieve.csv", delimiter="\t")
 
 with st.expander("About this app"):
     st.text("This app lets the user compare linking strategies in the simulation under different testing environments.")

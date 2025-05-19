@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from system.IPAROLink import IPAROLink
+from src.system.IPAROLink import IPAROLink
 
 
 @dataclass(frozen=True)

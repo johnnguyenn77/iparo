@@ -3,10 +3,10 @@ import hashlib
 import pickle
 from enum import Enum
 
-from simulation.IPAROException import IPARONotFoundException
-from simulation.IPARO import IPARO
-from simulation.IPAROLink import IPAROLink
-from simulation.IPNS import ipns
+from src.simulation.IPAROException import IPARONotFoundException
+from src.simulation.IPARO import IPARO
+from src.simulation.IPAROLink import IPAROLink
+from src.simulation.IPNS import ipns
 
 
 class Mode(Enum):

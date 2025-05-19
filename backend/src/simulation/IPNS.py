@@ -1,8 +1,8 @@
 import gc
 import time
 
-from simulation.TimeUnit import TimeUnit
-from simulation.IPAROException import IPARONotFoundException
+from src.simulation.TimeUnit import TimeUnit
+from src.simulation.IPAROException import IPARONotFoundException
 
 
 class IPNS:
