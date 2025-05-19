@@ -9,6 +9,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HistoryIcon      from '@mui/icons-material/History';
 import OpenInNewIcon    from '@mui/icons-material/OpenInNew';
 import ShareIcon        from '@mui/icons-material/Share';
+import { useTheme } from '@mui/material/styles';
 import { fetchSnapshotById, initReconstructive } from '../services/archiveService';
 
 export default function SnapshotViewerPage() {
@@ -18,6 +19,7 @@ export default function SnapshotViewerPage() {
   const [error, setError]       = useState(null);
   const [ready, setReady]       = useState(false);
   const iframeRef               = useRef(null);
+  const theme = useTheme();
 
   useEffect(() => {
     initReconstructive()
@@ -79,23 +81,71 @@ export default function SnapshotViewerPage() {
           </Button>
         </Paper>
 
-        <Alert severity="info" sx={{ mb:3 }}>
-          In production, Reconstructive will render the real archived assets.
-        </Alert>
+        <Box sx={{
+          position: 'relative',
+          mb: 2,
+          backgroundColor: theme.palette.warning.light,
+          color: theme.palette.warning.contrastText,
+          p: 2,
+          borderRadius: 1,
+          display: 'flex',
+          alignItems: 'center',
+          boxShadow: 1
+        }}>
+          <HistoryIcon sx={{ mr: 1.5, color: 'black'}} fill="black"/>
+          <Typography variant="body2" color="black" sx={{ flexGrow: 1 }}>
+            You are viewing an archived version of this page from {formatDate(snapshot.timestamp)}.
+            Content may not function as originally intended.
+          </Typography>
+          <IconButton 
+            size="small" 
+            onClick={() => window.open(snapshot.url, '_blank')}
+            sx={{ ml: 1, color: 'black'}}
+          >
+            <OpenInNewIcon fontSize="small" />
+          </IconButton>
+        </Box>
 
-        <Paper sx={{ borderRadius:2, overflow:'hidden', height:'70vh', minHeight:400 }}>
-          <Box sx={{ height:'100%', position:'relative' }}>
+        <Paper sx={{ 
+          borderRadius: 2, 
+          overflow: 'hidden', 
+          height: '70vh', 
+          minHeight: 400,
+          backgroundColor: 'transparent',
+          backgroundImage: 'none'
+        }}>
+          <Box sx={{ 
+            height: '100%', 
+            position: 'relative',
+            color: '#000 !important',
+            bgcolor: 'transparent !important'
+          }}>
             {ready ? (
               <iframe
                 ref={iframeRef}
                 src={snapshot.mementoUrl}
                 title={`Archive of ${snapshot.url}`}
-                style={{ width:'100%',height:'100%',border:'none' }}
+                style={{ 
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  // Force light theme inside iframe:
+                  backgroundColor: 'white',
+                  colorScheme: 'light'
+                }}
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               />
             ) : (
-              <Box sx={{ display:'flex',alignItems:'center',justifyContent:'center',height:'100%' }}>
+              <Box sx={{ 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                // Keep loader styling consistent
+                backgroundColor: theme.palette.background.paper
+              }}>
                 <CircularProgress />
-                <Typography sx={{ ml:2 }}>Initializing archive viewer…</Typography>
+                <Typography sx={{ ml: 2 }}>Initializing archive viewer…</Typography>
               </Box>
             )}
           </Box>

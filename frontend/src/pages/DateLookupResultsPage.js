@@ -6,6 +6,7 @@ import {
   Breadcrumbs, Link as MuiLink
 } from '@mui/material'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
+import HistoryIcon from '@mui/icons-material/History';
 import { fetchSnapshotsByDate } from '../services/archiveService'
 
 export default function DateLookupResultsPage() {
@@ -63,14 +64,44 @@ export default function DateLookupResultsPage() {
             <List>
               {snapshots.map((snap, i) => (
                 <React.Fragment key={snap.id}>
-                  <ListItem disablePadding>
-                    <ListItemButton component={Link} to={`/view/${snap.id}`}>
-                      <ListItemText
-                        primary={formatDate(snap.timestamp)}
-                        secondary={`ID: ${snap.id}`}
-                      />
-                    </ListItemButton>
-                  </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton 
+                    component={Link} 
+                    to={`/view/${snap.id}`}
+                    sx={{
+                      borderRadius: 2,
+                      mb: 1,
+                      transition: 'all 0.2s',
+                      '&:hover': {
+                        backgroundColor: 'primary.light',
+                        '& .MuiListItemText-primary': {
+                          color: 'primary.contrastText'
+                        },
+                        '& .MuiListItemText-secondary': {
+                          color: 'primary.contrastText'
+                        }
+                      }
+                    }}
+                  >
+                    <ListItemText
+                      primary={
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <HistoryIcon sx={{ mr: 1, fontSize: '1rem' }} />
+                          {formatDate(snap.timestamp)}
+                        </Box>
+                      }
+                      secondary={`ID: ${snap.id}`}
+                      primaryTypographyProps={{ 
+                        fontWeight: 'medium',
+                        variant: 'body1'
+                      }}
+                      secondaryTypographyProps={{ 
+                        variant: 'caption',
+                        color: 'text.secondary'
+                      }}
+                    />
+                  </ListItemButton>
+                </ListItem>
                   {i < snapshots.length - 1 && <Divider />}
                 </React.Fragment>
               ))}

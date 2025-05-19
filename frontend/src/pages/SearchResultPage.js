@@ -3,9 +3,10 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import {
   Box, Container, Typography, Paper, List, ListItem,
   ListItemButton, ListItemText, Divider, CircularProgress,
-  Button, Breadcrumbs, Link as MuiLink
+  Breadcrumbs, Link as MuiLink
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import HistoryIcon from '@mui/icons-material/History';
 import { fetchSnapshotsByUrl } from '../services/archiveService';
 
 export default function SearchResultsPage() {
@@ -67,10 +68,40 @@ export default function SearchResultsPage() {
               {snapshots.map((snap, i) => (
                 <React.Fragment key={snap.id}>
                   <ListItem disablePadding>
-                    <ListItemButton component={Link} to={`/view/${snap.id}`}>
+                    <ListItemButton 
+                      component={Link} 
+                      to={`/view/${snap.id}`}
+                      sx={{
+                        borderRadius: 2,
+                        mb: 1,
+                        transition: 'all 0.2s',
+                        '&:hover': {
+                          backgroundColor: 'primary.light',
+                          '& .MuiListItemText-primary': {
+                            color: 'primary.contrastText'
+                          },
+                          '& .MuiListItemText-secondary': {
+                            color: 'primary.contrastText'
+                          }
+                        }
+                      }}
+                    >
                       <ListItemText
-                        primary={formatDate(snap.timestamp)}
+                        primary={
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <HistoryIcon sx={{ mr: 1, fontSize: '1rem' }} />
+                            {formatDate(snap.timestamp)}
+                          </Box>
+                        }
                         secondary={`ID: ${snap.id}`}
+                        primaryTypographyProps={{ 
+                          fontWeight: 'medium',
+                          variant: 'body1'
+                        }}
+                        secondaryTypographyProps={{ 
+                          variant: 'caption',
+                          color: 'text.secondary'
+                        }}
                       />
                     </ListItemButton>
                   </ListItem>
