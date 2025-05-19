@@ -1,7 +1,7 @@
 from warcio import ArchiveIterator
 from warcio.exceptions import ArchiveLoadFailed  # new import
 import os
-from src.system.IPARO import IPARO
+from system.IPARO import IPARO
 
 
 class IPAROFactory:

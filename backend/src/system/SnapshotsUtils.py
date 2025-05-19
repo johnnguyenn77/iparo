@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from src.system.IPARO import IPARO
-from src.system.IPFS import IPFS, Mode
-from src.system.IPNS import IPNS
+from system.IPARO import IPARO
+from system.IPFS import IPFS, Mode
+from system.IPNS import IPNS
 
 
 def get_all_snapshots_for_url(url: str, ipns: IPNS, ipfs: IPFS, ipns_records: dict) -> dict[str, IPARO]:
@@ -51,8 +51,8 @@ def retrieve_closest_iparos(url: str, ipns: IPNS, ipfs: IPFS, date: str, ipns_re
     str, IPARO]:
     """
     Returns a JSON object that retrieves all IPARO objects on a specific date, up to limit. This method
-    will return the closest IPARO, plus N IPAROs that are sequentially . The date is a string that contains
-    the specific date in YYYY-mm-dd format.
+    will return the closest IPARO, plus N IPAROs that are closest sequentially. The date is a string that
+    contains the specific date in YYYY-mm-dd format.
     """
     peer_id = ipns_records.get(url)
     latest_cid = ipns.resolve_cid(peer_id)
