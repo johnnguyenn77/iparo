@@ -12,6 +12,7 @@ import SearchResultsPage from './pages/SearchResultPage';
 import DateLookupResultsPage from './pages/DateLookupResultsPage';
 import SnapshotViewerPage from './pages/SnapshotViewerPage';
 import NotFoundPage from './pages/NotFoundPage';
+import DocsPage from './pages/DocsPage';
 import { initReconstructive } from './services/archiveService';
 
 initReconstructive()
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/date-results" element={<DateLookupResultsPage />} /> 
                   <Route path="/view/:id" element={<SnapshotViewerPage />} />
                   <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/docs" element={<DocsPage />} />
                 </Routes>
               </Box>
             </Box>
