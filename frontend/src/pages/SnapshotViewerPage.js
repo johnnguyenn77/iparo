@@ -39,6 +39,12 @@ export default function SnapshotViewerPage() {
       year:'numeric',month:'long',day:'numeric',
       hour:'2-digit',minute:'2-digit'
     });
+  const formatUTC = (s) =>
+    new Date(s).toLocaleString(undefined, {
+      timeZone: 'UTC',
+      year:'numeric',month:'long',day:'numeric',
+      hour:'2-digit',minute:'2-digit'
+    });
 
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
   if (error)   return <Alert severity="error">{error}</Alert>;
@@ -60,8 +66,12 @@ export default function SnapshotViewerPage() {
               </Typography>
               <Box sx={{ display:'flex', alignItems:'center' }}>
                 <CalendarTodayIcon sx={{ mr:1 }} />
-                <Typography>{formatDate(snapshot.timestamp)}</Typography>
+                <Typography>{formatDate(snapshot.timestamp)} (Local)</Typography>
               </Box>
+              <Typography variant="body2" color="text.secondary">
+                UTC: {formatUTC(snapshot.timestamp)}
+              </Typography>
+              <Divider sx={{ my:1 }} />
               <Typography variant="body2" sx={{ wordBreak:'break-all' }}>
                 {snapshot.url}
               </Typography>
