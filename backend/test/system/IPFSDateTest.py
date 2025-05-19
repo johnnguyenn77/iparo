@@ -4,10 +4,10 @@ import unittest
 from unittest import TestCase
 
 from datetime import datetime, timedelta
-from src.system.IPARO import IPARO
-from src.system.IPAROLink import IPAROLink
-from src.system.IPAROLinkFactory import IPAROLinkFactory
-from src.system.IPFS import IPFS, Mode
+from system.IPARO import IPARO
+from system.IPAROLink import IPAROLink
+from system.IPAROLinkFactory import IPAROLinkFactory
+from system.IPFS import IPFS, Mode
 
 prev_link = None
 latest_link = None

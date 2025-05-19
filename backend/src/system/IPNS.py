@@ -2,7 +2,7 @@ import hashlib
 
 import requests
 
-from src.system.Utils import Utils
+from system.Utils import Utils
 
 
 class IPNS:

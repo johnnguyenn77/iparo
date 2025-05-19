@@ -1,8 +1,8 @@
 from typing import Optional
 
-from src.system.IPARO import IPARO
-from src.system.IPAROLink import IPAROLink
-# from src.system.IPFS import IPFS
+from system.IPARO import IPARO
+from system.IPAROLink import IPAROLink
+# from system.IPFS import IPFS
 
 
 class IPAROLinkFactory:

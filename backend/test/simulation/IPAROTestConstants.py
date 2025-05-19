@@ -1,6 +1,6 @@
 import time
 
-from src.simulation.IPARO import IPARO
+from simulation.IPARO import IPARO
 
 time1 = int(1000000 * time.time())
 time2 = int(1000000 * (time.time() + 1))

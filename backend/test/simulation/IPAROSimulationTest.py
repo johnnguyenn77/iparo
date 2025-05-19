@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import patch, call
 
-from src.simulation.IPAROException import IPARONotFoundException
-from src.simulation.IPAROSimulationWriter import IPAROSimulationWriter
-from src.simulation.LinkingStrategy import *
-from src.simulation.IPNS import ipns
-from src.simulation.IPFS import ipfs
-from src.simulation.VersionDensity import *
+from simulation.IPAROException import IPARONotFoundException
+from simulation.IPAROSimulationWriter import IPAROSimulationWriter
+from simulation.LinkingStrategy import *
+from simulation.IPNS import ipns
+from simulation.IPFS import ipfs
+from simulation.VersionDensity import *
 
 
 class IPAROSimulationTest(unittest.TestCase):

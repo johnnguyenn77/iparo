@@ -4,11 +4,11 @@ from enum import Enum
 
 import requests
 
-from src.system.IPARO import IPARO
-from src.system.IPAROException import IPARONotFoundException
-from src.system.IPAROLink import IPAROLink
-from src.system.IPAROLinkFactory import IPAROLinkFactory
-from src.system.Utils import Utils
+from system.IPARO import IPARO
+from system.IPAROException import IPARONotFoundException
+from system.IPAROLink import IPAROLink
+from system.IPAROLinkFactory import IPAROLinkFactory
+from system.Utils import Utils
 
 
 class Mode(Enum):

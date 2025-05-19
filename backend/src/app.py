@@ -12,6 +12,7 @@ ipfs = IPFS()
 ipns = IPNS()
 iparo_link_factory = IPAROLinkFactory()
 
+
 @app.route("/")
 def index():
     return "Welcome to the IPARO Web Server"
