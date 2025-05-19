@@ -23,6 +23,18 @@ ipfs = IPFS()
 ipns = IPNS()
 iparo_link_factory = IPAROLinkFactory()
 
+# Load or generate IPNS records cache
+cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
+if cache_path.exists():
+    with open(cache_path, 'r') as f:
+        ipns_records = json.load(f)
+    print(f"Loaded IPNS records from cache: {cache_path}")
+else:
+    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+    with open(cache_path, 'w') as f:
+        json.dump(ipns_records, f)
+    print(f"Generated and saved IPNS records to cache: {cache_path}")
+
 @app.route("/")
 def index():
     return "Welcome to the IPARO Web Server"
@@ -183,22 +195,8 @@ def get_snapshots_by_date():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == "__main__":
-    # Path to cache file for IPNS records
-    cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
-    if cache_path.exists():
-        # Load previously generated records
-        with open(cache_path, 'r') as f:
-            ipns_records = json.load(f)
-        print(f"Loaded IPNS records from cache: {cache_path}")
-    else:
-        # First run: process WARCs and cache the result
-        ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
-        with open(cache_path, 'w') as f:
-            json.dump(ipns_records, f)
-        print(f"Generated and saved IPNS records to cache: {cache_path}")
-    # Display loaded peer keys
-    for url, peer_id in ipns_records.items():
-        print(f"{url} -> {peer_id}")
-    # Start server on port 5002 (avoid macOS AirPlay port conflicts)
-    app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False)
+# Display loaded peer keys
+for url, peer_id in ipns_records.items():
+    print(f"{url} -> {peer_id}")
+# Start server on port 5002 (avoid macOS AirPlay port conflicts)
+app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False)
