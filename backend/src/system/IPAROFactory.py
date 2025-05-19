@@ -1,6 +1,6 @@
 from warcio import ArchiveIterator
 import os
-from src.system.IPARO import IPARO
+from system.IPARO import IPARO
 
 
 class IPAROFactory:

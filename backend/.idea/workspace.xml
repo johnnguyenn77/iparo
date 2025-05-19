@@ -5,28 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288c70e-2960-4e90-a337-b37f2cbbb71f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/test/simulation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/system/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_11_2025_2_13_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_11_2025_2_13_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_5_11_2025_2_13_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPARO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPARO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPAROLinkFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROLinkFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPAROSimulationWriter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulationWriter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPNS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/VersionDensity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/VersionDensity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system/IPARO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPARO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system/IPAROFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPAROFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system/IPAROLinkFactory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPAROLinkFactory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system/IPNS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/IPNS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system/SnapshotsUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/simulation/IPAROSimulationTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/simulation/IPAROSimulationTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/simulation/IPAROStrategyTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/simulation/IPAROStrategyTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/simulation/IPAROTestConstants.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/simulation/IPAROTestConstants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/system/IPFSDateTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/system/IPFSDateTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +77,7 @@
       <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests in IPFSDateTest.py">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
@@ -196,6 +177,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.app" />
         <item itemvalue="Python tests.Python tests in IPFSDateTest.py" />
       </list>
     </recent_temporary>

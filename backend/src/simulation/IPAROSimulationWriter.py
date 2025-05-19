@@ -1,13 +1,13 @@
 import os
 
-from src.simulation.IPAROException import IPARONotFoundException
-from src.simulation.IPNS import ipns
-from src.simulation.LinkingStrategy import *
+from simulation.IPAROException import IPARONotFoundException
+from simulation.IPNS import ipns
+from simulation.LinkingStrategy import *
 
 import networkx as nx
 
-from src.simulation.VersionDensity import *
-from src.simulation.IPFS import ipfs
+from simulation.VersionDensity import *
+from simulation.IPFS import ipfs
 
 
 class IPAROSimulationWriter:

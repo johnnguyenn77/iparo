@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.simulation.IPAROLink import IPAROLink
+from simulation.IPAROLink import IPAROLink
 
 
 @dataclass
