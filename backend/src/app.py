@@ -1,21 +1,10 @@
-from flask import Flask, request, jsonify, abort, make_response
-import os
-import hashlib
+from flask import Flask, request, jsonify
+
 from system.IPAROFactory import IPAROFactory
-from system.IPFS import IPFS
 from system.IPAROLinkFactory import IPAROLinkFactory
+from system.IPFS import IPFS
 from system.IPNS import IPNS
-from system.IPARO import IPARO
-from system.SnapshotsUtils import get_all_snapshots_for_url
-from warcio.archiveiterator import ArchiveIterator
-from warcio.exceptions import ArchiveLoadFailed
-from flask import Flask, request, jsonify, abort, make_response
-from urllib.parse import urlparse, urljoin
-import re 
-import requests  # add requests library
-from datetime import datetime
-import json
-import pathlib  # for cache file path
+from system.SnapshotsUtils import get_all_snapshots_for_url, retrieve_closest_iparos
 
 app = Flask(__name__)
 
@@ -23,17 +12,6 @@ ipfs = IPFS()
 ipns = IPNS()
 iparo_link_factory = IPAROLinkFactory()
 
-# Load or generate IPNS records cache
-cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
-if cache_path.exists():
-    with open(cache_path, 'r') as f:
-        ipns_records = json.load(f)
-    print(f"Loaded IPNS records from cache: {cache_path}")
-else:
-    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
-    with open(cache_path, 'w') as f:
-        json.dump(ipns_records, f)
-    print(f"Generated and saved IPNS records to cache: {cache_path}")
 
 @app.route("/")
 def index():
@@ -166,37 +144,33 @@ def get_snapshot_resource(cid, subpath):
 
 
 @app.route("/api/snapshots/date", methods=["GET"])
-def get_snapshots_by_date():
-    url = request.args.get("url")
-    date_str = request.args.get("date")
-    limit = request.args.get("limit", type=int, default=3)
-    if not url or not date_str:
-        return jsonify({"error": "Missing 'url' or 'date' parameter"}), 400
+def get_url_versions_by_date():
+    url: str = request.args.get("url")
+    date: str = request.args.get("date")
+
     try:
-        all_snaps = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)
-        # Parse target date (YYYY-MM-DD)
-        target = datetime.fromisoformat(date_str)
-        # Compute deltas
-        snaps = []
-        for cid, iparo in all_snaps.items():
-            # strip trailing 'Z' from ISO timestamps so fromisoformat accepts it
-            ts_str = iparo.timestamp.rstrip('Z')
-            ts = datetime.fromisoformat(ts_str)
-            delta = abs((ts - target).total_seconds())
-            snaps.append((delta, cid, iparo))
-        # Sort by closest
-        snaps.sort(key=lambda x: x[0])
-        # Take top limit
-        selected = snaps[:limit]
-        return jsonify([
-            { "cid": cid, "url": iparo.url, "timestamp": iparo.timestamp }
-            for _, cid, iparo in selected
-        ]), 200
+        limit: int = request.args.get("limit", 3, type=int)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    if not url or not date:
+        return jsonify({"error": "Missing 'url' or 'date'"}), 400
+
+    try:
+        snapshots = retrieve_closest_iparos(url, ipns, ipfs, date, ipns_records, limit)
+        return jsonify([{
+                "cid": cid,
+                "url": iparo.url,
+                "timestamp": iparo.timestamp,
+                "seq_num": iparo.seq_num,
+                "content_type": iparo.content_type
+            } for cid, iparo in snapshots.items()]), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Display loaded peer keys
-for url, peer_id in ipns_records.items():
-    print(f"{url} -> {peer_id}")
-# Start server on port 5002 (avoid macOS AirPlay port conflicts)
-app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False)
+
+if __name__ == "__main__":
+    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+    for url, peer_id in ipns_records.items():
+        print(f"{url} -> {peer_id}")
+
+    app.run(debug=True, use_reloader=False)

@@ -18,21 +18,34 @@ function NotFoundPage() {
       }}
     >
       <Container maxWidth="md">
-        <Paper
-          elevation={3}
-          sx={{
-            p: 4,
-            borderRadius: 2,
-            textAlign: 'center'
-          }}
-        >
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          borderRadius: 4,
+          textAlign: 'center',
+          background: 'linear-gradient(to bottom right, #f8f9fa, #ffffff)',
+          border: '1px solid rgba(0,0,0,0.1)'
+        }}
+      >
+          <Box sx={{ 
+            width: 120,
+            height: 120,
+            borderRadius: '50%',
+            backgroundColor: 'error.light',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mb: 3
+          }}>
           <ErrorOutlineIcon 
             color="error" 
             sx={{ 
-              fontSize: 80,
+              fontSize: 60,
               mb: 2
             }} 
           />
+          </Box>
           
           <Typography
             variant="h3"

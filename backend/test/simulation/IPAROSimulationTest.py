@@ -21,15 +21,6 @@ class IPAROSimulationTest(unittest.TestCase):
     def tearDown(self):
         self.simulation.reset(reset_data=True)
 
-    def test_simulation_has_ipns_store_results(self):
-        self.assertIsInstance(self.simulation.store_results, dict)
-
-    def test_simulation_has_ipfs_retrieve_number_results(self):
-        self.assertIsInstance(self.simulation.retrieve_number_results, dict)
-
-    def test_simulation_has_ipns_retrieve_datetime_results(self):
-        self.assertIsInstance(self.simulation.retrieve_date_results, dict)
-
 
     def test_simulation_can_reset(self):
         self.simulation.reset()

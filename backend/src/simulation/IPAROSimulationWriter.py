@@ -105,19 +105,19 @@ class IPAROSimulationWriter:
         print("IPNS Counts:")
         print(ipns.get_counts())
 
-    # def as_graph(self):
-    #     """
-    #     Creates a DiGraph object out of the current nodes in the IPFS.
-    #     """
-    #     # Do comprehensive
-    #     nx_graph = nx.DiGraph()
-    #     for iparo in ipfs.get_all_iparos(self.url):
-    #         curr_num = iparo.seq_num
-    #         nx_graph.add_node(curr_num)
-    #         for link in iparo.linked_iparos:
-    #             nx_graph.add_edge(curr_num, link.seq_num)
-    #
-    #     return nx_graph
+    def as_graph(self):
+        """
+        Creates a DiGraph object out of the current nodes in the IPFS.
+        """
+        # Do comprehensive
+        nx_graph = nx.DiGraph()
+        for iparo in ipfs.get_all_iparos(self.url):
+            curr_num = iparo.seq_num
+            nx_graph.add_node(curr_num)
+            for link in iparo.linked_iparos:
+                nx_graph.add_edge(curr_num, link.seq_num)
+
+        return nx_graph
 
     def reset(self, reset_data=False):
         """Resets the counts (and optionally, the data) from the IPNS and IPFS."""
