@@ -37,6 +37,12 @@ export default function SnapshotViewerPage() {
       year:'numeric',month:'long',day:'numeric',
       hour:'2-digit',minute:'2-digit'
     });
+  const formatUTC = (s) =>
+    new Date(s).toLocaleString(undefined, {
+      timeZone: 'UTC',
+      year:'numeric',month:'long',day:'numeric',
+      hour:'2-digit',minute:'2-digit'
+    });
 
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
   if (error)   return <Alert severity="error">{error}</Alert>;
@@ -58,8 +64,12 @@ export default function SnapshotViewerPage() {
               </Typography>
               <Box sx={{ display:'flex', alignItems:'center' }}>
                 <CalendarTodayIcon sx={{ mr:1 }} />
-                <Typography>{formatDate(snapshot.timestamp)}</Typography>
+                <Typography>{formatDate(snapshot.timestamp)} (Local)</Typography>
               </Box>
+              <Typography variant="body2" color="text.secondary">
+                UTC: {formatUTC(snapshot.timestamp)}
+              </Typography>
+              <Divider sx={{ my:1 }} />
               <Typography variant="body2" sx={{ wordBreak:'break-all' }}>
                 {snapshot.url}
               </Typography>
@@ -78,10 +88,6 @@ export default function SnapshotViewerPage() {
             Back to Results
           </Button>
         </Paper>
-
-        <Alert severity="info" sx={{ mb:3 }}>
-          In production, Reconstructive will render the real archived assets.
-        </Alert>
 
         <Paper sx={{ borderRadius:2, overflow:'hidden', height:'70vh', minHeight:400 }}>
           <Box sx={{ height:'100%', position:'relative' }}>

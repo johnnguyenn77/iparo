@@ -14,6 +14,8 @@ from urllib.parse import urlparse, urljoin
 import re 
 import requests  # add requests library
 from datetime import datetime
+import json
+import pathlib  # for cache file path
 
 app = Flask(__name__)
 
@@ -26,7 +28,7 @@ def index():
     return "Welcome to the IPARO Web Server"
 
 
-@app.route("/archive", methods=["POST"])
+@app.route("/archive", methods=["POST"]) # type: ignore
 def archive():
     pass
 
@@ -165,7 +167,9 @@ def get_snapshots_by_date():
         # Compute deltas
         snaps = []
         for cid, iparo in all_snaps.items():
-            ts = datetime.fromisoformat(iparo.timestamp)
+            # strip trailing 'Z' from ISO timestamps so fromisoformat accepts it
+            ts_str = iparo.timestamp.rstrip('Z')
+            ts = datetime.fromisoformat(ts_str)
             delta = abs((ts - target).total_seconds())
             snaps.append((delta, cid, iparo))
         # Sort by closest
@@ -180,8 +184,21 @@ def get_snapshots_by_date():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+    # Path to cache file for IPNS records
+    cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
+    if cache_path.exists():
+        # Load previously generated records
+        with open(cache_path, 'r') as f:
+            ipns_records = json.load(f)
+        print(f"Loaded IPNS records from cache: {cache_path}")
+    else:
+        # First run: process WARCs and cache the result
+        ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+        with open(cache_path, 'w') as f:
+            json.dump(ipns_records, f)
+        print(f"Generated and saved IPNS records to cache: {cache_path}")
+    # Display loaded peer keys
     for url, peer_id in ipns_records.items():
         print(f"{url} -> {peer_id}")
-    # Run on port 5002 to avoid conflicts with macOS AirPlay ports
+    # Start server on port 5002 (avoid macOS AirPlay port conflicts)
     app.run(host='0.0.0.0', port=5002, debug=True, use_reloader=False)
