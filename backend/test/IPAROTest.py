@@ -1,6 +1,6 @@
 import unittest
 
-from IPAROTestConstants import *
+from test.IPAROTestConstants import *
 
 
 class IPAROObjectTest(unittest.TestCase):

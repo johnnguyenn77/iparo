@@ -1,6 +1,6 @@
 import unittest
 
-from IPAROTestConstants import *
+from test.IPAROTestConstants import *
 from simulation.IPAROException import IPARONotFoundException
 from simulation.IPNS import ipns
 
