@@ -64,6 +64,21 @@ The frontend provides an interactive implementation of the IPARO web archival sy
 
 After a moment, the frontend server will be running on `localhost:3000`.
 
+### Testing
+
+1. **Navigate to Root Directory**
+
+    ```bash
+    cd iparo
+    ```
+
+2. **Install Dependecies and Run Test**
+
+    ```
+    pip install pytest
+    PYTHONPATH=backend/src pytest backend/test/SysIPAROTest.py
+    ```
+
 ## Contributors
 
 Professor Mat Kelly [@machawk1](https://github.com/machawk1)\
