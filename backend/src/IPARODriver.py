@@ -3,11 +3,11 @@ from flask_cors import CORS
 from datetime import datetime
 
 # Import IPARO components
-from IPFS import ipfs, Mode
-from IPNS import ipns
+from IPFS import ipfs, Mode # type: ignore
+from IPNS import ipns # type: ignore
 from IPARO import IPARO
 from IPAROFactory import IPAROFactory
-from IPARODateConverter import IPARODateConverter
+from IPARODateConverter import IPARODateConverter # type: ignore
 
 app = Flask(__name__)
 
@@ -79,7 +79,7 @@ def analyze_url():
     if request.method == 'OPTIONS':
         return jsonify({})
     data = request.json
-    url = data.get('url')
+    url = data.get('url') # type: ignore
     
     if not url:
         return jsonify({"error": "URL is required"}), 400
@@ -88,7 +88,7 @@ def analyze_url():
         # Create a new IPARO node for the URL
         # In a real implementation, you would fetch the content from the URL
         content = f"Content from {url} at {datetime.now().isoformat()}".encode('utf-8')
-        iparo = IPAROFactory.create_node(url, content)
+        iparo = IPAROFactory.create_node(url, content) # type: ignore
         
         # Store in IPFS
         cid = ipfs.store(iparo)
@@ -102,7 +102,7 @@ def analyze_url():
         # Return the node data
         return jsonify({
             "success": True,
-            "data": iparo_to_dict(stored_iparo),
+            "data": iparo_to_dict(stored_iparo), # type: ignore
             "cid": cid
         })
     except Exception as e:
@@ -137,7 +137,7 @@ def get_nodes():
             if iparo:
                 nodes.append({
                     "cid": cid,
-                    "data": iparo_to_dict(iparo)
+                    "data": iparo_to_dict(iparo) # type: ignore
                 })
                 
                 # Process linked nodes
@@ -174,7 +174,7 @@ def get_graph():
             if not iparo:
                 continue
                 
-            node_data = iparo_to_dict(iparo)
+            node_data = iparo_to_dict(iparo) # type: ignore
             node_id = f"node_{i}"
             nodes.append({
                 "id": node_id,
