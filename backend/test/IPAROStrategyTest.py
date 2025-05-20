@@ -3,7 +3,7 @@ from math import ceil, log2
 import unittest
 from itertools import takewhile, count
 
-from IPAROTestHelpers import *
+from test.IPAROTestHelpers import *
 from simulation.IPAROException import IPARONotFoundException
 from simulation.LinkingStrategy import *
 from simulation.IPNS import ipns
