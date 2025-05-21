@@ -77,7 +77,7 @@ const getDesignTokens = (mode) => ({
       styleOverrides: {
         root: {
           backgroundImage: mode === 'light' 
-            ? 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
+            ? 'linear-gradient(135deg, #001451 0%, #2a5298 100%)'
             : 'linear-gradient(135deg, #121212 0%, #1e1e1e 100%)',
         },
       },
