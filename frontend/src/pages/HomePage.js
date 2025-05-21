@@ -1,7 +1,6 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar';
 import { Box, Typography, Button, Paper, Container, Grid, Divider } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css';
@@ -21,16 +20,38 @@ function HomePage() {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '100%'
+        minHeight: '100vh',
+        flexDirection: 'column',
+        pt: 0,
+        mt: -16,
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{ py: 0 }}>
+        <Box sx={{ 
+          textAlign: 'center',
+          mb: 2,
+          mx: 'auto',
+          maxWidth: { xs: '250px', sm: '300px', md: '400px' },
+          '& img': {
+            width: '100%',
+            height: 'auto',
+            filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.1))'
+          }
+        }}>
+          <img 
+            src="https://raw.githubusercontent.com/johnnguyenn77/iparo/252346fd632d2a5d0e39b4c7a133b81acaf2a8ff/frontend/public/assets/IPARO_logo_color.png" 
+            alt="IPARO Logo"
+            loading="lazy"
+          />
+        </Box>
+
         <Paper
           elevation={3}
           sx={{
             p: 4,
             borderRadius: 2,
-            textAlign: 'center'
+            textAlign: 'center',
+            mt: -2,
           }}
         >
           <Typography
