@@ -143,7 +143,6 @@ export default function SnapshotViewerPage() {
                   backgroundColor: 'white',
                   colorScheme: 'light'
                 }}
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               />
             ) : (
               <Box sx={{ 
