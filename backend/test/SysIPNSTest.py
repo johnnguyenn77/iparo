@@ -5,7 +5,7 @@ import hashlib
 
 from system.IPNS import IPNS
 
-class TestIPNS(unittest.TestCase):
+class IPNSTest(unittest.TestCase):
 
     def setUp(self):
         self.ipns = IPNS()
