@@ -34,7 +34,7 @@ class IPFSTest(unittest.TestCase):
         # Create a mock response for the store method
         self.mock_store_response = {"Hash": "test_cid"}
     
-    def test_store(self):
+    def test_ipfs_store(self):
         """Test that store correctly serializes and posts to IPFS"""
         # replace requests.post with a mock to intercept actual network calls
         with patch('requests.post') as mock_post:
@@ -49,7 +49,7 @@ class IPFSTest(unittest.TestCase):
             # check the cid is matched with the mock data
             self.assertEqual(cid, "test_cid_123")
     
-    def test_retrieve(self):
+    def test_ipfs_retrieve(self):
         """Test that retrieve correctly deserializes an IPARO object"""
         with patch('requests.post') as mock_post:
             # Create pickled IPARO data
@@ -63,7 +63,7 @@ class IPFSTest(unittest.TestCase):
             self.assertEqual(retrieved_iparo.url, iparo1.url)
             self.assertEqual(retrieved_iparo.timestamp, iparo1.timestamp)
     
-    def test_retrieve_error(self):
+    def test_ipfs_retrieve_error(self):
         """Test error handling when retrieving fails"""
         with patch('requests.post') as mock_post:
             mock_post.return_value.status_code = 404
@@ -71,7 +71,7 @@ class IPFSTest(unittest.TestCase):
             with self.assertRaises(Exception):
                 self.ipfs.retrieve("nonexistent_cid")
     
-    def test_retrieve_by_number_valid(self):
+    def test_ipfs_retrieve_by_number_valid(self):
         """Test retrieving an IPARO by valid sequence number"""
         # Setup chain of IPAROs
         iparo3 = MagicMock(spec=IPARO)
