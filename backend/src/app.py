@@ -1,3 +1,6 @@
+import json
+import pathlib
+
 from flask import Flask, request, jsonify
 
 from system.IPAROFactory import IPAROFactory
@@ -135,7 +138,17 @@ def get_url_versions_by_date():
 
 
 if __name__ == "__main__":
-    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+    # Load or generate IPNS records cache
+    cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
+    if cache_path.exists():
+        with open(cache_path, 'r') as f:
+            ipns_records = json.load(f)
+        print(f"Loaded IPNS records from cache: {cache_path}")
+    else:
+        ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
+        with open(cache_path, 'w') as f:
+            json.dump(ipns_records, f)
+        print(f"Generated and saved IPNS records to cache: {cache_path}")
     for url, peer_id in ipns_records.items():
         print(f"{url} -> {peer_id}")
 
