@@ -3,7 +3,7 @@ import json
 import pathlib
 import requests
 from flask import Flask, request, jsonify, make_response
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from datetime import datetime, timezone
 
 
@@ -31,6 +31,48 @@ else:
         json.dump(ipns_records, f)
     print(f"Generated and saved IPNS records to cache: {cache_path}")
 
+from urllib.parse import urlparse, urlunparse
+
+def normalize_url(url: str) -> str:
+    """
+    Normalize URLs to exactly match the formats in ipns_records
+    For example:
+    - http://Memento.US/ -> http://memento.us/
+    - memento.us -> http://memento.us/
+    - www.memento.us -> http://memento.us/
+    """
+    if not url.startswith(('http://', 'https://')):
+        url = 'http://' + url
+    
+    parsed = urlparse(url)
+    
+    scheme = 'http'
+    
+    netloc = parsed.netloc.lower()
+    if netloc.startswith('www.'):
+        netloc = netloc[4:]
+    
+    path = parsed.path
+    if not path:
+        path = '/'
+    elif not path.startswith('/'):
+        path = '/' + path
+    elif path == '/':
+        path = '/'
+    elif path.endswith('/'):
+        path = path[:-1]
+    
+    normalized = urlunparse((
+        scheme,
+        netloc,
+        path,
+        '',
+        '',
+        ''  
+    ))
+    
+    return normalized
+
 @app.route("/")
 def index():
     return "Welcome to the IPARO Web Server"
@@ -47,7 +89,8 @@ def get_latest_snapshot():
     if not url:
         return jsonify({"error": "Missing 'url'"}), 400
     
-    peer_id = ipns_records.get(url)
+    normalized_url = normalize_url(url)
+    peer_id = ipns_records.get(normalized_url)
     
     if not peer_id:
         return jsonify({"error": "This website has never been archived"}), 404
@@ -71,7 +114,8 @@ def get_all_snapshots():
         return jsonify({"error": "Missing 'url'"}), 400
 
     try:
-        snapshots = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)
+        normalized_url = normalize_url(url)
+        snapshots = get_all_snapshots_for_url(normalized_url, ipns, ipfs, ipns_records)
         return jsonify([
             {
                 "cid": cid,
@@ -91,7 +135,8 @@ def get_url_version_count():
     if not url:
         return jsonify({"error": "Missing 'url' query parameter"}), 400
     
-    peer_id = ipns_records.get(url)
+    normalized_url = normalize_url(url)
+    peer_id = ipns_records.get(normalized_url)
     
     if not peer_id:
         return jsonify({"error": "This website has never been archived"}), 404
@@ -175,7 +220,8 @@ def get_snapshots_by_date():
         return jsonify({"error": "Missing 'url' or 'date' parameter"}), 400
 
     try:
-        all_snaps = get_all_snapshots_for_url(url, ipns, ipfs, ipns_records)
+        normalized_url = normalize_url(url)
+        all_snaps = get_all_snapshots_for_url(normalized_url, ipns, ipfs, ipns_records)
         target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
 
         snaps = []
