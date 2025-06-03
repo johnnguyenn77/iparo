@@ -10,3 +10,4 @@ __pycache__/
 /.idea/
 .ipynb_checkpoints/
 backend/.idea/workspace.xml
+backend/ipns_records.json
