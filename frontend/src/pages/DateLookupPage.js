@@ -115,7 +115,7 @@ function DateLookupPage() {
                 shrink: true,
               }}
               error={!!dateError}
-              helperText={dateError || "Format: YYYY-MM-DD"}
+              helperText={dateError || "Format: MM/DD/YYYY"}
               sx={{ mb: 3 }}
             />
             
