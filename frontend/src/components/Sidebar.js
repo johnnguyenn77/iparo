@@ -12,9 +12,8 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
-import HistoryIcon from '@mui/icons-material/History';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AddLinkIcon from '@mui/icons-material/AddLink';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 
 const drawerWidth = 240;
@@ -45,27 +44,11 @@ function Sidebar() {
             </ListItemButton>
           </ListItem>
           
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/submit-new-url">
-              <ListItemIcon>
-                <AddLinkIcon />
-              </ListItemIcon>
-              <ListItemText primary="Submit URL" />
-            </ListItemButton>
-          </ListItem>
         </List>
         
         <Divider />
         
         <List>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/history">
-              <ListItemIcon>
-                <HistoryIcon />
-              </ListItemIcon>
-              <ListItemText primary="All Versions" />
-            </ListItemButton>
-          </ListItem>
           
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/date-lookup">
@@ -73,6 +56,15 @@ function Sidebar() {
                 <CalendarTodayIcon />
               </ListItemIcon>
               <ListItemText primary="Specific Version Lookup" />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/docs">
+              <ListItemIcon>
+                <DescriptionIcon />
+              </ListItemIcon>
+              <ListItemText primary="Documentation" />
             </ListItemButton>
           </ListItem>
         </List>
