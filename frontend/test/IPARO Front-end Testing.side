@@ -721,6 +721,1144 @@
       "targets": [],
       "value": "http://localhost:3000/view/Qmeb9hsqB9dwhVNjDMtPdj2pMGbMzuoygd49WpqD9pNDXe"
     }]
+  }, {
+    "id": "763efe00-2f06-4160-a478-100700d48d13",
+    "name": "T3.3.4.1: Clicking \"Home\" from Date Lookup Page redirects to the Home Page",
+    "commands": [{
+      "id": "a1767d83-9b72-41c6-b169-1f602e879827",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ba493524-d249-442e-be66-a8e92797ec31",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d16a0abe-a2bc-488e-ae95-f1b2c5869d24",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e87207e8-8ba6-4c84-924c-ca9c35afef65",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "https://example.com"
+    }, {
+      "id": "930f65ca-8119-48f2-882c-38ddb4dba244",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2016-09-04"
+    }, {
+      "id": "ad496f90-d47e-4d44-b4ff-e1744ffa8758",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c2165249-e82d-4341-ae73-53d96d314ad0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiTypography-inherit",
+      "targets": [
+        ["css=.MuiTypography-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/nav/ol/li/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/')])[7]", "xpath:href"],
+        ["xpath=//ol/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eab0e01c-bdfc-4f5d-9290-69ecadbd03fc",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "a090abe8-2e02-4854-b238-5c77d62fbbad",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/"
+    }]
+  }, {
+    "id": "e7806e03-3a14-43d8-a287-bb5b71a3a823",
+    "name": "T3.3.4.2: Clicking \"Back to Date Lookup\" redirects to the Date Lookup Page",
+    "commands": [{
+      "id": "ebf5c131-e97c-41e5-9feb-e926000db272",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6e763596-2f5d-4401-8870-93c815746af3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f3fc1fd0-c700-478c-8ff4-ae2ed22b09b0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9cf0c077-3e95-48e1-a6a8-d0a65ac29c66",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "https://example.com"
+    }, {
+      "id": "ec297ab9-a8bf-4b44-afaf-594ccf1a6922",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2016-09-04"
+    }, {
+      "id": "51424dc5-08d8-4dbe-9d34-c9339ff2b89e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d18e5e9a-35e5-4c97-8bb1-8d33c6a72aae",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a/div[2]/span", "xpath:idRelative"],
+        ["xpath=//ul[2]/li/a/div[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d7c41e48-ec1a-40df-84ed-756bcbd74d71",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "fec9faf4-8083-4dd6-8607-cb44593ac464",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/date-lookup"
+    }]
+  }, {
+    "id": "ab23acd4-ba7a-4267-84ea-f45d61943689",
+    "name": "T3.3.4.3: Clicking a Snapshot on Date Lookup Page redirects to the Snapshot Viewer Page",
+    "commands": [{
+      "id": "30167f75-8e54-48ee-ac0e-1a57621f034e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "175a27a3-9642-47b4-885b-65eb4704a66d",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "56eeb043-dd99-40a7-91f1-7b23fc85257d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiPaper-elevation3",
+      "targets": [
+        ["css=.MuiPaper-elevation3", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//main/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8748fe37-b182-4f09-bd31-7210c034431e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2cd7953f-24e7-43e6-afef-309929f4410a",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "https://example.com"
+    }, {
+      "id": "800655d0-9454-4232-8234-1d9a2feeaae4",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2003-09-09"
+    }, {
+      "id": "f19346bb-f700-4394-8486-c24cf2e11cff",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3f74a202-e845-467c-b1ce-b2fe3a03b6e0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiListItem-root:nth-child(1) .MuiBox-root",
+      "targets": [
+        ["css=.MuiListItem-root:nth-child(1) .MuiBox-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/ul/li/a/div/p/div", "xpath:idRelative"],
+        ["xpath=//p/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a46eacec-358b-4372-a5ac-71383947418b",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "d9fc41de-b27a-4b16-87c8-5cef86236685",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/view/QmQM5mgUxrMZyB8KEvc6uCT8vY8fYTJ84dqfnNwgWnuiC9"
+    }]
+  }, {
+    "id": "2b4a9b0a-913b-4669-a4c8-19734367fe3d",
+    "name": "T3.3.5.5: Clicking “Back to Results” redirects to Search Results Page",
+    "commands": [{
+      "id": "a41c94b0-1b91-419e-a0d8-8d3165c15a55",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d2598d07-b9f6-4e91-ac0e-1f98c67a17d1",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f19b1709-aa83-4357-b0cc-74bdd8a4d971",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiPaper-elevation3",
+      "targets": [
+        ["css=.MuiPaper-elevation3", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//main/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c1aeb408-2cd8-4a75-ad4d-ffdaa3ca1231",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e48bcac4-5792-40a3-916b-47a7aadd0e8a",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "http://memento.us/"
+    }, {
+      "id": "da638028-94cc-4ed7-a233-ca108369fa2c",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2003-09-09"
+    }, {
+      "id": "e423395e-199f-43ac-ad16-9769f4c21937",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "df30db73-ebf1-4d0f-8b82-4b102a0f6ce8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiListItem-root:nth-child(1) .MuiBox-root",
+      "targets": [
+        ["css=.MuiListItem-root:nth-child(1) .MuiBox-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/ul/li/a/div/p/div", "xpath:idRelative"],
+        ["xpath=//p/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e92ff2c-6cb8-489b-ae7d-b7ac331755ef",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Back to Results",
+      "targets": [
+        ["linkText=Back to Results", "linkText"],
+        ["css=.MuiButtonBase-root:nth-child(4)", "css:finder"],
+        ["xpath=//a[contains(text(),'Back to Results')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/view/QmQM5mgUxrMZyB8KEvc6uCT8vY8fYTJ84dqfnNwgWnuiC9')]", "xpath:href"],
+        ["xpath=//main/div/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Back to Results')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3f433d8d-d86d-4f25-bc20-1b0a4959786f",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "4ecf68fe-8b50-44d0-8534-77eee4df988a",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/date-results?url=http%3A%2F%2Fmemento.us%2F&date=2003-09-09"
+    }]
+  }, {
+    "id": "15ec406f-2213-4648-aa2e-7bd855d6a7ef",
+    "name": "T3.3.5.2: Clicking “All Versions” redirects to Search Results Page",
+    "commands": [{
+      "id": "bf78703c-4d97-4179-89a3-d279c880d1b1",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "de7e9018-747e-4d0e-afbc-91b0dc02e429",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ecee6e60-80f3-4698-ba2e-52a03d19b69e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiPaper-elevation3",
+      "targets": [
+        ["css=.MuiPaper-elevation3", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//main/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d9df7f7f-cedc-4a72-9a8d-16facdfe67f4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3d4e671c-aab5-4dc3-acef-82ed4d3b93e5",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "http://memento.us/"
+    }, {
+      "id": "45a8a80b-05d5-40d4-9034-ef7ac3baf9f0",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2003-09-09"
+    }, {
+      "id": "f4be36d6-e1e5-44a7-b9e1-a510c3cfb9ed",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "882f47a4-518e-48f6-b786-0bde25899cc7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiListItem-root:nth-child(1) .MuiBox-root",
+      "targets": [
+        ["css=.MuiListItem-root:nth-child(1) .MuiBox-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/ul/li/a/div/p/div", "xpath:idRelative"],
+        ["xpath=//p/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "79aa75e3-7502-4402-85ec-c11b385a06d9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=All Versions",
+      "targets": [
+        ["linkText=All Versions", "linkText"],
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'All Versions')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/results?url=https%3A%2F%2Fexample.com')]", "xpath:href"],
+        ["xpath=//div/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'All Versions')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8f1746a0-60af-42b3-ae2b-cb5fcee429d7",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "062d307f-5b28-44de-b2f0-1c15afde888d",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/results?url=http%3A%2F%2Fmemento.us%2F"
+    }]
+  }, {
+    "id": "f3f456b9-bea1-4f5b-96fe-e9cd36838731",
+    "name": "T3.3.5.3: Clicking “Visit current live page” redirects to the current live page",
+    "commands": [{
+      "id": "2dcb36fc-050a-4421-9584-01aa5e976505",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ba225207-d782-42ed-af1d-383800680548",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cf3f97da-e329-42ce-b216-10ee0ea8773c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiPaper-elevation3",
+      "targets": [
+        ["css=.MuiPaper-elevation3", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//main/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "52d0043f-ee32-43c6-8303-b32fcf587343",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2266012f-4f3c-4532-9d55-2feffc87565b",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "http://matkelly.com/frogsLeft"
+    }, {
+      "id": "4fba54aa-f3ac-4490-a21d-1095bb633841",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2003-09-09"
+    }, {
+      "id": "bec56b3a-59b2-40ef-8f88-df971a453137",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b1211bdb-a8cd-4033-a787-35e240a44089",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiListItem-root:nth-child(1) .MuiBox-root",
+      "targets": [
+        ["css=.MuiListItem-root:nth-child(1) .MuiBox-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/ul/li/a/div/p/div", "xpath:idRelative"],
+        ["xpath=//p/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "964d09b4-72c4-4379-ab78-aa75cf2214be",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=All Versions",
+      "targets": [
+        ["linkText=All Versions", "linkText"],
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'All Versions')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/results?url=http%3A%2F%2Fmatkelly.com%2FfrogsLeft')]", "xpath:href"],
+        ["xpath=//div/div/div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'All Versions')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "83a86a5d-0bb2-4eb4-98a2-138d1e2cf5e1",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "ddc7a348-dffa-411c-8985-c107be566a47",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path", "css:finder"]
+      ],
+      "value": "",
+      "opensWindow": true,
+      "windowHandleName": "win3909",
+      "windowTimeout": 2000
+    }, {
+      "id": "75268ea8-092a-4ddc-9103-ae8035cbe8c4",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(2) > .MuiSvgIcon-root > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "5976cef5-cbc4-492b-ac84-a6d8e40ae0e1",
+      "comment": "",
+      "command": "selectWindow",
+      "target": "handle=${win3909}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "35e62d66-2e49-4f69-80d8-176d03e515c3",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "697451d2-6cf0-45ba-ab2b-16ce88ddb329",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "https://matkelly.com/frogsLeft"
+    }]
+  }, {
+    "id": "5e8e39d2-f494-459a-8d0d-037a520fca5f",
+    "name": "T3.3.5.4: Clicking “Share this archive” copies the link to the clipboard",
+    "commands": [{
+      "id": "ba1fcb6f-80fd-4303-acc9-60c5c29e3a1a",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2e5cce3a-5d8c-4575-a53b-be5e7c56fe8d",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7c976612-8d79-4efa-b131-85a813fc1c74",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiPaper-elevation3",
+      "targets": [
+        ["css=.MuiPaper-elevation3", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//main/div/div/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba46eb6f-9858-47a4-8a7e-b7298af846f2",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Search by specific date",
+      "targets": [
+        ["linkText=Search by specific date", "linkText"],
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//a[contains(text(),'Search by specific date')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div[2]/div[3]/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[3]", "xpath:href"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Search by specific date')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e15bea27-7fd0-4a9f-bf1c-c01672a7e2e6",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r5:",
+      "targets": [
+        ["id=:r5:", "id"],
+        ["css=#\\3Ar5\\3A", "css:finder"],
+        ["xpath=//input[@id=':r5:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "http://memento.us/"
+    }, {
+      "id": "04709292-2abf-43e7-8fd4-8f1799e5d556",
+      "comment": "",
+      "command": "type",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//input[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "2003-09-09"
+    }, {
+      "id": "d0da915c-93e9-4016-882e-c98fe02d7104",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-contained",
+      "targets": [
+        ["css=.MuiButton-contained", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Find Archived Version')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "149e7c6f-e110-409d-83a0-99c84b0e4f3a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiListItem-root:nth-child(1) .MuiBox-root",
+      "targets": [
+        ["css=.MuiListItem-root:nth-child(1) .MuiBox-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/ul/li/a/div/p/div", "xpath:idRelative"],
+        ["xpath=//p/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e9baa5e-64f5-4e66-bd67-66454a39a7c5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-sizeMedium:nth-child(3) > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-sizeMedium:nth-child(3) > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "03408e10-715f-489e-9d92-1e683a893c4e",
+    "name": "T3.3.6.1: Clicking \"Back to Home\" on the Snapshot Not Found Page redirects to the Home Page",
+    "commands": [{
+      "id": "c4addb2e-2c6b-40a0-ba36-0463a42868eb",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f4247e7b-8c96-4459-9e49-f73d6973ce04",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1634x994",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "eb482dff-7e42-4422-b4e8-159bf07101d5",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=URL Search",
+      "targets": [
+        ["linkText=URL Search", "linkText"],
+        ["css=.MuiButton-text:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'URL Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/')])[2]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'URL Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c09aac4a-4dee-4321-bc46-1cfc2b50e4b8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiInputBase-input",
+      "targets": [
+        ["css=.MuiInputBase-input", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "23b05dd2-a93b-4b40-99c6-d1ef1f1af857",
+      "comment": "",
+      "command": "type",
+      "target": "css=.MuiInputBase-input",
+      "targets": [
+        ["css=.MuiInputBase-input", "css:finder"],
+        ["xpath=//input[@value='http://fakewebsite.com']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/div/div/form/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "http://fakewebsite.com"
+    }, {
+      "id": "ee943aa4-6056-48c9-8e76-aee92aa4e2f9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-colorPrimary > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-colorPrimary > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "521c77d0-5e4a-4859-b570-f91e89131876",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.css-lcmie7-MuiTypography-root",
+      "targets": [],
+      "value": "Failed to load snapshot data."
+    }, {
+      "id": "eb766c1e-c84f-4064-a65e-27b92e04afb0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiTypography-inherit",
+      "targets": [
+        ["css=.MuiTypography-inherit", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/div/main/div/div/nav/ol/li/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/')])[7]", "xpath:href"],
+        ["xpath=//ol/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "41f61bf5-37aa-4173-93ec-a63567dc4d68",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "bf817cb3-2439-41bd-b090-f5a2d5e3ccfd",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/"
+    }]
+  }, {
+    "id": "2e101d24-de53-43eb-a0a4-b113561c31e6",
+    "name": "T3.3.7.1: Clicking “URL Search” redirects to the Home Page",
+    "commands": [{
+      "id": "4bee5aaa-ba1f-416d-89c4-397949f6726e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5b9b0ee1-bfb3-421a-9196-529051225799",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d066969b-ca80-4d0a-be6a-fa80db8bbaeb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButtonBase-root:nth-child(3) > .MuiButton-icon > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(3) > .MuiButton-icon > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "0aea4e64-4a97-4b85-8ccc-224afea9d80f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Specific Version Lookup",
+      "targets": [
+        ["linkText=Specific Version Lookup", "linkText"],
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) > .MuiButtonBase-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[2]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7447d19c-4e6f-48e8-a55c-cebda63850a5",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Specific Version Lookup",
+      "targets": [
+        ["linkText=Specific Version Lookup", "linkText"],
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) > .MuiButtonBase-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/date-lookup')])[2]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f3dcfc5e-2d0b-4b67-b2f7-0052b60041fc",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a/div[2]/span", "xpath:idRelative"],
+        ["xpath=//ul[2]/li/a/div[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2f5688b-8a05-4313-a6d8-09d18aa73c12",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a/div[2]/span", "xpath:idRelative"],
+        ["xpath=//ul[2]/li/a/div[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "712c4f2b-c4ec-496d-8a5e-aa6e815f5bae",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(3) > .MuiListItem-root:nth-child(1) .MuiTypography-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div/div/div[2]/ul[2]/li/a/div[2]/span", "xpath:idRelative"],
+        ["xpath=//ul[2]/li/a/div[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Specific Version Lookup')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "75ec7d00-d624-41b7-afa6-9dbeb122dd5f",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=URL Search",
+      "targets": [
+        ["linkText=URL Search", "linkText"],
+        ["css=.MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'URL Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/')])[2]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'URL Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7a9a2d41-4445-4756-9074-78c90bf19eeb",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "14ee9191-dad1-41bc-882d-fd85e4c161cf",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/"
+    }]
+  }, {
+    "id": "6ea3bf23-01ca-4a2a-b92a-4ebe51d0cfa5",
+    "name": "T3.3.7.2: Clicking “Date Search” redirects to the Date Lookup Page",
+    "commands": [{
+      "id": "a0c2ae29-1bf4-4b5f-ac53-aace0b6814f6",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4ea5a7a1-c75c-4e0c-a42d-18d05e8ed1cd",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1364x913",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a4752632-b732-4769-ae80-7c52ea26acec",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=URL Search",
+      "targets": [
+        ["linkText=URL Search", "linkText"],
+        ["css=.MuiButtonBase-root:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'URL Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/')])[2]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'URL Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a039d579-8578-4b23-9140-806febc4a331",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiIconButton-colorInherit",
+      "targets": [
+        ["css=.MuiIconButton-colorInherit", "css:finder"],
+        ["xpath=//button[@type='button']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b26ba49c-f0be-4a2d-9403-6d20a9fd5855",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Date Search",
+      "targets": [
+        ["linkText=Date Search", "linkText"],
+        ["css=.MuiButton-root:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Date Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/date-lookup')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Date Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "09925714-ee0b-4cb1-bbd0-84958b27d8a1",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Date Search",
+      "targets": [
+        ["linkText=Date Search", "linkText"],
+        ["css=.MuiButton-root:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Date Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/date-lookup')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Date Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b7ab85fd-e34d-4fcd-b739-75e24578f281",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Date Search",
+      "targets": [
+        ["linkText=Date Search", "linkText"],
+        ["css=.MuiButton-text:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Date Search')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/header/div/div[2]/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/date-lookup')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Date Search')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "82c51328-fbc0-4281-bafb-d87b08b7d1ca",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return window.location.href",
+      "targets": [],
+      "value": "pageurl"
+    }, {
+      "id": "2fdb8301-f34e-451c-a94d-9f74e5d9f2bc",
+      "comment": "",
+      "command": "assert",
+      "target": "pageurl",
+      "targets": [],
+      "value": "http://localhost:3000/date-lookup"
+    }]
   }],
   "suites": [{
     "id": "ffee1248-0fc5-4af1-874a-4bdcbde7deba",
