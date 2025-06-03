@@ -17,13 +17,11 @@ class IPAROSimulationWriter:
 
     def __init__(self, linking_strategy: LinkingStrategy, version_density: VersionDensity,
                  version_volume: VersionVolume, url: str = "example.com"):
+        self.links_generated = []
         self.linking_strategy = linking_strategy
         self.version_density = version_density
         self.version_volume = version_volume
         self.url = url
-
-        # Debug variables for testing.
-        self.num_links = 0
 
     def run(self, k: int, verbose=True):
         """
@@ -43,30 +41,35 @@ class IPAROSimulationWriter:
             try:
                 first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(self.url)
                 node.linked_iparos = self.linking_strategy.get_candidate_nodes(latest_link, latest_node, first_link)
-                self.num_links += len(node.linked_iparos)
             except IPARONotFoundException:
                 node.linked_iparos = set()
             cid, _ = ipfs.store(node)
-            if i == 0:
+            # Columns: ["strategy", "volume", "iparo_count", "density", "num_links_generated"]
+            if i > 0:
+                row = [str(x) for x in [self.linking_strategy, self.version_volume, i + 1, self.version_density,
+                                        len(node.linked_iparos)]]
+
+                # "a+" means append to the file.
+                with open("store.csv", "a+") as file:
+                    file.write("\t".join(row) + "\n")
+            else:
                 first_node = node
             ipns.update(self.url, cid)
 
-        # Columns: ["strategy", "volume", "density", "num_links", "store_ipns_get",
+        # Columns: ["strategy", "volume", "density", "store_ipns_get",
         #           "store_ipns_update", "store_ipfs_retrieve", "store_ipfs_store"]
         row = [str(x) for x in [self.linking_strategy, self.version_volume, self.version_density,
-                                self.num_links, ipns.get_count, ipns.update_count,
-                                ipfs.retrieve_count, ipfs.store_count]]
+                                ipns.get_count, ipns.update_count, ipfs.retrieve_count, ipfs.store_count]]
 
         # "a+" means append to the file.
-        with open("results_store.csv", "a+") as file:
+        with open("store_opcounts.csv", "a+") as file:
             file.write("\t".join(row) + "\n")
 
         if verbose:
             IPAROSimulationWriter.print_counts("Store")
         print("Retrieve")
-
-        # Columns: ["strategy_name", "type", "volume", "density", "ipfs_retrieve_count"]
-        with open("results_retrieve.csv", "a+") as file:
+        # Columns: ["strategy", "type", "volume", "density", "ipfs_retrieve_count"]
+        with open("retrieve.csv", "a+") as file:
             for t in range(k):
                 # This operation does not count.
                 self.reset()
@@ -124,7 +127,7 @@ class IPAROSimulationWriter:
         if reset_data:
             ipfs.reset_data()
             ipns.reset_data()
-            self.num_links = 0
+            self.links_generated = []
         ipfs.reset_counts()
         ipns.reset_counts()
 
@@ -189,13 +192,16 @@ if __name__ == "__main__":
     os.chdir("results")
 
     # Write to file.
-    with open("results_store.csv", "w+") as file:
+    with open("store_opcounts.csv", "w+") as file:
         headers = ["strategy", "volume", "density", "num_links", "store_ipns_get",
-                   "store_ipns_update", "store_ipfs_retrieve", "store_ipfs_store"]
+                  "store_ipns_update", "store_ipfs_retrieve", "store_ipfs_store"]
+        file.write("\t".join(headers) + "\n")
+    with open("store.csv", "w+") as file:
+        headers = ["strategy", "volume", "num_iparos", "density", "links_generated"]
         file.write("\t".join(headers) + "\n")
 
-    with open("results_retrieve.csv", "w+") as file:
-        headers = ["strategy_name", "type", "volume", "density", "ipfs_retrieve_count"]
+    with open("retrieve.csv", "w+") as file:
+        headers = ["strategy", "type", "volume", "density", "ipfs_retrieve_count"]
         file.write("\t".join(headers) + "\n")
 
     keys = ["get", "update", "retrieve", "store"]
@@ -212,12 +218,6 @@ if __name__ == "__main__":
                                                version_density=UniformVersionDensity())
             # 3 types of operations to test (store, retrieve by number, retrieve by date),
             # 4 types of IPFS/IPNS operations to count, 4 version volumes
-            store_counts = np.zeros((4, 4))
-
-            # Count number of links
-            num_links = np.zeros(4)
-
-            # Count number of retrievals
             for version_density in version_densities:
                 retrieve_number_data = []
                 retrieve_date_data = []

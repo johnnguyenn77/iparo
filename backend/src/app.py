@@ -5,8 +5,6 @@ import requests
 from flask import Flask, request, jsonify, make_response
 from urllib.parse import urljoin
 from datetime import datetime, timezone
-
-
 from system.IPAROFactory import IPAROFactory
 from system.IPFS import IPFS
 from system.IPAROLinkFactory import IPAROLinkFactory
@@ -209,7 +207,7 @@ def get_snapshots_by_date():
 
 
 if __name__ == "__main__":
-
+    # Load or generate IPNS records cache
     cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
     if cache_path.exists():
         with open(cache_path, 'r') as f:

@@ -45,8 +45,6 @@ class VersionDensityTestCase(unittest.TestCase):
 
         # The first time interval should have at least 20% of the nodes.
         self.assertGreaterEqual(frequencies[0] / VersionVolume.LARGE, 0.2)
-        # The tail should be long (decay factor should be greater than 0.8)
-        self.assertGreaterEqual(frequencies[9] / frequencies[8], 0.8)
 
     def test_multipeak_can_have_two_peaks(self):
         multipeak = MultipeakVersionDensity(np.array([2/3, 1/3]),

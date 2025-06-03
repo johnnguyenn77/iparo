@@ -1,5 +1,5 @@
 from simulation import IPARO
-from IPAROTestConstants import *
+from test.IPAROTestConstants import *
 from simulation.IPFS import *
 from simulation.LinkingStrategy import *
 from simulation.TimeUnit import TimeUnit

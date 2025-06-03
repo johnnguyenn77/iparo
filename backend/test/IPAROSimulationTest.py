@@ -1,5 +1,8 @@
+import os
 import unittest
 from unittest.mock import patch, call
+import sys
+
 
 from simulation.IPAROException import IPARONotFoundException
 from simulation.IPAROSimulationWriter import IPAROSimulationWriter
@@ -20,7 +23,8 @@ class IPAROSimulationTest(unittest.TestCase):
 
     def tearDown(self):
         self.simulation.reset(reset_data=True)
-
+        os.remove("results_retrieve.csv")
+        os.remove("results_store.csv")
 
     def test_simulation_can_reset(self):
         self.simulation.reset()

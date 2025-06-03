@@ -9,3 +9,4 @@ yarn-error.log
 __pycache__/
 /.idea/
 .ipynb_checkpoints/
+backend/.idea/workspace.xml
