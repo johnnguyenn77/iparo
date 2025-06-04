@@ -192,7 +192,7 @@ def get_snapshots_by_date():
         traceback.print_exc(file=sys.stderr)
         return jsonify({"error": str(e)}), 500
     
-
+__all__ = ['app', 'ipns_records']
 
 if __name__ == "__main__":
 

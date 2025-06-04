@@ -87,6 +87,25 @@ class IPNSTest(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             self.ipns.resolve_cid(self.peer_id)
         self.assertIn("Failed to resolve", str(context.exception))
+        
+    @patch("system.IPNS.requests.post")
+    def test_ipns_update_and_resolve_flow(self, mock_post):
+        """T3.2.2 - Update IPNS pointer to point to the latest node"""
+
+        # Simulate publishing the IPNS record
+        mock_post.side_effect = [
+            Mock(status_code=200, json=Mock(return_value={"Name": self.peer_id})),  # publish
+            Mock(status_code=200, json=Mock(return_value={"Path": f"/ipfs/{self.cid}"}))  # resolve
+        ]
+
+        # Step 1: Update IPNS pointer
+        publish_result = self.ipns.update(self.key_name, self.cid)
+        self.assertEqual(publish_result, self.peer_id)
+
+        # Step 2: Resolve IPNS pointer
+        resolved_cid = self.ipns.resolve_cid(self.peer_id)
+        self.assertEqual(resolved_cid, self.cid)
+
 
 
 if __name__ == "__main__":

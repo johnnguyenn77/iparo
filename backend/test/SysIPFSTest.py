@@ -108,3 +108,29 @@ class IPFSTest(unittest.TestCase):
             
             self.assertEqual(retrieved_link, link2)
             self.assertEqual(retrieved_iparo, iparo2)
+    
+    @patch("requests.post")
+    def test_ipfs_store_and_retrieve_roundtrip(self, mock_post):
+        """T3.2.3 - Store IPARO object in file storage system"""
+
+        # --- Simulate store() behavior ---
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = {"Hash": "QmMockCID123"}
+
+        # Call store and capture returned CID
+        cid = self.ipfs.store(iparo1)
+        self.assertEqual(cid, "QmMockCID123")
+
+        # --- Simulate retrieve() behavior ---
+        pickled_iparo = pickle.dumps(iparo1)
+
+        # Update mock to simulate retrieval response
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.content = pickled_iparo
+
+        # Call retrieve and verify object matches
+        retrieved = self.ipfs.retrieve(cid)
+        self.assertIsInstance(retrieved, IPARO)
+        self.assertEqual(retrieved.url, iparo1.url)
+        self.assertEqual(retrieved.timestamp, iparo1.timestamp)
+        self.assertEqual(retrieved.content, iparo1.content)
