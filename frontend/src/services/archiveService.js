@@ -1,22 +1,36 @@
-//Mock functions for now
+const API = path =>
+  fetch(path, { credentials: 'same-origin' })
+    .then(r => {
+      if (!r.ok) throw new Error(r.statusText)
+      return r.json()
+    })
 
-export const fetchSnapshots = async () => {
-    //Replace with actual data/logic later
-    return [
-      { id: 1, url: 'https://example.com', timestamp: '2023-10-01T12:00:00Z' },
-      { id: 2, url: 'https://example.com', timestamp: '2023-10-02T12:00:00Z' },
-    ];
-  };
-  
-  export const fetchClosestSnapshots = async (date) => {
-    //Replace with actual data/logic later
-    return [
-      { id: 1, url: 'https://example.com', timestamp: '2023-10-01T12:00:00Z' },
-      { id: 2, url: 'https://example.com', timestamp: '2023-10-02T12:00:00Z' },
-    ];
-  };
-  
-  export const submitNewURL = async (url) => {
-    //Replace with actual data/logic later
-    return { success: true, message: 'URL submitted successfully' };
-  };
+export const fetchSnapshotsByUrl = url =>
+  API(`/api/snapshots?url=${encodeURIComponent(url)}`)
+    .then(data => data.map(item => ({ id: item.cid, timestamp: item.timestamp })))
+
+export const fetchSnapshotsByDate = (url, date, limit=3) =>
+  API(`/api/snapshots/date?url=${encodeURIComponent(url)}` +
+      `&date=${encodeURIComponent(date)}&limit=${limit}`)
+    .then(data => data.map(item => ({ id: item.cid, timestamp: item.timestamp })))
+
+export const fetchSnapshotById = id =>
+  API(`/api/snapshot/${encodeURIComponent(id)}`)
+
+export const fetchSnapshotContent = id =>
+  fetch(`/api/archive/${encodeURIComponent(id)}/content`, { credentials: 'same-origin' })
+    .then(r => {
+      if (!r.ok) throw new Error(r.statusText)
+      return r.text()
+    })
+
+export const initReconstructive = async () => {
+  if (!('serviceWorker' in navigator))
+    throw new Error('ServiceWorker unsupported')
+  const reg = await navigator.serviceWorker.register(
+    '/reconstructive-serviceworker.js',
+    { scope: '/' }
+  )
+  await navigator.serviceWorker.ready
+  return Boolean(reg.active)
+}
