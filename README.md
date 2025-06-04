@@ -110,10 +110,10 @@ Dr. Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
 John Nguyen [@johnnguyenn77](https://github.com/johnnguyenn77)
 
 ### Team
-Benji Bui [@qvbui02](https://github.com/qvbui02)
-Alex Grigorian [@Alex651907](https://github.com/Alex651907)
-Alexey Kuraev [@dg-off](https://github.com/dg-off)
-Patrick Le [@21pxle](https://github.com/21pxle)
+Benji Bui [@qvbui02](https://github.com/qvbui02)\
+Alex Grigorian [@Alex651907](https://github.com/Alex651907)\
+Alexey Kuraev [@dg-off](https://github.com/dg-off)\
+Patrick Le [@21pxle](https://github.com/21pxle)\
 Thiyazan Qaissi [@tqdrex](https://github.com/tqdrex)
 
 
