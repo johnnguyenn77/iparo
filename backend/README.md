@@ -18,9 +18,11 @@ python -m unittest [module_name]
 ```
 where `module_name` refers to the test module name which starts with `test` and
 then the module name would be the name of the file, minus the `.py` extension.
-For instance, if you want to run the tests in `IPFSDateTest.py`, then you would
+For instance, if you want to run the tests in `SysIPFSDateTest.py`, then you would
 use 
 
 ```
-python -m unittest test.IPFSDateTest
+python -m unittest test.SysIPFSDateTest
 ```
+
+Note: The `test.SysIPFSDateTest` tests are only supported on Python 3.11+.

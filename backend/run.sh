@@ -4,8 +4,8 @@ for module in $(ls test/[^_]*)
 do
   module=${module##*/}
   module=${module%.*}
-  if [ "$module" != "IPFSDateTest" -a "$module" != "IPAROTestConstants" -a \
-  "$module" != "IPAROTestHelpers" -a "$module" != "IPAROStrategyTest" ]
+  if [ "$module" != "SysIPFSDateTest" -a "$module" != "IPAROTestConstants" -a \
+  "$module" != "IPAROTestelpers" -a "$module" != "IPAROStrategyTest" ]
   then
     python3 -m unittest "test.${module}" -v
   fi

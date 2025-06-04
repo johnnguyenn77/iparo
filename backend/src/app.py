@@ -17,18 +17,6 @@ ipfs = IPFS()
 ipns = IPNS()
 iparo_link_factory = IPAROLinkFactory()
 
-# Load or generate IPNS records cache
-cache_path = pathlib.Path(__file__).parent.parent / 'ipns_records.json'
-if cache_path.exists():
-    with open(cache_path, 'r') as f:
-        ipns_records = json.load(f)
-    print(f"Loaded IPNS records from cache: {cache_path}")
-else:
-    ipns_records = IPAROFactory.create_and_store_iparos(ipfs, ipns, iparo_link_factory)
-    with open(cache_path, 'w') as f:
-        json.dump(ipns_records, f)
-    print(f"Generated and saved IPNS records to cache: {cache_path}")
-
 @app.route("/")
 def index():
     return "Welcome to the IPARO Web Server"
