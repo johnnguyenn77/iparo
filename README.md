@@ -4,7 +4,7 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
 
 ## Prerequisites
 
-1. **Python**: Ensure Python is installed on your system. This repository uses Python 3.
+1. **Python**: Ensure Python is installed on your system. This repository uses Python 3. For best results with testing, Python 3.11 or newer is recommended.
 2. **Virtual Environment**: Create a virtual environment and activate it
 
     ```bash
@@ -22,14 +22,37 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
 
 ### Backend Setup
 
-1. **Clone the Repository**
+1. **Clone the Repository and Install Requirements**
 
     ```bash
     git clone https://github.com/johnnguyenn77/iparo.git
     cd iparo
     ```
 
-2. **Running the Jupyter Notebook**
+    Ensure that all prerequisites as listed in the `requirements.txt` file are installed.
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Running the Backend**
+
+   To run the backend, install [Kubo IPFS](docs.ipfs.tech/install/command-line/#install-official-binary-distributions) and then use
+    ```
+    ipfs daemon
+    ```
+    for setting up IPFS.
+
+   Then, run `app.py` in `src` to get the server running:
+
+   ```
+   cd backend
+   python src/app.py
+   ```
+
+    **NOTE:** First time setup may take up to 15-20 minutes. This is to be expected and is normal, as the backend must cache all of the archived sites and each snapshot, cached locally.
+
+4. **Running the Jupyter Notebook**
 
     Ensure you have Jupyter Notebook installed. If not, you can install it using:
 
@@ -37,7 +60,7 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
     pip install notebook
     ```
 
-3. **Launch the Jupyter Notebook**
+5. **Launch the Jupyter Notebook**
 
     ```bash
     jupyter notebook
@@ -81,9 +104,18 @@ After a moment, the frontend server will be running on `localhost:3000`.
 
 ## Contributors
 
+### Stakeholders
 Professor Mat Kelly [@machawk1](https://github.com/machawk1)\
 Dr. Sawood Alam [@ibnesayeed](https://github.com/ibnesayeed)\
 John Nguyen [@johnnguyenn77](https://github.com/johnnguyenn77)
+
+### Team
+Benji Bui [@qvbui02](https://github.com/qvbui02)
+Alex Grigorian [@Alex651907](https://github.com/Alex651907)
+Alexey Kuraev [@dg-off](https://github.com/dg-off)
+Patrick Le [@21pxle](https://github.com/21pxle)
+Thiyazan Qaissi [@tqdrex](https://github.com/tqdrex)
+
 
 ## License
 
