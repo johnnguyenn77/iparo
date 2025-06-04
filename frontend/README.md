@@ -11,3 +11,5 @@ Once in ```frontend/```, enter the following in the terminal:
 ```npm start```
 
 After a moment, the server should now be running on ```localhost:3000```.
+
+Note that the site will not function properly without also running the backend. Instructions for running the backend can be found in our [backend README](https://github.com/johnnguyenn77/iparo/blob/main/backend/README.md).
