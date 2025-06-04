@@ -5,6 +5,7 @@ from simulation.VersionDensity import *
 class VersionDensityTestCase(unittest.TestCase):
 
     def test_version_density_is_uniformly_distributed(self):
+        """T3.2.5.1 - Sampling from a Uniform Version Density"""
         uniform_density = UniformVersionDensity()
         generator = VersionGenerator(uniform_density)
         iparos = generator.generate(10000)
@@ -14,6 +15,7 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertLessEqual(max(ts) - min(ts), 999999)
 
     def test_linear_is_linearly_distributed(self):
+        """T3.2.5.2 - Sampling from a Linear Version Density"""
         linear_version_density = LinearVersionDensity(2)
         version_generator = VersionGenerator(linear_version_density)
         nodes = version_generator.generate(10000)
@@ -31,6 +33,7 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertLessEqual(np.max(frequencies) - np.min(frequencies), 200)
 
     def test_big_head_long_tail_has_big_head_and_long_tail(self):
+        """T3.2.5.3 - Sampling from a Big Head Long Tail Version Density"""
         big_head_long_tail = BigHeadLongTailVersionDensity(200)
         timestamps = big_head_long_tail.sample(VersionVolume.LARGE)
         timestamps = np.sort(timestamps)
@@ -47,6 +50,7 @@ class VersionDensityTestCase(unittest.TestCase):
         self.assertGreaterEqual(frequencies[0] / VersionVolume.LARGE, 0.2)
 
     def test_multipeak_can_have_two_peaks(self):
+        """T3.2.5.4 - Sampling from a Big Head Long Tail Version Density"""
         multipeak = MultipeakVersionDensity(np.array([2/3, 1/3]),
                                             np.array([[0, 32], [2000, 30]]))
         version_generator = VersionGenerator(multipeak)
