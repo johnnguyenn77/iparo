@@ -19,11 +19,13 @@ class IPAROStrategyTest(unittest.TestCase):
         ipfs.reset_counts()
 
     def test_single_strategy_should_link_to_only_one_node(self):
+        """T3.2.4.1 - Single Strategy"""
         lengths = test_strategy(SingleStrategy())
         expected_lengths = [min(i, 1) for i in range(100)]
         self.assertListEqual(lengths, expected_lengths)
 
     def test_every_strategy_should_require_only_one_ipns_call(self):
+        """T3.2.4.2 - Previous + First Strategy"""
         test_strategy(SingleStrategy())
         ipns.reset_counts()
         latest_link, latest_iparo = ipfs.get_link_to_latest_node(URL)
@@ -31,35 +33,41 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertEqual(ipns.get_counts()["get"], 1)
 
     def test_comprehensive_strategy_should_link_to_all_previous_nodes(self):
+        """T3.2.4.10 - Comprehensive Strategy"""
         lengths = test_strategy(ComprehensiveStrategy())
         expected_lengths = list(range(100))
 
         self.assertListEqual(lengths, expected_lengths)
 
     def test_comprehensive_strategy_should_link_to_the_right_nodes(self):
+        """T3.2.4.11 - Comprehensive Strategy"""
         lengths, cids, iparos = test_strategy_verbose(ComprehensiveStrategy())
         linked_cids = {link.cid for link in iparos[99].linked_iparos}
         self.assertSetEqual(linked_cids, set(cids[:99]))
 
     def test_previous_should_link_to_at_most_two_nodes(self):
+        """T3.2.4.2 - Previous + First Strategy"""
         lengths, cids, iparos = test_strategy_verbose(PreviousStrategy())
 
         expected_lengths = [min(i, 2) for i in range(100)]
         self.assertListEqual(lengths, expected_lengths)
 
     def test_five_previous_should_link_to_at_most_six_nodes(self):
+        """T3.2.4.3 - K-Previous + First Strategy"""
         lengths = test_strategy(KPreviousStrategy(k=5))
         expected_lengths = [min(i, 6) for i in range(100)]
 
         self.assertListEqual(lengths, expected_lengths)
 
     def test_random_strategy_should_respect_limits(self):
+        """T3.2.4.4 - K-Random + First Strategy"""
         lengths = test_strategy(KRandomStrategy(10))
 
         self.assertLessEqual(max(lengths), 12)
         self.assertEqual(min(lengths[1:]), 1)
 
     def test_exponential_strategy_should_have_logarithmic_number_of_links(self):
+        """T3.2.4.7 - Sequential Exponential (Factor of B) + Previous Strategy"""
         strategy = SequentialExponentialStrategy(k=2)
         lengths = test_strategy(strategy)
         expected_lengths = [0]
@@ -68,6 +76,7 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(lengths, expected_lengths)
 
     def test_exponential_strategy_should_have_the_right_nodes(self):
+        """T3.2.4.7 - Sequential Exponential (Factor of B) + Previous Strategy"""
         strategy = SequentialExponentialStrategy(k=2)
 
         def get_sequence_numbers(n):
@@ -99,6 +108,7 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(sequence_numbers, expected_sequence_numbers)
 
     def test_sequential_uniform_strategy_should_have_at_most_n_plus_two_links(self):
+        """T3.2.4.5 - Sequential Uniform N-prior + Previous + First"""
         strategy = SequentialUniformNPriorStrategy(n=10)
         lengths = test_strategy(strategy)
         expected_lengths = [min(i, 12) for i in range(100)]
@@ -106,7 +116,8 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(lengths, expected_lengths)
 
     def test_sequential_s_max_gap_strategy_should_respect_s_max_gap(self):
-        s = 3 
+        """T3.2.4.5 - Sequential Uniform S-Max-Gap + Previous + First"""
+        s = 3
         strategy = SequentialSMaxGapStrategy(s=s)
 
         lengths, cids, iparos = test_strategy_verbose(strategy)
@@ -130,6 +141,7 @@ class IPAROStrategyTest(unittest.TestCase):
                 self.assertLessEqual(gap, s)
 
     def test_sequential_s_max_gap_strategy_should_be_at_most_s_hops_away(self):
+        """T3.2.4.5 - Sequential Uniform S-Max-Gap + Previous + First"""
         test_strategy(SequentialSMaxGapStrategy(5))
         # Now use BFS
         latest_cid = ipns.get_latest_cid(URL)
@@ -147,6 +159,7 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertLessEqual(max(bfs_values.values()), 5)
 
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
+        """T3.2.4.8 - Temporally Uniform N-prior + Previous + First"""
         # 0, 10, 11, ..., 44, 50
         relative_times = [(i * 10 + j) for i in range(5) for j in range(i+1)]
         relative_times.append(50)
@@ -157,6 +170,7 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(timestamps, expected_timestamps)
 
     def test_temporal_max_gap_strategy_should_pick_correct_datetimes(self):
+        """T3.2.4.9 - Temporally Uniform T-max-gap + Previous + First"""
         # 0, 800, 801, ..., 1600
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
@@ -168,6 +182,7 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertListEqual(timestamps, expected_timestamps)
 
     def test_temporal_exponential_strategy_should_get_correct_timestamps(self):
+        """T3.2.4.10 - Temporally Exponential + Previous + First"""
         # 0, 10, 11, ..., 44, 50
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)

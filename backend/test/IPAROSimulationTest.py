@@ -23,8 +23,9 @@ class IPAROSimulationTest(unittest.TestCase):
 
     def tearDown(self):
         self.simulation.reset(reset_data=True)
-        os.remove("results_retrieve.csv")
-        os.remove("results_store.csv")
+        os.remove("retrieve.csv")
+        os.remove("store.csv")
+        os.remove("store_opcounts.csv")
 
     def test_simulation_can_reset(self):
         self.simulation.reset()
