@@ -1,8 +1,18 @@
 import unittest
+from datetime import datetime
 # backend/test/system/test_iparo.py
 from test.SysIPAROTestConstant import *
 
 class IPAROObjectTest(unittest.TestCase):
+    
+    def test_iparo_constructor_initialization(self):
+        """T3.2.1.1 - Creating an IPARO with the constructor"""
+        self.assertEqual(iparo1.url, url1)
+        self.assertEqual(iparo1.timestamp, time1)
+        self.assertEqual(iparo1.content, content1)
+        self.assertEqual(iparo1.linked_iparos, frozenset())
+        self.assertEqual(iparo1.seq_num, seq_num1)
+
 
     def test_iparo_has_content(self):
         content = iparo1.content
