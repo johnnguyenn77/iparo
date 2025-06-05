@@ -10,17 +10,11 @@ function DocsPage() {
   const documentationSections = [
     {
       title: "Getting Started",
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, quis aliquam nisl nunc eu nisl. Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, quis aliquam nisl nunc eu nisl.",
+      content: "Detailed information about getting started with installation and setup of the IPARO system can be found in the README files on the repository via the links below.",
       links: [
-        { text: "Installation Guide", url: "#" },
-        { text: "System Requirements", url: "#" }
-      ]
-    },
-    {
-      title: "API Documentation",
-      content: "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
-      links: [
-        { text: "Endpoint Reference", url: "#" }
+        { text: "IPARO Repository", url: "https://github.com/johnnguyenn77/iparo"},
+        { text: "Frontend Setup", url: "https://github.com/johnnguyenn77/iparo/blob/main/frontend/README.md" },
+        { text: "Backend Setup", url: "https://github.com/johnnguyenn77/iparo/blob/main/backend/README.md" }
       ]
     },
   ];
