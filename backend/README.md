@@ -55,5 +55,30 @@ Note: The system tests are only supported on Python 3.11+ and you will need to i
 ```
 pip install warcio
 ```
+
+## Simulation
+
+The simulation allows researchers to compare linking strategies and version densities to find the most efficient solutions for IPARO storage and retrieval.
+
+To run the simulation, first ensure the proper pre-requisites are installed: 
+
+```
+pip install streamlit altair
+```
+
+To prepare the simulation, IPAROSimulationWriter.py must first be run. **Please note that it will take a very long time to run the program.**
+
+```
+cd backend/src/simulation
+python IPAROSimulationWriter.py
+```
+
+To start the simulation:
+
+```
+cd backend/src
+streamlit run IPAROSimulation.py
+```
+
 ## Changelog
 **6-4-2025**: Renamed tests with systems to start with `Sys`.
