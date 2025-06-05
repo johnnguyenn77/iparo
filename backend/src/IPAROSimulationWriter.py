@@ -185,7 +185,7 @@ if __name__ == "__main__":
         BigHeadLongTailVersionDensity(5, 1000),
         MultipeakVersionDensity(np.array([0.5, 0.5]), np.array([[0, 50], [200, 100]])),
     ]
-    os.chdir("../..")
+    os.chdir("..")
 
     # Make a separate folder called "results"
     os.makedirs("results", exist_ok=True)
