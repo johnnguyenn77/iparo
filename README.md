@@ -97,17 +97,17 @@ cd backend/src && streamlit run IPAROSimulation.py
 
 ## Jupyter Notebook
 
-    Ensure you have Jupyter Notebook installed. If not, you can install it using:
+Ensure you have Jupyter Notebook installed. If not, you can install it using:
 
-    ```bash
-    pip install notebook
-    ```
+```bash
+pip install notebook
+```
 
 **Launch the Jupyter Notebook**
 
-    ```bash
-    jupyter notebook
-    ```
+```bash
+jupyter notebook
+```
 
 Open the `iparo.ipynb` notebook and follow the instructions to run the cells.
 
