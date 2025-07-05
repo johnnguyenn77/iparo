@@ -110,8 +110,8 @@ class LinearVersionDensity(IntervalVersionDensity):
         chosen_distributions = np.random.choice(3, size=n,
                                                 p=probabilities)
         choices = np.vstack((np.random.uniform(high=interval, size=n),
-                            np.random.triangular(left=0, mode=interval, right=interval, size=n),
-                            np.random.triangular(left=0, mode=0, right=interval, size=n)))
+                             np.random.triangular(left=0, mode=interval, right=interval, size=n),
+                             np.random.triangular(left=0, mode=0, right=interval, size=n)))
 
         results = choices[chosen_distributions, np.arange(n)]
         return results

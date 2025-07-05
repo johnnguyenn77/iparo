@@ -217,6 +217,7 @@ class TemporallyMinGapStrategy(LinkingStrategy):
                                                                           current_time, Mode.LATEST_BEFORE)
             links.add(candidate_link)
             curr_link = candidate_link
+            current_time = candidate_link.timestamp  # We want the new timestamp to be the current timestamp
 
         links.add(first_link)
         links.add(latest_link)
@@ -227,7 +228,11 @@ class TemporallyMinGapStrategy(LinkingStrategy):
 
 
 class TemporallyExponentialStrategy(LinkingStrategy):
-    def __init__(self, base: float, time_unit: int):
+    def __init__(self, base: float, time_unit: float):
+        """
+        :param base: the base (greater than 1).
+        :param time_unit: the minimum time unit in terms of seconds.
+        """
         self.base = base
         self.time_unit = time_unit
 
@@ -241,7 +246,7 @@ class TemporallyExponentialStrategy(LinkingStrategy):
             gap *= self.base
         gaps.reverse()
 
-        timestamps = {latest_iparo.timestamp + gap for gap in gaps}
+        timestamps = {int(latest_iparo.timestamp + gap) for gap in gaps}
         links, _ = IPAROLinkFactory.from_timestamps(timestamps, {first_link, latest_link})
         links.add(first_link)
         links.add(latest_link)
