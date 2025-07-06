@@ -1,3 +1,4 @@
+import os
 import random
 from abc import abstractmethod
 
@@ -94,8 +95,9 @@ class IterableOperation(Operation):
     def record(self):
         self.opcounts.rename_axis(index="Iteration", inplace=True)
         storage_summary = self.opcounts.describe()  # Transpose
-        self.opcounts.to_csv(f"{str(self.env)}-{self.name()}.txt")
-        storage_summary.to_csv(f"{str(self.env)}-{self.name()}.txt", mode="a", header=False)
+        output_path = f"{str(self.env)}-{self.name()}.txt"
+        self.opcounts.to_csv(output_path)
+        storage_summary.to_csv(output_path, mode="a", header=False)
 
 
 class StoreOperation(IterableOperation):

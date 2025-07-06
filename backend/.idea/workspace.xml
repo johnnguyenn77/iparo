@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/IPAROSimulationApp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SimulationWriter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/simulation/CommandLineParser.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/simulation/CommandLineValidator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/simulation/Operation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/CommandLineParserTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/CommandLineValidatorTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/IPAROSimulationEnvironmentTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IPAROSimulation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IPAROSimulationWriter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulationEnvironment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/VersionDensity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/VersionDensity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROSimulationTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROSimulationTest.py" afterDir="false" />
-    </list>
+    <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +52,7 @@
     "Python.SimulationWriterV2.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "ptl46"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -203,16 +186,6 @@
           <url>file://$PROJECT_DIR$/test/CommandLineValidatorTest.py</url>
           <line>310</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/SimulationWriter.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/simulation/IPAROSimulationEnvironment.py</url>
-          <line>16</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

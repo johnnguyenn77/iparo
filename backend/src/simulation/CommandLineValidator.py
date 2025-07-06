@@ -72,7 +72,7 @@ def dir_path(s: str):
         raise ArgumentTypeError(f"Not a valid target directory: {s}")
 
 
-validator = ArgumentParser(prog="SimulationWriter.py",
+validator = ArgumentParser(prog="python SimulationWriter.py",
                            description="Generates data about the IPFS/IPNS operation counts for storing and "
                                        "retrieving based on different policies. The default version density "
                                        "to use is uniform.")
