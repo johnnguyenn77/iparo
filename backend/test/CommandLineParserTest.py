@@ -65,6 +65,10 @@ class CommandLineParserTest(unittest.TestCase):
         strategy = get_relevant_output(["-c"], action=get_policy)
         self.assertIsInstance(strategy, ComprehensiveStrategy)
 
+    def test_can_parse_random(self):
+        strategy = get_relevant_output(["-r", "5"], action=get_policy)
+        self.assertIsInstance(strategy, KRandomStrategy)
+
     def test_can_parse_seq_uniform_n_prior(self):
         strategy = get_relevant_output(["-u", "5"], action=get_policy)
         self.assertIsInstance(strategy, SequentialUniformNPriorStrategy)

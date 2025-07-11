@@ -1,3 +1,5 @@
+from sys import stderr
+
 from simulation.LinkingStrategy import *
 from simulation.VersionDensity import *
 
@@ -25,6 +27,8 @@ class CommandLineParser:
             return KPreviousStrategy(k) if k != 1 else PreviousStrategy()
         elif n := args.sequniform:
             return SequentialUniformNPriorStrategy(n)
+        elif k := args.random:
+            return KRandomStrategy(k)
         elif s := args.seqmaxgap:
             return SequentialSMaxGapStrategy(s)
         elif base := args.seqexp:
@@ -33,8 +37,10 @@ class CommandLineParser:
             return TemporallyUniformStrategy(n)
         elif t := args.tempmingap:
             return TemporallyMinGapStrategy(t)
-        base, time_unit = tuple(args.tempexp)
-        return TemporallyExponentialStrategy(base, time_unit)
+        elif t := tuple(args.tempexp):
+            base, time_unit = t
+            return TemporallyExponentialStrategy(base, time_unit)
+        raise AssertionError("The policy cannot be parsed.")
 
     def parse_volume(self):
         """
@@ -52,15 +58,16 @@ class CommandLineParser:
         Parses version density.
         """
         args = self.args
+        interval = args.interval
         if slope := args.linear:
-            return LinearVersionDensity(slope)
+            return LinearVersionDensity(slope, interval)
         elif slope := args.bigheadlongtail:
-            return BigHeadLongTailVersionDensity(slope)
+            return BigHeadLongTailVersionDensity(slope, interval)
         elif params := args.multipeak:
             # First pass: get the sum of weights.
             mixture_params = np.array(params)
             return MultipeakVersionDensity(mixture_params[:, 0], mixture_params[:, 1:])
-        return UniformVersionDensity()
+        return UniformVersionDensity(interval)
 
     def parse_operations(self):
         """

@@ -1,0 +1,4 @@
+-g 2 -o Results/Sequential-2-Max-Gap
+-g 4 -o Results/Sequential-4-Max-Gap
+-g 8 -o Results/Sequential-8-Max-Gap
+-g 16 -o Results/Sequential-16-Max-Gap

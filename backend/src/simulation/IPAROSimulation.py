@@ -15,25 +15,17 @@ class IPAROSimulation:
         # Create some storage.
         env = self.env
 
-        if env.verbose:
-            print("Storing nodes...")
-
         # Link the IPAROs in the IPFS
         store_op = StoreOperation(env)
         store_op.execute()
-        # for operation in self.environment.operations:
-        #     self.dispatch(operation)
 
-        if env.verbose:
-            print("Applying other operations...")
-
-        first_op = FirstOperation(env)
-        first_op.execute()
         for op in env.operations:
             self.dispatch(op)
 
-
     def dispatch(self, operation: str):
+        """
+        Dispatches an operation based on the operation name.
+        """
         op = None
         match operation.lower():
             case "time":

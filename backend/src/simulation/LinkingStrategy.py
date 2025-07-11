@@ -95,11 +95,10 @@ class KRandomStrategy(LinkingStrategy):
         if num_nodes <= self.k:
             latest_node_links.add(latest_link)
             return latest_node_links
-        else:
-            # K random sequence numbers from 1 to n-1, n = latest sequence number
-            candidate_seq_nums = set(random.sample(range(1, num_nodes), min(self.k, num_nodes - 1)))
-            candidate_seq_nums.add(0)
-            links = IPAROLinkFactory.from_indices(latest_link, set(candidate_seq_nums))
+        # K random sequence numbers from 1 to n-1, n = latest sequence number
+        candidate_seq_nums = set(random.sample(range(1, num_nodes), min(self.k, num_nodes - 1)))
+        candidate_seq_nums.add(0)
+        links = IPAROLinkFactory.from_indices(latest_link, set(candidate_seq_nums))
         links.add(latest_link)
         return links
 

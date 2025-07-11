@@ -77,7 +77,8 @@ validator = ArgumentParser(prog="python SimulationWriter.py",
                                        "retrieving based on different policies. The default version density "
                                        "to use is uniform.")
 
-validator.add_argument("-o", "--output", help="The output directory after running the simulation.",
+validator.add_argument("-o", "--output", help="""The output directory after running the simulation.
+Directory names with spaces are unsupported.""",
                        type=dir_path)
 
 # Policy group
@@ -201,7 +202,10 @@ validator.add_argument("-O", "--operations", help="""The operation to use. Optio
                                                  simulate the nth and list operations. Repeated operations are not 
                                                  allowed.""",
                        choices=operation_choices, nargs='*', action='extend')
-validator.add_argument("-v", "--verbose", help="""Prints detailed output.""", action="store_true")
+validator.add_argument("-v", "--verbose", help="Prints detailed output.", action="store_true")
+validator.add_argument("-i", "--interval", help="""The time interval for simulation.
+Default is 1000. The interval will not be used in the multipeak distribution.""",
+                       type=check_greater_than_zero, default=1000, metavar="seconds")
 
 
 def post_validate(args):

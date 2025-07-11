@@ -371,10 +371,6 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid = validate("-s -n 3 -o".split())
         self.assertFalse(is_valid)
 
-    def test_command_line_output_accepts_spaces_in_directories(self):
-        is_valid = validate(["-s", "-n", "3", "results something"])
-        self.assertTrue(is_valid)
-
     def test_command_line_output_only_accepts_one_argument_in_directories(self):
         is_valid = validate("-s -n 3 -o results something".split())
         self.assertFalse(is_valid)
@@ -385,3 +381,15 @@ class CommandLineValidatorTest(unittest.TestCase):
             self.assertTrue(is_valid)
         finally:
             os.removedirs("results")
+
+    def test_command_line_accepts_interval(self):
+        is_valid = validate(["-s", "-i", "0.7"])
+        self.assertTrue(is_valid)
+
+    def test_command_line_does_not_accept_negative_numbers(self):
+        is_valid = validate(["-s", "-i", "-0.7"])
+        self.assertFalse(is_valid)
+
+    def test_command_line_does_not_accept_non_numeric_arguments(self):
+        is_valid = validate(["-s", "-i", "apple"])
+        self.assertFalse(is_valid)

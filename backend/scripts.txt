@@ -1,0 +1,41 @@
+-s -o Results/Single
+-p -o Results/Previous
+-p 2 -o Results/2-Previous
+-p 4 -o Results/4-Previous
+-p 8 -o Results/8-Previous
+-p 16 -o Results/16-Previous
+-c -o Results/Comprehensive
+-r 2 -o Results/2-Random
+-r 4 -o Results/4-Random
+-r 8 -o Results/8-Random
+-r 16 -o Results/16-Random
+-r 32 -o Results/32-Random
+-e 1.25 -o Results/Sequential-Exponential-Base-1.25
+-e 1.5 -o Results/Sequential-Exponential-Base-1.5
+-e 2 -o Results/Sequential-Exponential-Base-2
+-e 3 -o Results/Sequential-Exponential-Base-3
+-e 4 -o Results/Sequential-Exponential-Base-4
+-g 2 -o Results/Sequential-2-Max-Gap
+-g 4 -o Results/Sequential-4-Max-Gap
+-g 8 -o Results/Sequential-8-Max-Gap
+-g 16 -o Results/Sequential-16-Max-Gap
+-u 2 -o Results/Sequential-2-Uniform
+-u 4 -o Results/Sequential-4-Uniform
+-u 8 -o Results/Sequential-8-Uniform
+-u 16 -o Results/Sequential-16-Uniform
+-u 32 -o Results/Sequential-32-Uniform
+-E 1.25 1 -o Results/Temporally-Exponential-Base-1.25
+-E 1.5 1 -o Results/Temporally-Exponential-Base-1.5
+-E 2 1 -o Results/Temporally-Exponential-Base-2
+-E 3 1 -o Results/Temporally-Exponential-Base-3
+-E 4 1 -o Results/Temporally-Exponential-Base-4
+-G 10 -o Results/Temporally-Min-Gap-10
+-G 20 -o Results/Temporally-Min-Gap-20
+-G 40 -o Results/Temporally-Min-Gap-40
+-G 80 -o Results/Temporally-Min-Gap-80
+-G 160 -o Results/Temporally-Min-Gap-160
+-U 2 -o Results/Temporally-2-Uniform
+-U 4 -o Results/Temporally-4-Uniform
+-U 8 -o Results/Temporally-8-Uniform
+-U 16 -o Results/Temporally-16-Uniform
+-U 32 -o Results/Temporally-32-Uniform

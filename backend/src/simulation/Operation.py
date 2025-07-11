@@ -1,4 +1,4 @@
-import os
+import os.path
 import random
 from abc import abstractmethod
 
@@ -7,8 +7,8 @@ import pandas as pd
 
 from simulation.IPAROException import IPARONotFoundException
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
-from simulation.IPNS import ipns
 from simulation.IPFS import ipfs
+from simulation.IPNS import ipns
 from simulation.VersionDensity import VersionGenerator
 
 URL = "example.com"
@@ -56,20 +56,33 @@ class IterableOperation(Operation):
         self.iterations = iterations or env.iterations
         self.opcounts = None
         self.data = np.zeros((self.iterations, 4))
+        self.output_path = f"{str(self.env)}-{self.name()}.txt"
 
     def execute(self):
         """
         Executes the operation.
         """
-        for i in range(self.iterations):
-            self.step(i)
-            self.record_iteration(i)
-        self.opcounts = pd.DataFrame(self.data, columns=["IPNS Get", "IPNS Update", "IPFS Store",
-                                                         "IPFS Retrieve"],
-                                     index=pd.RangeIndex(1, self.env.version_volume + 1), dtype=np.uint64)
-        self.opcounts.rename_axis(index="Iteration", inplace=True)
-        self.postprocess_data()
-        self.record()
+        needs_setup = True
+        try:
+            ipns.get_latest_cid(URL)
+            needs_setup = False
+        except IPARONotFoundException:
+            pass
+
+        if not os.path.exists(self.output_path) or needs_setup:
+            if self.env.verbose:
+                print(f"{str(self.env)}: Executing the {self.name()} operation.")
+            for i in range(self.iterations):
+                self.step(i)
+                self.record_iteration(i)
+            self.opcounts = pd.DataFrame(self.data, columns=["IPNS Get", "IPNS Update", "IPFS Store",
+                                                             "IPFS Retrieve"],
+                                         index=pd.RangeIndex(1, self.iterations + 1), dtype=np.uint64)
+            self.opcounts.rename_axis(index="Iteration", inplace=True)
+            self.postprocess_data()
+            self.record()
+        else:
+            print(f"{self.output_path}: Record exists: Skipping")
 
     @abstractmethod
     def step(self, i: int):
@@ -93,11 +106,13 @@ class IterableOperation(Operation):
         pass
 
     def record(self):
+        """
+        Saves the output (and its summary) to a file.
+        """
         self.opcounts.rename_axis(index="Iteration", inplace=True)
         storage_summary = self.opcounts.describe()  # Transpose
-        output_path = f"{str(self.env)}-{self.name()}.txt"
-        self.opcounts.to_csv(output_path)
-        storage_summary.to_csv(output_path, mode="a", header=False)
+        self.opcounts.to_csv(self.output_path)
+        storage_summary.to_csv(self.output_path, mode="a", header=False)
 
 
 class StoreOperation(IterableOperation):
@@ -106,7 +121,7 @@ class StoreOperation(IterableOperation):
         return "Store"
 
     def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+        super().__init__(env, env.version_volume)
         generator = VersionGenerator(env.version_density)
         self.__num_links = []
         self.__nodes = generator.generate(env.version_volume, URL)
@@ -117,7 +132,7 @@ class StoreOperation(IterableOperation):
         """
         self.__nodes[i].seq_num = i
         if i % 100 == 99 and self.env.verbose:
-            print(f"Storing node {i + 1}.")
+            print(f"{str(self.env)}: Storing node {i + 1}.")
         try:
             first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(URL)
             self.__nodes[i].linked_iparos = self.env.linking_strategy.get_candidate_nodes(latest_link, latest_node,

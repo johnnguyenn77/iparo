@@ -35,7 +35,7 @@
 For all the tests besides `SysIPFSDateTest` and `IPAROStrategyTest`, you can
 run:
 ```
-sh run.sh
+sh run-tests.sh
 ```
 Please note that this is only possible in the `backend` directory. To run an
 individual test (including `SysIPFSDateTest` and `IPAROStrategyTest`), use
@@ -66,19 +66,30 @@ To run the simulation, first ensure the proper pre-requisites are installed:
 pip install streamlit altair
 ```
 
-To prepare the simulation, IPAROSimulationWriter.py must first be run. **Please note that it will take a very long time to run the program.**
+To prepare the simulation, you must run `IPAROSimulationWriter.py`.
 
 ```
-cd backend/src/simulation
-python IPAROSimulationWriter.py
+cd backend/src
+python IPAROSimulationWriter.py [options]
 ```
+
+To see the options for this command, run:
+```
+python IPAROSimulationWriter.py -h
+```
+
+If you want to run simulations, you should run:
+```
+sh run.sh
+```
+**Please note that it will take a very long time to run the program.**
 
 To start the simulation:
-
 ```
 cd backend/src
 streamlit run IPAROSimulation.py
 ```
 
 ## Changelog
+**7-9-2025**: Renamed `tests.sh` to `run-tests.sh` and added a batch script `run.sh` for the simulation.
 **6-4-2025**: Renamed tests with systems to start with `Sys`.

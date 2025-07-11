@@ -1,0 +1,5 @@
+-p -o Results/Previous
+-p 2 -o Results/2-Previous
+-p 4 -o Results/4-Previous
+-p 8 -o Results/8-Previous
+-p 16 -o Results/16-Previous
