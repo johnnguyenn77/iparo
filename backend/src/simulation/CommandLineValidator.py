@@ -197,10 +197,11 @@ validator.add_argument("-n", "--number-of-iterations", help="Number of iteration
 validator.add_argument("-O", "--operations", help="""The operation to use. Options are 'first' for get 
                                                  first, 'latest' for get latest, 'time' for get at uniformly 
                                                  distributed time T, 'nth' for get Nth node, and 'list' for list all. 
-                                                 By default, all operations are included in this simulation. Multiple 
-                                                 operation choices are allowed. For instance, '-O list nth' will 
-                                                 simulate the nth and list operations. Repeated operations are not 
-                                                 allowed.""",
+                                                 By default, all operations are included in this simulation and default
+                                                 to the number of iterations (with the exception of 'list', which will
+                                                 always happen 10 times). Multiple operation choices are allowed. For 
+                                                 instance, '-O list nth' will simulate the nth and list operations.
+                                                 Repeated operations are not allowed.""",
                        choices=operation_choices, nargs='*', action='extend')
 validator.add_argument("-v", "--verbose", help="Prints detailed output.", action="store_true")
 validator.add_argument("-i", "--interval", help="""The time interval for simulation.

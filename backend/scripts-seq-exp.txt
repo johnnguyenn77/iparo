@@ -1,5 +1,0 @@
--e 1.25 -o Results/Sequential-Exponential-Base-1.25
--e 1.5 -o Results/Sequential-Exponential-Base-1.5
--e 2 -o Results/Sequential-Exponential-Base-2
--e 3 -o Results/Sequential-Exponential-Base-3
--e 4 -o Results/Sequential-Exponential-Base-4

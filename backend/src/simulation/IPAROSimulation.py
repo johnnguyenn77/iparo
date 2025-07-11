@@ -22,6 +22,9 @@ class IPAROSimulation:
         for op in env.operations:
             self.dispatch(op)
 
+        if self.env.verbose:
+            print(f"{str(self.env)}: Done")
+
     def dispatch(self, operation: str):
         """
         Dispatches an operation based on the operation name.

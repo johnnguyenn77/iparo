@@ -1,3 +1,4 @@
+import gc
 import os.path
 import random
 from abc import abstractmethod
@@ -9,7 +10,7 @@ from simulation.IPAROException import IPARONotFoundException
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.IPFS import ipfs
 from simulation.IPNS import ipns
-from simulation.VersionDensity import VersionGenerator
+from simulation.VersionDensity import VersionGenerator, VersionVolume
 
 URL = "example.com"
 
@@ -65,6 +66,7 @@ class IterableOperation(Operation):
         needs_setup = True
         try:
             ipns.get_latest_cid(URL)
+            reset()
             needs_setup = False
         except IPARONotFoundException:
             pass
@@ -215,10 +217,12 @@ class ListAllOperation(IterableOperation):
     """
 
     def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+        super().__init__(env, 10)
 
     def name(self) -> str:
         return "List"
 
     def step(self, i):
-        ipfs.get_all_iparos(URL)
+        if self.env.verbose:
+            print(f"{str(self.env)}: List All: Iteration {i + 1}")
+        ipfs.get_all_links(URL)

@@ -82,7 +82,14 @@ If you want to run simulations, you should run:
 ```
 sh run.sh
 ```
-**Please note that it will take a very long time to run the program.**
+This should require no more than around 8 GB of RAM.
+For the more memory-intensive simulations, you should run
+```
+sh run-hyperlarge.sh
+```
+
+**Please note that it will use a lot of memory (32 GB of RAM allocated to Linux is recommended). Both of the previous
+two commands above will take a very long time to run.**
 
 To start the simulation:
 ```
