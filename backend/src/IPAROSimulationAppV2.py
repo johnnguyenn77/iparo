@@ -63,10 +63,10 @@ if __name__ == '__main__':
             policy_names.append(filename.name)
 
         cols = st.columns(4)
-        n_strategies = len(policy_names)
+        n_policies = len(policy_names)
         for i in range(4):
             with cols[i] as col:
-                for name in policy_names[i:n_strategies:4]:
+                for name in policy_names[i:n_policies:4]:
                     policies[name] = st.checkbox(name)
 
         submitted = st.form_submit_button()
@@ -93,16 +93,23 @@ if __name__ == '__main__':
         first_col_displayed = ["Uniform", "BHLT"]
         second_col_displayed = ["Linear", "Multipeak"]
         layout = [first_col_displayed, second_col_displayed]
-
+        n_listed_policies = len(listed_policies)
+        n_densities = len(densities)
+        n_op_types = len(op_types)
+        progress_total = (n_densities * n_listed_policies + 4) * n_op_types
+        my_bar = st.progress(0.0, text=f"Gathering data. Please wait... (0 / {progress_total})")
+        progress = 0
         for i, op in enumerate(op_types):
             ctr = st.container()
             partial_dfs = []
             partial_df_iterations = []
             partial_df_summaries = []
 
-            for policy_name in listed_policies:
+            for j, policy_name in enumerate(listed_policies):
                 policy_filename = policy_name_to_file_name(policy_name)
-                for density in densities:
+                for k, density in enumerate(densities):
+                    my_bar.progress(progress / progress_total,
+                                    text=f"Gathering data. Please wait... ({progress} / {progress_total})")
                     filename = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}-{op_types[op]}.csv"
                     partial_df = pd.read_csv(filename)
                     partial_df_iter, partial_df_summary = get_iteration_summary_split(partial_df)
@@ -112,14 +119,14 @@ if __name__ == '__main__':
                     partial_dfs.append(partial_df)
                     partial_df_iterations.append(partial_df_iter)
                     partial_df_summaries.append(partial_df_summary)
+                    progress += 1
 
+            my_bar.progress(progress / progress_total,
+                            text=f"Rendering charts. Please wait... ({progress} / {progress_total})")
             df = pd.concat(partial_dfs)
             df_iter = pd.concat(partial_df_iterations)
             df_summary = pd.concat(partial_df_summaries)
-
-            n_densities = len(densities)
-
-            with (((ctr))):
+            with ctr:
                 st.subheader(op)
                 tab1, tab2, tab3, tab4 = st.tabs(["Results By Strategy 📈", "Results By Iteration 📈",
                                                   "Summary Data 🔢", "Iteration Data 🔢"])
@@ -154,6 +161,9 @@ if __name__ == '__main__':
                                     stroke=None
                                 )
                                 col.altair_chart(chart)
+                progress += 1
+                my_bar.progress(progress / progress_total,
+                                text=f"Rendering charts. Please wait... ({progress} / {progress_total})")
                 with tab2:
                     tabs2 = st.tabs(basic_op_types)
                     for basic_op, tab in zip(basic_op_types, tabs2):
@@ -178,10 +188,24 @@ if __name__ == '__main__':
                                         )
                                         col.altair_chart(chart)
 
+                progress += 1
+                my_bar.progress(progress / progress_total,
+                                text=f"Rendering charts. Please wait... ({progress} / {progress_total})")
                 with tab3:
                     df_summary.rename(columns={"Iteration": "Statistic"}, inplace=True)
                     df_summary.set_index(["Policy", "Density", "Statistic"], inplace=True)
                     tab3.dataframe(df_summary)
+                progress += 1
+                my_bar.progress(progress / progress_total,
+                                text=f"Rendering charts. Please wait... ({progress} / {progress_total})")
                 with tab4:
                     df_iter.set_index(["Policy", "Density", "Iteration"], inplace=True)
                     tab4.dataframe(df_iter)
+                progress += 1
+                my_bar.progress(progress / progress_total,
+                                text=f"Rendering charts. Please wait... ({progress} / {progress_total})")
+
+            my_bar.progress(progress / progress_total,
+                            text=f"Gathering data. Please wait... ({progress} / {progress_total})")
+            if progress == progress_total:
+                my_bar.empty()
