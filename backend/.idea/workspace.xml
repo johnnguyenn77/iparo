@@ -167,8 +167,8 @@
     <list>
       <item itemvalue="Python.IPAROSimulationAppV2" />
       <item itemvalue="Python.SimulationWriter" />
-      <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
       <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
+      <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
       <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
     </list>
   </component>
