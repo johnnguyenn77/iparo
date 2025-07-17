@@ -67,6 +67,8 @@ class IterableOperation(Operation):
         try:
             ipns.get_latest_cid(URL)
             needs_setup = False
+        except IPARONotFoundException:
+            pass  #Ignored
         finally:
             reset()
 
