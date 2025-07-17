@@ -5,24 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/run-tests.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts-comprehensive.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts-max-gap.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts-previous.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts-seq-exp.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/simulation-writer/iparo.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/IPAROSimulationAppV2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/CommandLineParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/CommandLineParser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/CommandLineValidator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/CommandLineValidator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPAROSimulationEnvironment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulationEnvironment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/LinkingStrategy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IPAROSimulationApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/IPAROSimulationApp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/simulation/Operation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/Operation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/CommandLineParserTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/CommandLineParserTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/CommandLineValidatorTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/CommandLineValidatorTest.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,34 +41,61 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.test_command_line_accepts_single.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor&quot;: &quot;Run&quot;,
-    &quot;Python.SimulationWriter.executor&quot;: &quot;Run&quot;,
-    &quot;Python.SimulationWriterV2.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ptl46&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.executor": "Run",
+    "Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.test_command_line_accepts_single.executor": "Run",
+    "Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest.executor": "Run",
+    "Python tests.Python tests for CommandLineVerifierTest.CommandLineParserTest.executor": "Run",
+    "Python tests.Python tests for CommandLineVerifierTest.CommandLineValidatorTest.executor": "Run",
+    "Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest.executor": "Run",
+    "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
+    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
+    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor": "Run",
+    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor": "Run",
+    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor": "Run",
+    "Python.IPAROSimulationAppV2.executor": "Run",
+    "Python.SimulationWriter.executor": "Run",
+    "Python.SimulationWriterV2.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "ptl46",
+    "last_opened_file_path": "C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src\simulation" />
       <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.SimulationWriter">
+  <component name="RunManager" selected="Python.IPAROSimulationAppV2">
+    <configuration name="IPAROSimulationAppV2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/IPAROSimulationAppV2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="SimulationWriter" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
@@ -135,21 +148,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="Python tests for IPAROStrategyTest.IPAROStrategyTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
@@ -166,19 +164,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.IPAROSimulationAppV2" />
       <item itemvalue="Python.SimulationWriter" />
       <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
-      <item itemvalue="Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest" />
       <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
       <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.IPAROSimulationAppV2" />
         <item itemvalue="Python.SimulationWriter" />
         <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
         <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
         <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
-        <item itemvalue="Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest" />
       </list>
     </recent_temporary>
   </component>

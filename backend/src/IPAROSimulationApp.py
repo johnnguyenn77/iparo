@@ -6,9 +6,6 @@ if __name__ == '__main__':
     st.set_page_config(layout="wide")
     st.title("IPARO Simulation App")
 
-    # df_store = pd.read_csv("../results/store.csv", delimiter="\t")
-    df_retrieve = pd.read_csv("../results/retrieve.csv", delimiter="\t")
-    df_store_opcounts = pd.read_csv("../results/store_opcounts.csv", delimiter="\t")
     with st.expander("About this app"):
         st.text("This app lets the user compare linking strategies in the simulation under different testing "
                 "environments.")

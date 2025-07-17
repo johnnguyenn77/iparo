@@ -57,7 +57,7 @@ class IterableOperation(Operation):
         self.iterations = iterations or env.iterations
         self.opcounts = None
         self.data = np.zeros((self.iterations, 4))
-        self.output_path = f"{str(self.env)}-{self.name()}.txt"
+        self.output_path = f"{str(self.env)}-{self.name()}.csv"
 
     def execute(self):
         """
@@ -66,10 +66,9 @@ class IterableOperation(Operation):
         needs_setup = True
         try:
             ipns.get_latest_cid(URL)
-            reset()
             needs_setup = False
-        except IPARONotFoundException:
-            pass
+        finally:
+            reset()
 
         if not os.path.exists(self.output_path) or needs_setup:
             if self.env.verbose:
