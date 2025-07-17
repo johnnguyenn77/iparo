@@ -56,7 +56,6 @@ if __name__ == '__main__':
     scales = ["Single", "Small", "Medium", "Large", "Hyperlarge"]
 
     with st.form('form'):
-        scale = st.selectbox("Select Scale", scales)
         st.subheader("Choose your Linking Policies")
         # Pass 1: Get all names of files
         for filename in os.scandir(RESULTS_FOLDER):
@@ -68,7 +67,7 @@ if __name__ == '__main__':
             with cols[i] as col:
                 for name in policy_names[i:n_policies:4]:
                     policies[name] = st.checkbox(name)
-
+        scale = st.selectbox("Select Scale", scales)
         submitted = st.form_submit_button()
 
     # Melt the dataframe. ID by policy, scale, and operation.
@@ -134,7 +133,8 @@ if __name__ == '__main__':
                 df_long_filtered = {density: df_long[df_long["Density"] == density] for density in densities}
                 dfs_filtered = {density: df_iter[df_iter["Density"] == density] for density in densities}
                 basic_op_types = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve"]
-                print(dfs_filtered)
+                if op == 'Store Nodes':
+                    basic_op_types.append("Links")
                 with tab1:
                     cols = st.columns(2)
 

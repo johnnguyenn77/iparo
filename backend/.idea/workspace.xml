@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/IPAROSimulationAppV2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/IPAROSimulationAppV2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,8 +167,8 @@
     <list>
       <item itemvalue="Python.IPAROSimulationAppV2" />
       <item itemvalue="Python.SimulationWriter" />
-      <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
       <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
+      <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
       <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
     </list>
   </component>
