@@ -1,0 +1,21 @@
+import streamlit as st
+
+if __name__ == '__main__':
+    st.title("Home")
+    st.text("The IPARO Simulation App lets users compare different linking strategies "
+            "to see the number of operations under different testing environments and "
+            "different scales. The terminology will be captured below:")
+    st.markdown("""
+    - **Big Head Long Tail (BHLT)**: A version density whose time distribution is defined by a big head
+    (meaning that a significant chunk of IPAROs will have a time on one side) and a long tail (meaning 
+    that the median time for the IPAROs in the IPFS is far from the mode).
+    - **Density**: A version density represents the distribution with respect to the time.
+    - **Policy**: A way to store the links along with the IPAROs. Minimizing the links and the
+    number of retrievals required is important to maintaining a fast and reliable database
+    in the IPFS.
+    - **Scale**: The scale defines the number of IPAROs in the IPFS.
+    - **Space-Time Tradeoff**: A phenomenon where the amount of storage space required,
+    represented by the number of links stored in the IPFS at the given scale, is balanced
+    with the number of link traversals required to retrieve an IPARO object in the IPFS
+    with a uniformly distributed time or sequence number.
+    """)
