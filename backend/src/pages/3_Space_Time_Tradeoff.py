@@ -157,10 +157,18 @@ def spacetime_tradeoff():
                 ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
                 st.altair_chart(chart4)
             with tab4:
+                ranked_df_time.drop(columns=["IPFS Retrieve (Sequence Number)"], inplace=True)
+                ranked_df_time["Rank"] = ranked_df_time.groupby("Density")["Tradeoff"].rank(method="dense").astype(int)
+                ranked_df_time.set_index(["Density", "Policy"], inplace=True)
+                ranked_df_time.sort_values(["Density", "Tradeoff"], inplace=True)
                 st.subheader("Retrieval by Time Tradeoff")
-                st.dataframe(ranked_df_time, hide_index=True)
+                st.dataframe(ranked_df_time)
                 st.subheader("Retrieval by Sequence Number Tradeoff")
-                st.dataframe(ranked_df_seq_num, hide_index=True)
+                ranked_df_seq_num["Rank"] = ranked_df_seq_num.groupby("Density")["Tradeoff"].rank(
+                    method="dense").astype(int)
+                ranked_df_seq_num.set_index(["Density", "Policy"], inplace=True)
+                ranked_df_seq_num.sort_values(["Density", "Tradeoff"], inplace=True)
+                st.dataframe(ranked_df_seq_num)
 
 
 if __name__ == '__main__':
