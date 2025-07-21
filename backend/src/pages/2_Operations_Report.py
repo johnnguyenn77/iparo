@@ -1,44 +1,29 @@
 import streamlit as st
 import altair as alt
 import os.path
-from reports.utils import *
+
+from components.CheckboxGroup import CheckboxGroup
+from components.utils import *
 
 
 def operations_report():
-    op_types = {
-        "Get First Node": "First",
-        "Get Latest Node": "Latest",
-        "List All Nodes": "List",
-        "Get Nth Node": "Nth",
-        "Get Node at Time T": "Time",
-        "Store Nodes": "Store"
-    }
+    st.set_page_config(page_title="Operations Report", page_icon="⚙️")
 
     with st.expander("About this page"):
         st.text("This page lets the user compare linking strategies in the simulation under different testing "
                 "environments (under the same scale), with respect to all the basic operations (IPFS Store and "
                 "Retrieve operations, and the IPNS Get and Update operations), as well as the number of links "
-                "stored for Store operations.")
-
-    policies = {}
-    policy_names = []
-    listed_policies = []
-    scales = ["Single", "Small", "Medium", "Large", "Hyperlarge"]
+                "stored for Store operations. For the purposes of this report, for each density, the distribution "
+                "is assumed to have an interval of 1000 seconds, besides the case for Multipeak which is a mixture "
+                "of two normal distributions, one with a mean of 0 seconds and a standard deviation of 30 seconds, and "
+                "the other with a mean of 100 seconds and a standard deviation of 40 seconds.")
 
     error_message = st.empty()
+    policies_group = CheckboxGroup(POLICIES, "Choose your Linking Policies", help=POLICIES_HELP)
     with st.form('form'):
-        st.subheader("Choose your Linking Policies")
         # Pass 1: Get all names of files
-        for filename in os.scandir(RESULTS_FOLDER):
-            policy_names.append(filename.name)
-
-        cols = st.columns(4)
-        n_policies = len(policy_names)
-        for i in range(4):
-            with cols[i] as col:
-                for name in policy_names[i:n_policies:4]:
-                    policies[name] = st.checkbox(name)
-        scale = st.selectbox("Select Scale", scales)
+        policies_group.display()
+        scale = st.selectbox("Select Scale", SCALES)
         submitted = st.form_submit_button()
 
     # Melt the dataframe. ID by policy, scale, and operation.
@@ -50,39 +35,31 @@ def operations_report():
 
     if submitted:
         # Handle logic of checking for every strategy.
-        densities = ["Uniform", "Linear", "BHLT", "Multipeak"]
-        for policy_name in policy_names:
-            if policies[policy_name]:
-                policy_name_to_file_name(policy_name)
-                listed_policies.append(policy_name)
-
+        listed_policies = policies_group.get_value()
         if not listed_policies:
-            error_message.error("You must select at least one linking policy to compare.")
+            error_message.error("You must select at least one linking policy to view.")
         else:
             st.header("Operations")
             # For each operation, do a container. This container will encapsulate one "operation."
 
             # Setup "Grid" Layout (no supporting functionality sadly, but I can perhaps do a makeshift version.)
-            first_col_displayed = ["Uniform", "BHLT"]
-            second_col_displayed = ["Linear", "Multipeak"]
-            layout = [first_col_displayed, second_col_displayed]
             n_listed_policies = len(listed_policies)
-            n_densities = len(densities)
-            n_op_types = len(op_types)
+            n_densities = len(DENSITIES)
+            n_op_types = len(OP_TYPES)
             progress_total = (n_densities * n_listed_policies + 4) * n_op_types
             my_bar = st.progress(0.0, text=f"Gathering data. Please wait... (0 / {progress_total})")
             progress = 0
-            for i, op in enumerate(op_types):
+            for i, op in enumerate(OP_TYPES):
                 ctr = st.container()
                 partial_df_iterations = []
                 partial_df_summaries = []
 
                 for j, policy_name in enumerate(listed_policies):
                     policy_filename = policy_name_to_file_name(policy_name)
-                    for k, density in enumerate(densities):
+                    for k, density in enumerate(DENSITIES):
                         my_bar.progress(progress / progress_total,
                                         text=f"Gathering data. Please wait... ({progress} / {progress_total})")
-                        filename = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}-{op_types[op]}.csv"
+                        filename = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}-{OP_TYPES[op]}.csv"
                         partial_df = pd.read_csv(filename)
                         partial_df_iter, partial_df_summary = get_iteration_summary_split(partial_df)
                         partial_df_iter = partial_df_iter.assign(Policy=policy_name, Density=density)

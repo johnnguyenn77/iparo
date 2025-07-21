@@ -1,4 +1,0 @@
-
-
-# def spacetime_tradeoff():
-#
