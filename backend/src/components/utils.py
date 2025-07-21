@@ -31,6 +31,7 @@ def policy_name_to_file_name(policy_name: str):
 
 # Helpful constants
 SCALES = ["Single", "Small", "Medium", "Large", "Hyperlarge"]
+SCALES_DICT = dict(zip(SCALES, [1, 10, 100, 1000, 10000]))
 DENSITIES = ["Uniform", "Linear", "BHLT", "Multipeak"]
 NUM_COLUMNS = 2
 
