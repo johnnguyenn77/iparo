@@ -88,7 +88,8 @@ def spacetime_tradeoff():
 
             st.header("Output")
             # Next, visualize.
-            tab1, tab2 = st.tabs(["Results 📈", "Data 🔢"])
+            tab1, tab2, tab3, tab4 = st.tabs(["Scatterplot Results 📈", "Scatterplot Data 🔢",
+                                              "Ranked Results 🏆", "Ranking Data 🔢"])
             scale_type: Literal['symlog', 'identity'] = "symlog" if log_scale else "identity"
             store_retrieve_df = store_df.join([retrieval_time_df, retrieval_nth_df]
                                               ).filter(like=statistic, axis=0).reset_index()
@@ -113,6 +114,53 @@ def spacetime_tradeoff():
                 st.altair_chart(chart2)
             with tab2:
                 st.dataframe(store_retrieve_df, hide_index=True)
+            with (tab3):
+                st.text("The space-time tradeoff is calculated using the product of the retrieval cost "
+                        "(in IPFS link traversals) and the amount of storage space.")
+
+                ranked_df_time = store_retrieve_df.copy()
+                ranked_df_time['Tradeoff'] = ranked_df_time.apply(lambda x: x['Links'] * x['IPFS Retrieve (Time)'],
+                                                                  axis=1)
+                ranked_df_time.sort_values('Tradeoff', inplace=True)
+                chart3 = alt.Chart(ranked_df_time,
+                                   title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Time) - "
+                                                         f"{aggregate_names[statistic]}")
+                                   ).mark_bar().encode(
+                    x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                   op='sum',
+                                                                   order='ascending')),
+
+                    y=alt.Y("Tradeoff:Q"),
+                    color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
+                    column=alt.Column("Density:O")
+                ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                st.altair_chart(chart3)
+
+                ranked_df_seq_num = store_retrieve_df.copy()
+                ranked_df_seq_num['Tradeoff'] = ranked_df_time.apply(lambda x: x['Links'] *
+                                                                               x['IPFS Retrieve (Sequence Number)'],
+                                                                     axis=1)
+                ranked_df_seq_num['Rank'] = ranked_df_time.rank
+                ranked_df_seq_num.sort_values(['Density', 'Tradeoff'], inplace=True)
+
+                chart4 = alt.Chart(ranked_df_seq_num,
+                                   title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Sequence "
+                                                         f"Number) - {aggregate_names[statistic]}")
+                                   ).mark_bar().encode(
+                    x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                   op='sum',
+                                                                   order='ascending')),
+
+                    y=alt.Y("Tradeoff:Q"),
+                    color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
+                    column=alt.Column("Density:O")
+                ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                st.altair_chart(chart4)
+            with tab4:
+                st.subheader("Retrieval by Time Tradeoff")
+                st.dataframe(ranked_df_time, hide_index=True)
+                st.subheader("Retrieval by Sequence Number Tradeoff")
+                st.dataframe(ranked_df_seq_num, hide_index=True)
 
 
 if __name__ == '__main__':
