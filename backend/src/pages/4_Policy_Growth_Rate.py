@@ -35,66 +35,38 @@ def policy_growth_rate():
         submitted = st.form_submit_button()
 
     if submitted:
-        # .transpose().reset_index().rename(
-        #     columns={"index": "Status", "25%": "q1", "50%": "median", "75%": "q3"}).replace(np.nan, 0).astype(
-        #     {"count": int, "min": int, "max": int})
         listed_policies = policy_group.get_value()
-        if not listed_policies:
-            error_message.error("You must select at least one linking policy to view.")
+        listed_densities = density_group.get_value()
+        if not listed_policies or not listed_densities:
+            error_message.error("You must select at least one linking policy and one version density to view "
+                                "growth rates.")
         else:
-            time_retrieval_df = get_summary_data(listed_policies, "Time")
-            nth_retrieval_df = get_summary_data(listed_policies, "Nth")
-            store_df = get_summary_data(listed_policies, "Store", col_index=5)
-            store_retrievals_df = get_summary_data(listed_policies, "Store")
-            
+            time_retrieval_df = get_summary_data(listed_policies, listed_densities, "Time")
+            nth_retrieval_df = get_summary_data(listed_policies, listed_densities, "Nth")
+            store_df = get_summary_data(listed_policies, listed_densities, "Store", col_index=5)
+            store_retrievals_df = get_summary_data(listed_policies, listed_densities, "Store")
+
+            width = 45 * len(listed_policies)
             plot_store_links = LayeredBoxPlot(store_df, "IPFS Storage Performance - Links", "Policy:N",
                                               "Link Count Per Node", log_scale=log_scale)
+            plot_store_links.set_width(width)
             plot_store_links.display()
 
             plot_store_retrievals = LayeredBoxPlot(store_retrievals_df, "IPFS Storage Performance - Links",
                                                    "Policy:N", "IPFS Retrievals Per Store Operation",
                                                    log_scale=log_scale)
+            plot_store_retrievals.set_width(width)
             plot_store_retrievals.display()
 
             plot_retrieve_time = LayeredBoxPlot(time_retrieval_df, "IPFS Time Retrieval Performance", "Policy:N",
                                                 "IPFS Retrievals", log_scale=log_scale)
+            plot_retrieve_time.set_width(width)
             plot_retrieve_time.display()
 
             plot_retrieve_nth = LayeredBoxPlot(nth_retrieval_df, "IPFS Time Retrieval Performance", "Policy:N",
                                                "IPFS Retrievals", log_scale=log_scale)
+            plot_retrieve_nth.set_width(width)
             plot_retrieve_nth.display()
-
-        #     store_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-        #     retrieval_nth_df = pd.concat(partial_nth_retrieval_dfs)
-        #     retrieval_nth_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-        #     retrieval_time_df = pd.concat(partial_time_retrieval_dfs)
-        #     retrieval_time_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-        #
-        #     st.header("Output")
-        #     # Next, visualize.
-        #     tab1, tab2 = st.tabs(["Results 📈", "Data 🔢"])
-        #     scale_type: Literal['symlog', 'identity'] = "symlog" if log_scale else "identity"
-        #     with tab1:
-        #         chart = alt.Chart(store_retrieve_df,
-        #                           title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance - "
-        #                                                 f"{aggregate_names[statistic]}")).mark_point().encode(
-        #             x=alt.X("Links:Q", title="IPFS Links Per Node").scale(type=scale_type),
-        #             y=alt.Y("IPFS Retrieve (Time):Q").scale(type=scale_type),
-        #             color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
-        #             shape=alt.Shape("Density:O", legend=alt.Legend(labelLimit=400))
-        #         )
-        #         st.altair_chart(chart)
-        #         chart2 = alt.Chart(store_retrieve_df,
-        #                            title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance - "
-        #                                                  f"{aggregate_names[statistic]}")).mark_point().encode(
-        #             x=alt.X("Links:Q", title="IPFS Links Per Node").scale(type=scale_type),
-        #             y=alt.Y("IPFS Retrieve (Sequence Number):Q").scale(type=scale_type),
-        #             color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
-        #             shape=alt.Shape("Density:O", legend=alt.Legend(labelLimit=400)),
-        #         )
-        #         st.altair_chart(chart2)
-        #     with tab2:
-        #         st.dataframe(store_retrieve_df, hide_index=True)
 
 
 if __name__ == '__main__':

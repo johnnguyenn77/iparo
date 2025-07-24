@@ -5,7 +5,7 @@ import altair as alt
 import streamlit as st
 
 from components.Component import Component
-from components.utils import SCALES, DENSITIES, SCALES_DICT, drop_index_cols
+from components.utils import SCALES, drop_index_cols
 
 
 class LayeredBoxPlot(Component):
@@ -25,7 +25,7 @@ class LayeredBoxPlot(Component):
         self.data = summary
         self.chart = alt.LayerChart(summary).encode(
             x=x,
-            color=alt.Color(x),
+            color=alt.Color(x, legend=alt.Legend(labelLimit=400)),
             tooltip=[x, alt.Tooltip("count:Q", format=","),
                      alt.Tooltip("mean:Q", format=",.2f"),
                      alt.Tooltip("min:Q", format=","), alt.Tooltip("q1:Q", format=",.2f"),
@@ -39,12 +39,14 @@ class LayeredBoxPlot(Component):
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        ).facet(column=alt.Column("Scale:N", sort=SCALES), row="Density:N", title=title)
+        ).facet(column=alt.Column("Scale:N", sort=SCALES), row="Density:N", title=title
+                ).configure_axisX(labelLimit=400)
         # proportional to number of rows, divided by the number of scales and the number of densities.
-        self.chart.spec.width = 45 * summary.shape[0] / (len(SCALES) * len(DENSITIES))
+
+    def set_width(self, width: float):
+        self.chart.spec.width = width
 
     def display(self):
-
         tabs = st.tabs(["Results By Strategy 📈", "Summary Data 🔢"])
         with tabs[0]:
             st.altair_chart(self.chart, use_container_width=True)

@@ -18,7 +18,7 @@ def get_iteration_summary_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Data
     return df_iter, df_summary
 
 
-def get_summary_data(policy_names: list[str], operation: str, col_index: int = 4):
+def get_summary_data(policy_names: list[str], listed_densities: list[str], operation: str, col_index: int = 4):
     """
     Gets the summary data conveniently located at the bottom of the CSV file.
 
@@ -29,7 +29,7 @@ def get_summary_data(policy_names: list[str], operation: str, col_index: int = 4
     partial_dfs = []
     for policy_name in policy_names:
         for scale in SCALES:
-            for density in DENSITIES:
+            for density in listed_densities:
                 policy_filename = policy_name_to_file_name(policy_name)
                 filename_prefix = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}"
 
