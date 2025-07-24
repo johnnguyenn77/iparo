@@ -18,6 +18,36 @@ def get_iteration_summary_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Data
     return df_iter, df_summary
 
 
+def get_summary_data(policy_names: list[str], operation: str, col_index: int = 4):
+    """
+    Gets the summary data conveniently located at the bottom of the CSV file.
+
+    :param policy_names: The name of every policy listed (defined as a folder in the 'Results' directory).
+    :param operation: The operation, capitalized. This parameter is case-sensitive.
+    :param col_index: The column index, which defaults to 4 (IPFS Retrieve index) for retrieval operations.
+    """
+    partial_dfs = []
+    for policy_name in policy_names:
+        for scale in SCALES:
+            for density in DENSITIES:
+                policy_filename = policy_name_to_file_name(policy_name)
+                filename_prefix = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}"
+
+                # Get number of iterations based on operation
+
+                # Technically, List only runs for 10 operations, but we don't use it for grabbing the summary,
+                # so we need not worry about that case.
+                n_iter = SCALES_DICT[scale] if operation == "Store" else 100
+                partial_df = (pd.read_csv(f"{filename_prefix}-{operation}.csv",
+                                          skiprows=n_iter, usecols=[0, col_index], index_col=0).transpose()
+                              .assign(Policy=policy_name, Scale=scale, Density=density)
+                              .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"})
+                              .set_index(['Policy', 'Scale', 'Density'], drop=False))
+                partial_dfs.append(partial_df)
+    df = pd.concat(partial_dfs)
+    return df
+
+
 def policy_name_to_file_name(policy_name: str):
     path = os.path.join(RESULTS_FOLDER, policy_name)
     my_dir = pathlib.Path(path)
@@ -28,6 +58,7 @@ def policy_name_to_file_name(policy_name: str):
     # Strip the portion to the right of the filename.
     filename = first_file[:policy_length]
     return filename
+
 
 # Helpful constants
 SCALES = ["Single", "Small", "Medium", "Large", "Hyperlarge"]
@@ -49,6 +80,10 @@ for filename in os.scandir(RESULTS_FOLDER):
     POLICIES.add(filename.name)
 
 
+def drop_index_cols(df: pd.DataFrame):
+    return df.drop(columns=["Policy", "Density", "Scale"])
+
+
 def temp_min_gap_help(seconds: int):
     return (f"A strategy that prioritizes each node that is at least {seconds} seconds apart, "
             "but also includes the first and previous nodes.")
@@ -68,14 +103,17 @@ def sequential_exponential_help(k: float):
             f"difference in sequence number is a power of {k}, rounded down to an integer. All intermediate "
             f"multiplications in calculating the powers of {k} are not rounded.")
 
+
 def sequential_max_gap_help(k: float):
     return (f"A strategy where the number of hops from each node to any prior node is guaranteed "
             f"to be no greater than {k}.")
+
 
 def temp_uniform_help(k: int):
     return (f"A strategy that uses the links to the previous node, the first node, and the {k} prior nodes that are "
             f"uniformly spaced in the window of time between the first node and the previous node, meaning "
             f"up to {k + 2} links are stored with the node.")
+
 
 def sequential_uniform_help(k: int):
     return (f"A strategy that uses the links to the previous node, the first node, and the {k} prior nodes that are "
@@ -87,6 +125,7 @@ def temp_exponential_help(k: float):
     return (f"A strategy that uses the links to the previous node, the first node, and the prior nodes whose "
             f"difference in time is a power of {k} times the base time unit (1 second). All intermediate "
             f"multiplications in calculating the powers of {k} are not rounded.")
+
 
 POLICIES_HELP = {
     "Single": "A strategy that only links to the previous node.",

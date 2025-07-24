@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/Component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/LayeredBoxPlot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/3_Space_Time_Tradeoff.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/3_Space_Time_Tradeoff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run-hyperlarge.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run-hyperlarge.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IPAROSimulationApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/IPAROSimulationApp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/CheckboxGroup.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/CheckboxGroup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

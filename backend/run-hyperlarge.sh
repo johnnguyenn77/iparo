@@ -1,7 +1,7 @@
 #!/bin/bash
 
 comprehensive="-c -o Results/Comprehensive"
-maxgap="-g 2 -o Results/Sequential-2-Max-Gap"
+maxgap2="-g 2 -o Results/Sequential-2-Max-Gap"
 maxgap4="-g 4 -o Results/Sequential-4-Max-Gap"
 pythoncmd="python src/SimulationWriter.py -v -V hyperlarge"
 
@@ -21,11 +21,11 @@ $pythoncmd -b 20 $maxgap4 &
 $pythoncmd -m 0.5 0 30 -m 0.5 100 40 $maxgap4 &
 wait
 
-$pythoncmd $maxgap &
-$pythoncmd -l 2 $maxgap &
+$pythoncmd $maxgap2 &
+$pythoncmd -l 2 $maxgap2 &
 wait
-$pythoncmd -b 20 $maxgap &
-$pythoncmd -m 0.5 0 30 -m 0.5 100 40 $maxgap &
+$pythoncmd -b 20 $maxgap2 &
+$pythoncmd -m 0.5 0 30 -m 0.5 100 40 $maxgap2 &
 wait
 
 $pythoncmd $comprehensive

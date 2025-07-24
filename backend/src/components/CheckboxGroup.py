@@ -1,8 +1,10 @@
 import streamlit as st
+
+from components.Component import Component
 from components.utils import NUM_COLUMNS
 
 
-class CheckboxGroup:
+class CheckboxGroup(Component):
     """
     A checkbox group is a group of checkbox objects
     laid out in four columns.
