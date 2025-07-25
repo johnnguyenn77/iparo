@@ -176,7 +176,10 @@ class MultipeakVersionDensity(VersionDensity):
 
         # Normalize
         self.weights /= np.sum(self.weights)
-        choices = np.random.choice(np.arange(n_distributions), size=n, p=self.weights)
+        choices = np.random.choice(np.arange(n_distributions), size=n, p=self.weights)  # in seconds
         results = arr[choices, np.arange(n)]
+
+        # Multiplying a normal distribution by any number changes the mean and SD by that factor.
+        results *= TimeUnit.SECONDS
 
         return results
