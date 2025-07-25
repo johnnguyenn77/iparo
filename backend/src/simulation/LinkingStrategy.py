@@ -237,7 +237,7 @@ class TemporallyExponentialStrategy(LinkingStrategy):
 
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         # Exponential time gaps - assume number of nodes >= 1
-        gap = self.time_unit
+        gap = self.time_unit * TimeUnit.SECONDS
         time_window = latest_iparo.timestamp - first_link.timestamp
         gaps = []
         while gap < time_window:
