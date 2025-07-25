@@ -10,7 +10,7 @@ for line in "${arr[@]}"; do
    $pythoncmd $line &
    $pythoncmd -l 2 $line &
    $pythoncmd -b 20 $line &
-   $pythoncmd -m 0.5 0 30 -m 0.5 100 40 $line &
+   $pythoncmd -m 0.5 0 300 -m 0.5 1000 400 $line &
    wait
 done
 
@@ -18,17 +18,17 @@ $pythoncmd $maxgap4 &
 $pythoncmd -l 2 $maxgap4 &
 wait
 $pythoncmd -b 20 $maxgap4 &
-$pythoncmd -m 0.5 0 30 -m 0.5 100 40 $maxgap4 &
+$pythoncmd -m 0.5 0 300 -m 0.5 1000 400 $maxgap4 &
 wait
 
 $pythoncmd $maxgap2 &
 $pythoncmd -l 2 $maxgap2 &
 wait
 $pythoncmd -b 20 $maxgap2 &
-$pythoncmd -m 0.5 0 30 -m 0.5 100 40 $maxgap2 &
+$pythoncmd -m 0.5 0 300 -m 0.5 1000 400 $maxgap2 &
 wait
 
 $pythoncmd $comprehensive
 $pythoncmd -l 2 $comprehensive
 $pythoncmd -b 20 $comprehensive
-$pythoncmd -m 0.5 0 30 -m 0.5 100 40 $comprehensive
+$pythoncmd -m 0.5 0 300 -m 0.5 1000 400 $comprehensive

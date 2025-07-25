@@ -44,7 +44,11 @@ class IntervalVersionDensity(VersionDensity, ABC):
     """
 
     def __init__(self, interval: float = 1000):
-        self._interval = interval
+        """
+        Initializes the interval.
+        :param interval: The interval in seconds.
+        """
+        self._interval = interval * TimeUnit.SECONDS
 
 
 class VersionGenerator:
