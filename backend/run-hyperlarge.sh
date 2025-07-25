@@ -6,7 +6,8 @@ maxgap4="-g 4 -o Results/Sequential-4-Max-Gap"
 pythoncmd="python src/SimulationWriter.py -v -V hyperlarge"
 
 IFS=$'\n' read -d '' -ra arr <<< $(grep -F -v -f memory-intensive-scripts.txt max-gap-scripts.txt)
-for line in "${arr[@]}"; do
+for line in "${arr[@]}"
+do
    $pythoncmd $line &
    $pythoncmd -l 2 $line &
    $pythoncmd -b 20 $line &
