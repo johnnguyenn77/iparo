@@ -7,7 +7,7 @@ from components.utils import *
 
 
 def operations_report():
-    st.set_page_config(page_title="Operations Report", page_icon="⚙️")
+    st.set_page_config(page_title="Operations Report")
 
     with st.expander("About this page"):
         st.text("This page lets the user compare linking strategies in the simulation under different testing "

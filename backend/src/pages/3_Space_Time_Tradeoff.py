@@ -1,6 +1,5 @@
 from typing import Literal
 
-import pandas as pd
 import streamlit as st
 import altair as alt
 
@@ -25,15 +24,15 @@ def spacetime_tradeoff():
     density_group = CheckboxGroup(DENSITIES, "Choose your Version Densities",
                                   help=density_help)
 
-    aggregate_names = {"min": "Minimum", "25%": "1st Quartile", "50%": "Median",
-                       "75%": "3rd Quartile", "max": "Maximum", "mean": "Mean"}
+    aggregate_names = {"min": "Minimum", "q1": "1st Quartile", "median": "Median",
+                       "q3": "3rd Quartile", "max": "Maximum", "mean": "Mean"}
     with st.form('form'):
         # Pass 1: Get all names of files
         policy_group.display()
         density_group.display()
         scale = st.selectbox("Select Scale", SCALES)
-        statistic = st.selectbox("Choose Aggregation Function", ["mean", "min", "25%", "50%", "75%", "max"],
-                                 format_func=lambda x: aggregate_names[x])
+        statistic = st.selectbox("Choose Aggregation Function for IPFS Retrieval",
+                                 ["mean", "min", "q1", "median", "q3", "max"], format_func=lambda x: aggregate_names[x])
         log_scale = st.checkbox("Logarithmic Scale", help="Enables both the x-axis and y-axis to be displayed with "
                                                           "a symmetric logarithmic scale.")
         submitted = st.form_submit_button()
@@ -44,131 +43,132 @@ def spacetime_tradeoff():
         if not listed_policies or not version_densities:
             error_message.error("You must select at least one linking policy and one version density to view.")
         else:
-            partial_nth_retrieval_dfs = []
-            partial_time_retrieval_dfs = []
-            partial_store_dfs = []
-            for policy_name in listed_policies:
-                policy_filename = policy_name_to_file_name(policy_name)
-                for density in version_densities:
-                    filename_prefix = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}"
-
-                    # Statistic = 0, IPFS Retrieve = 4
-                    partial_time_retrieval_df = pd.read_csv(f"{filename_prefix}-Time.csv",
-                                                            skiprows=100, usecols=[0, 4])
-
-                    partial_time_retrieval_df.columns = ["Statistic", "IPFS Retrieve (Time)"]
-                    partial_time_retrieval_df["Policy"] = policy_name
-                    partial_time_retrieval_df["Density"] = density
-
-                    # Statistic = 0, IPFS Retrieve = 4
-                    partial_nth_retrieval_df = pd.read_csv(f"{filename_prefix}-Nth.csv",
-                                                           skiprows=100, usecols=[0, 4])
-
-                    partial_nth_retrieval_df.columns = ["Statistic", "IPFS Retrieve (Sequence Number)"]
-                    partial_nth_retrieval_df["Policy"] = policy_name
-                    partial_nth_retrieval_df["Density"] = density
-
-                    # Statistic = 0, Links = 5
-                    partial_store_df = pd.read_csv(f"{filename_prefix}-Store.csv",
-                                                   skiprows=SCALES_DICT[scale], usecols=[0, 5])
-                    partial_store_df.columns = ["Statistic", "Links"]
-                    partial_store_df["Policy"] = policy_name
-                    partial_store_df["Density"] = density
-
-                    partial_store_dfs.append(partial_store_df)
-                    partial_time_retrieval_dfs.append(partial_time_retrieval_df)
-                    partial_nth_retrieval_dfs.append(partial_nth_retrieval_df)
-
-            store_df = pd.concat(partial_store_dfs)
-            store_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-            retrieval_nth_df = pd.concat(partial_nth_retrieval_dfs)
-            retrieval_nth_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-            retrieval_time_df = pd.concat(partial_time_retrieval_dfs)
-            retrieval_time_df.set_index(["Policy", "Density", "Statistic"], inplace=True)
-
+            scales = [scale]
+            nth_retrieval_df = get_summary_data(listed_policies, version_densities, "Time", scales)
+            time_retrieval_df = get_summary_data(listed_policies, version_densities, "Nth", scales)
+            store_df = get_summary_data(listed_policies, version_densities, "Store", scales,
+                                        col_index=BasicOpType.LINKS)
             st.header("Output")
-            # Next, visualize.
+            nth_retrieval_df = rename_nonindex_columns(nth_retrieval_df, " (Nth)")
+            time_retrieval_df = rename_nonindex_columns(time_retrieval_df, " (Time)")
+            store_df = rename_nonindex_columns(store_df, " (Store)")
             tab1, tab2, tab3, tab4 = st.tabs(["Scatterplot Results 📈", "Scatterplot Data 🔢",
                                               "Ranked Results 🏆", "Ranking Data 🔢"])
             scale_type: Literal['symlog', 'identity'] = "symlog" if log_scale else "identity"
-            store_retrieve_df = store_df.join([retrieval_time_df, retrieval_nth_df]
-                                              ).filter(like=statistic, axis=0).reset_index()
+            store_retrieve_df = store_df.join([drop_index_cols(time_retrieval_df), drop_index_cols(nth_retrieval_df)])
+
             with tab1:
                 chart = alt.Chart(store_retrieve_df,
-                                  title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance - "
-                                                        f"{aggregate_names[statistic]}")).mark_point().encode(
-                    x=alt.X("Links:Q", title="IPFS Links Per Node").scale(type=scale_type),
-                    y=alt.Y("IPFS Retrieve (Time):Q").scale(type=scale_type),
+                                  title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance (Time) - "
+                                                        f"{aggregate_names[statistic]}", align='center',
+                                  anchor="middle", fontSize=20)).mark_point().encode(
+                    x=alt.X(f"mean (Store):Q", title="Mean IPFS Links Per Node").scale(type=scale_type),
+                    y=alt.Y(f"{statistic} (Time):Q", title="IPFS Retrieve (Time)").scale(type=scale_type),
                     color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
                     shape=alt.Shape("Density:O", legend=alt.Legend(labelLimit=400))
                 )
                 st.altair_chart(chart)
                 chart2 = alt.Chart(store_retrieve_df,
-                                   title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance - "
-                                                         f"{aggregate_names[statistic]}")).mark_point().encode(
-                    x=alt.X("Links:Q", title="IPFS Links Per Node").scale(type=scale_type),
-                    y=alt.Y("IPFS Retrieve (Sequence Number):Q").scale(type=scale_type),
+                                   title=alt.TitleParams(f"Link Storage vs. IPFS Retrieval Performance (Nth) - "
+                                                         f"{aggregate_names[statistic]}", align='center',
+                                                         anchor="middle", fontSize=20)).mark_point().encode(
+                    x=alt.X(f"mean (Store):Q", title="Mean IPFS Links Per Node").scale(type=scale_type),
+                    y=alt.Y(f"{statistic} (Nth):Q", title="IPFS Retrieve (Nth)").scale(type=scale_type),
                     color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
                     shape=alt.Shape("Density:O", legend=alt.Legend(labelLimit=400)),
                 )
                 st.altair_chart(chart2)
             with tab2:
-                st.dataframe(store_retrieve_df, hide_index=True)
-            with (tab3):
+                st.dataframe(drop_index_cols(store_retrieve_df))
+            with tab3:
                 st.text("The space-time tradeoff is calculated using the product of the retrieval cost "
-                        "(in IPFS link traversals) and the amount of storage space.")
+                        "(in IPFS link traversals) and the mean amount of storage space.")
 
                 ranked_df_time = store_retrieve_df.copy()
-                ranked_df_time['Tradeoff'] = ranked_df_time.apply(lambda x: x['Links'] * x['IPFS Retrieve (Time)'],
+                ranked_df_time['Tradeoff'] = ranked_df_time.apply(lambda x: x[f'mean (Store)'] *
+                                                                            x[f'{statistic} (Time)'],
                                                                   axis=1)
                 ranked_df_time.sort_values('Tradeoff', inplace=True)
-                chart3 = alt.Chart(ranked_df_time,
-                                   title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Time) - "
-                                                         f"{aggregate_names[statistic]}")
-                                   ).mark_bar().encode(
-                    x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
-                                                                   op='sum',
-                                                                   order='ascending')),
+                if len(listed_policies) > 1:
+                    chart3 = alt.Chart(ranked_df_time,
+                                       title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Time) - "
+                                                             f"{aggregate_names[statistic]}",
+                                                             align='center', anchor="middle", fontSize=20)
+                                       ).mark_bar().encode(
+                        x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                       op='sum',
+                                                                       order='ascending')),
 
-                    y=alt.Y("Tradeoff:Q"),
-                    color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
-                    column=alt.Column("Density:O")
-                ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                        y=alt.Y("Tradeoff:Q").scale(type=scale_type),
+                        color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
+                        column=alt.Column("Density:O")
+                    ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                else:
+                    chart3 = alt.Chart(ranked_df_time,
+                                       title=alt.TitleParams(f"{listed_policies[0]}: IPFS Retrieval Tradeoff (Time) - "
+                                                             f"{aggregate_names[statistic]}", align='center',
+                                                             anchor="middle", fontSize=20)
+                                       ).mark_bar().encode(
+                        x=alt.X("Density:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                        op='sum',
+                                                                        order='ascending')),
+
+                        y=alt.Y("Tradeoff:Q").scale(type=scale_type),
+                        color=alt.Color("Density:O", legend=alt.Legend(labelLimit=400)))
                 st.altair_chart(chart3)
 
+                ranked_df_time = store_retrieve_df.copy()
+                ranked_df_time['Tradeoff'] = ranked_df_time.apply(lambda x: x[f'mean (Store)'] *
+                                                                            x[f'{statistic} (Time)'],
+                                                                  axis=1)
+                ranked_df_time.sort_values('Tradeoff', inplace=True)
+
                 ranked_df_seq_num = store_retrieve_df.copy()
-                ranked_df_seq_num['Tradeoff'] = ranked_df_time.apply(lambda x: x['Links'] *
-                                                                               x['IPFS Retrieve (Sequence Number)'],
-                                                                     axis=1)
-                ranked_df_seq_num['Rank'] = ranked_df_time.rank
-                ranked_df_seq_num.sort_values(['Density', 'Tradeoff'], inplace=True)
+                ranked_df_seq_num['Tradeoff'] = store_retrieve_df.apply(
+                    lambda x: x[f'mean (Store)'] * x[f'{statistic} (Nth)'], axis=1)
+                ranked_df_seq_num.sort_values('Tradeoff', inplace=True)
+                if len(listed_policies) > 1:
+                    chart4 = alt.Chart(ranked_df_seq_num,
+                                       title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Sequence "
+                                                             f"Number) - {aggregate_names[statistic]}",
+                                                             align='center', anchor="middle", fontSize=20)
+                                       ).mark_bar().encode(
+                        x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                       op='sum',
+                                                                       order='ascending')),
 
-                chart4 = alt.Chart(ranked_df_seq_num,
-                                   title=alt.TitleParams(f"Linking Strategy vs. IPFS Retrieval Tradeoff (Sequence "
-                                                         f"Number) - {aggregate_names[statistic]}")
-                                   ).mark_bar().encode(
-                    x=alt.X("Policy:N", sort=alt.EncodingSortField(field='Tradeoff',
-                                                                   op='sum',
-                                                                   order='ascending')),
+                        y=alt.Y("Tradeoff:Q").scale(type=scale_type),
+                        color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
+                        column=alt.Column("Density:O")
+                    ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                else:
+                    chart4 = alt.Chart(ranked_df_time,
+                                       title=alt.TitleParams(f"{listed_policies[0]}: IPFS Retrieval Tradeoff "
+                                                             f"(Sequence Number) - {aggregate_names[statistic]}",
+                                                             align='center', anchor="middle", fontSize=20)
+                                       ).mark_bar().encode(
+                        x=alt.X("Density:N", sort=alt.EncodingSortField(field='Tradeoff',
+                                                                        op='sum',
+                                                                        order='ascending')),
 
-                    y=alt.Y("Tradeoff:Q"),
-                    color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400)),
-                    column=alt.Column("Density:O")
-                ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                        y=alt.Y("Tradeoff:Q").scale(type=scale_type),
+                        color=alt.Color("Density:O", legend=alt.Legend(labelLimit=400)))
                 st.altair_chart(chart4)
             with tab4:
-                ranked_df_time.drop(columns=["IPFS Retrieve (Sequence Number)"], inplace=True)
-                ranked_df_time["Rank"] = ranked_df_time.groupby("Density")["Tradeoff"].rank(method="dense").astype(int)
-                ranked_df_time.set_index(["Density", "Policy"], inplace=True)
-                ranked_df_time.sort_values(["Density", "Tradeoff"], inplace=True)
                 st.subheader("Retrieval by Time Tradeoff")
-                st.dataframe(ranked_df_time)
+                ranked_df_time = rank_and_sort_tradeoff(ranked_df_time)
+                ranked_df_time_display = ranked_df_time[['Policy', 'Density', f'{statistic} (Store)',
+                                                         f'{statistic} (Time)', 'Tradeoff', 'Rank']].rename(
+                    columns={f'{statistic} (Store)': f'{aggregate_names[statistic]} (Links)',
+                             f'{statistic} (Time)': f'{aggregate_names[statistic]} (IPFS Retrieve - Time)'})
+                st.dataframe(ranked_df_time_display)
                 st.subheader("Retrieval by Sequence Number Tradeoff")
-                ranked_df_seq_num["Rank"] = ranked_df_seq_num.groupby("Density")["Tradeoff"].rank(
-                    method="dense").astype(int)
-                ranked_df_seq_num.set_index(["Density", "Policy"], inplace=True)
-                ranked_df_seq_num.sort_values(["Density", "Tradeoff"], inplace=True)
-                st.dataframe(ranked_df_seq_num)
+                ranked_df_seq_num = rank_and_sort_tradeoff(ranked_df_seq_num)
+                ranked_df_seq_num_display = ranked_df_seq_num[['Policy', 'Density', f'{statistic} (Store)',
+                                                               f'{statistic} (Nth)', 'Tradeoff', 'Rank']].rename(
+                    columns={f'{statistic} (Store)': f'{aggregate_names[statistic]} (Links)',
+                             f'{statistic} (Nth)': f'{aggregate_names[statistic]} (IPFS Retrieve - Nth)'})
+                st.dataframe(ranked_df_seq_num_display)
 
 
 if __name__ == '__main__':

@@ -1,8 +1,4 @@
-from typing import Literal
-
-import pandas as pd
 import streamlit as st
-import altair as alt
 
 from components.CheckboxGroup import CheckboxGroup
 from components.LayeredBoxPlot import LayeredBoxPlot
@@ -52,7 +48,8 @@ def policy_growth_rate():
             plot_store_links.set_width(width)
             plot_store_links.display()
 
-            plot_store_retrievals = LayeredBoxPlot(store_retrievals_df, "IPFS Storage Performance - Links",
+            plot_store_retrievals = LayeredBoxPlot(store_retrievals_df, "IPFS Storage Performance - "
+                                                                        "Retrievals Per Store Operation",
                                                    "Policy:N", "IPFS Retrievals Per Store Operation",
                                                    log_scale=log_scale)
             plot_store_retrievals.set_width(width)

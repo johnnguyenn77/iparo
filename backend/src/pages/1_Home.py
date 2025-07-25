@@ -1,7 +1,7 @@
 import streamlit as st
 
 if __name__ == '__main__':
-    st.set_page_config(page_title="Home", page_icon="🏠")
+    st.set_page_config(page_title="Home")
     st.title("Home")
     st.text("The IPARO Simulation App lets users compare different linking strategies "
             "to see the number of operations under different testing environments and "

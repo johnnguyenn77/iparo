@@ -1,9 +1,18 @@
 import os
 import pathlib
+from enum import IntEnum
 
 import pandas as pd
 
 RESULTS_FOLDER = "../results"
+
+
+class BasicOpType(IntEnum):
+    IPNS_GET = 1
+    IPNS_UPDATE = 2
+    IPFS_STORE = 3
+    IPFS_RETRIEVE = 4
+    LINKS = 5
 
 
 def get_iteration_summary_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -18,17 +27,23 @@ def get_iteration_summary_split(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Data
     return df_iter, df_summary
 
 
-def get_summary_data(policy_names: list[str], listed_densities: list[str], operation: str, col_index: int = 4):
+def get_summary_data(policy_names: list[str], listed_densities: list[str], operation: str,
+                     scales: list[str] | None = None, col_index: BasicOpType = BasicOpType.IPFS_RETRIEVE):
     """
     Gets the summary data conveniently located at the bottom of the CSV file.
 
     :param policy_names: The name of every policy listed (defined as a folder in the 'Results' directory).
+    :param listed_densities: The name of every listed density.
     :param operation: The operation, capitalized. This parameter is case-sensitive.
-    :param col_index: The column index, which defaults to 4 (IPFS Retrieve index) for retrieval operations.
+    :param scales: The scales to iterate through, defaults to SCALES.
+    :param col_index: The column index.
     """
+    if scales is None:
+        scales = SCALES
+
     partial_dfs = []
     for policy_name in policy_names:
-        for scale in SCALES:
+        for scale in scales:
             for density in listed_densities:
                 policy_filename = policy_name_to_file_name(policy_name)
                 filename_prefix = f"{RESULTS_FOLDER}/{policy_name}/{policy_filename}-{scale}-{density}"
@@ -172,3 +187,21 @@ POLICIES_HELP = {
     "Temporally-Exponential-Base-3": temp_exponential_help(3),
     "Temporally-Exponential-Base-4": temp_exponential_help(4)
 }
+
+
+def rename_nonindex_columns(df: pd.DataFrame, suffix: str) -> pd.DataFrame:
+    """
+    Rename all non-index columns to allow the .join() method to operate on more than two dataframes.
+    """
+    return df.rename(columns=lambda col: col + suffix if col not in df.index.names else col)
+
+
+def rank_and_sort_tradeoff(df: pd.DataFrame):
+    """
+    Post-processing step for ranking and sorting the space-time tradeoff dataframes.
+    """
+    ranked_df = drop_index_cols(df)
+    ranked_df["Rank"] = ranked_df.groupby("Density")["Tradeoff"].rank(method="dense").astype(int)
+    ranked_df.reset_index(["Density", "Policy"], inplace=True)
+    ranked_df.sort_values(["Density", "Tradeoff"], inplace=True)
+    return ranked_df

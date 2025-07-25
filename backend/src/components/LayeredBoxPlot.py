@@ -39,7 +39,8 @@ class LayeredBoxPlot(Component):
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        ).facet(column=alt.Column("Scale:N", sort=SCALES), row="Density:N", title=title
+        ).facet(column=alt.Column("Scale:N", sort=SCALES), row="Density:N",
+                title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20)
                 ).configure_axisX(labelLimit=400)
         # proportional to number of rows, divided by the number of scales and the number of densities.
 
