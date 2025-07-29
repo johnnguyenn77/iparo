@@ -134,7 +134,7 @@ class StoreOperation(IterableOperation):
         """
         self.__nodes[i].seq_num = i
         if i % 100 == 99 and self.env.verbose:
-            print(f"{str(self.env)}: Storing node {i + 1}.")
+            print(f"{str(self.env.linking_strategy)}-{str(self.env)}: Storing node {i + 1}.")
         try:
             first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(URL)
             self.__nodes[i].linked_iparos = self.env.linking_strategy.get_candidate_nodes(latest_link, latest_node,
