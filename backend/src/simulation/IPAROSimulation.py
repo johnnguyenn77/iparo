@@ -23,7 +23,7 @@ class IPAROSimulation:
             self.dispatch(op)
 
         if self.env.verbose:
-            print(f"{str(self.env)}: Done")
+            print(f"{str(self.env.linking_strategy)}, {str(self.env)}: Done")
 
     def dispatch(self, operation: str):
         """

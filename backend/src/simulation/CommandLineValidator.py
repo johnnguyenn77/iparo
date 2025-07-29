@@ -199,11 +199,11 @@ version_density_exclusive_group.add_argument("-m", "--multipeak", help="""Multip
                                              metavar=("weight", "mean", "sd"), nargs=3, action="append",
                                              type=check_float)
 
-validator.add_argument("-n", "--number-of-iterations", help="Number of iterations. Default is 100. Note "
+validator.add_argument("-n", "--number-of-iterations", help="Number of iterations. Default is 10. Note "
                                                             "that this only affects the operations done after storing, "
                                                             "which means the number of iterations for the storage "
                                                             "depends on the version volume.",
-                       default=100, type=check_positive_int, metavar="iterations", dest="iterations")
+                       default=10, type=check_positive_int, metavar="iterations", dest="iterations")
 validator.add_argument("-O", "--operations", help="""The operation to use. Options are 'first' for get 
                                                  first, 'latest' for get latest, 'time' for get at uniformly 
                                                  distributed time T, 'nth' for get Nth node, and 'list' for list all. 

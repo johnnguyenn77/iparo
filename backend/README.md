@@ -85,7 +85,7 @@ sh run.sh
 This should require no more than around 8 GB of RAM.
 For the more memory-intensive simulations, you should run
 ```
-sh run-hyperlarge.sh
+sh run-huge.sh
 ```
 
 **Please note that it will use a lot of memory (32 GB of RAM allocated to Linux is recommended). Both of the previous

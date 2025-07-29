@@ -47,9 +47,8 @@ class CommandLineParser:
         Parses version volume
         """
         args = self.args
-        volume = args.volume.upper()
 
-        return VersionVolume[volume]
+        return args.volume
 
     def parse_density(self) -> VersionDensity:
         """
