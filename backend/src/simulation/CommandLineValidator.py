@@ -2,6 +2,8 @@ import os
 from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
 
+from simulation.VersionDensity import VersionVolume
+
 operation_choices = ["first", "latest", "time", "nth", "list"]
 
 
@@ -40,11 +42,20 @@ def check_predicate(val, pred):
     """
     fval = check_float(val)
     if not pred(fval):
-        raise ArgumentTypeError(f"{val}")
+        raise ArgumentTypeError(str(val))
     return fval
 
 
 # Helper predicates
+
+
+def check_version_volume(x: str) -> int:
+    if x.isdecimal():
+        return int(x)
+    elif x.lower() in ['single', 'small', 'medium', 'large', 'huge']:
+        return VersionVolume[x.upper()]
+    raise ArgumentTypeError(str(x))
+
 
 def check_greater_than_zero(x):
     return check_predicate(x, lambda x: x > 0)
@@ -145,13 +156,12 @@ policy_exclusive_group.add_argument("-E", "--tempexp", help="Temporally exponent
 
 # Version Volume group - case-insensitive
 volume_group = validator.add_argument("-V", "--volume", help="The version volume (or scale) used for the "
-                                                             "testing environment. Default is medium. The single "
-                                                             "version volume is 1 node, the small volume is 10 nodes, "
-                                                             "the medium volume is 100 nodes, large is 1000 nodes, "
-                                                             "and hyper-large is 10000 nodes.",
-                                      default="medium", choices=["single", "small", "medium", "large", "hyper_large",
-                                                                 "hyperlarge"], type=lambda x: x.lower())
-
+                                                             "testing environment. Default is 100. The single "
+                                                             "version volume is defined as 1 node, the small volume is"
+                                                             "defined as 10 nodes, the medium volume is 100 nodes, "
+                                                             "large is 1000 nodes, and huge is 10000 nodes.",
+                                      default="medium",
+                                      type=check_version_volume)
 # Version Density group
 version_density_group = validator.add_argument_group("Version Density", "The version density to use for "
                                                                         "the simulation. Default is uniformly "

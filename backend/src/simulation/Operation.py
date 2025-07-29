@@ -1,4 +1,3 @@
-import gc
 import os.path
 import random
 from abc import abstractmethod
@@ -10,7 +9,7 @@ from simulation.IPAROException import IPARONotFoundException
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.IPFS import ipfs
 from simulation.IPNS import ipns
-from simulation.VersionDensity import VersionGenerator, VersionVolume
+from simulation.VersionDensity import VersionGenerator
 
 URL = "example.com"
 
@@ -68,7 +67,7 @@ class IterableOperation(Operation):
             ipns.get_latest_cid(URL)
             needs_setup = False
         except IPARONotFoundException:
-            pass  #Ignored
+            pass  # Ignored
         finally:
             reset()
 

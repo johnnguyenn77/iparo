@@ -1,5 +1,5 @@
--c -o Results/Comprehensive
--g 2 -o Results/Sequential-2-Max-Gap
--g 4 -o Results/Sequential-4-Max-Gap
--g 8 -o Results/Sequential-8-Max-Gap
--g 16 -o Results/Sequential-16-Max-Gap
+-c -o 'Results/Sequential S-Max-Gap/Comprehensive'
+-g 2 -o 'Results/Sequential S-Max-Gap/2'
+-g 4 -o 'Results/Sequential S-Max-Gap/4'
+-g 8 -o 'Results/Sequential S-Max-Gap/8'
+-g 16 -o 'Results/Sequential S-Max-Gap/16'

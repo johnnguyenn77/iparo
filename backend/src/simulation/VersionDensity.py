@@ -16,7 +16,7 @@ class VersionVolume(IntEnum):
     SMALL = 10
     MEDIUM = 100
     LARGE = 1000
-    HYPER_LARGE = 10000
+    HUGE = 10000
 
 
 class VersionDensity(ABC):

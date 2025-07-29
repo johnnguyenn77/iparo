@@ -22,6 +22,4 @@ class IPAROSimulationEnvironment:
     def __str__(self):
         name = self.version_volume.name
         name = name[0].upper() + name[1:].lower()
-        if name == "Hyper_large":
-            name = "Hyperlarge"
-        return f"{str(self.linking_strategy)}-{name}-{str(self.version_density)}"
+        return f"{name}-{str(self.version_density)}"

@@ -11,7 +11,7 @@ def validate(args) -> bool:
         args = validator.parse_args(args)
         post_validate(args)
     except SystemExit as e:
-        return e.code == 0  #
+        return e.code == 0
     except ArgumentTypeError:
         return False
     except TypeError:
@@ -242,16 +242,12 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid = validate(["-s", "-V", "large"])
         self.assertTrue(is_valid)
 
-    def test_command_line_accepts_hyper_large_volume(self):
-        is_valid = validate(["-s", "-V", "hyper_large"])
-        self.assertTrue(is_valid)
-
-    def test_command_line_accepts_hyper_large_volume_alias(self):
-        is_valid = validate(["-s", "-V", "hyperlarge"])
+    def test_command_line_accepts_huge_volume(self):
+        is_valid = validate(["-s", "-V", "huge"])
         self.assertTrue(is_valid)
 
     def test_command_line_accepts_case_insensitive_volume_alias(self):
-        is_valid = validate(["-s", "-V", "HYPERLARGE"])
+        is_valid = validate(["-s", "-V", "HUGE"])
         self.assertTrue(is_valid)
 
     def test_command_line_does_not_accept_unrecognized_input(self):

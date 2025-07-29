@@ -121,12 +121,8 @@ class CommandLineParserTest(unittest.TestCase):
         self.assertEqual(volume, VersionVolume.LARGE)
 
     def test_can_parse_hyper_large_volume(self):
-        volume = get_relevant_output(["-s", "-V", "hyper_large"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.HYPER_LARGE)
-
-    def test_can_parse_hyper_large_volume_alias(self):
-        volume = get_relevant_output(["-s", "-V", "hyperlarge"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.HYPER_LARGE)
+        volume = get_relevant_output(["-s", "-V", "huge"], action=get_volume)
+        self.assertEqual(volume, VersionVolume.HUGE)
 
     def test_can_parse_linear_version_density(self):
         density = get_relevant_output(["-s", "-l", "2"], action=get_density)

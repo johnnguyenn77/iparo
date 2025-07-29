@@ -48,8 +48,6 @@ class CommandLineParser:
         """
         args = self.args
         volume = args.volume.upper()
-        if volume == "HYPERLARGE":
-            volume = "HYPER_LARGE"
 
         return VersionVolume[volume]
 

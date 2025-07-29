@@ -4,11 +4,9 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 
-from components.Component import Component
-from components.utils import SCALES, drop_index_cols
 
 
-class LayeredBoxPlot(Component):
+class LayeredBoxPlot:
 
     def __init__(self, summary: pd.DataFrame, title: str, x: str, y_title: str, log_scale: bool):
         """
@@ -52,4 +50,4 @@ class LayeredBoxPlot(Component):
         with tabs[0]:
             st.altair_chart(self.chart, use_container_width=True)
         with tabs[1]:
-            st.dataframe(drop_index_cols(self.data))
+            st.dataframe(self.data)

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 comprehensive="-c -o Results/Comprehensive"
-maxgap2="-g 2 -o Results/Sequential-2-Max-Gap"
-maxgap4="-g 4 -o Results/Sequential-4-Max-Gap"
+maxgap2="-g 2 -o Results/Sequential-Max-Gap/2"
+maxgap4="-g 4 -o Results/Sequential-Max-Gap/4"
 pythoncmd="python src/SimulationWriter.py -v -V hyperlarge"
 
 IFS=$'\n' read -d '' -ra arr <<< $(grep -F -v -f memory-intensive-scripts.txt max-gap-scripts.txt)
