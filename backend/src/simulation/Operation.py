@@ -73,7 +73,7 @@ class IterableOperation(Operation):
 
         if not os.path.exists(self.output_path) or needs_setup:
             if self.env.verbose:
-                print(f"{str(self.env)}: Executing the {self.name()} operation.")
+                print(f"{str(self.env.linking_strategy)}-{str(self.env)}: Executing the {self.name()} operation.")
             for i in range(self.iterations):
                 self.step(i)
                 self.record_iteration(i)
