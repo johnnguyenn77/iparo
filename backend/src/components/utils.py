@@ -1,18 +1,39 @@
 from enum import IntEnum
 from pathlib import Path
+from typing import Literal
 
 import pandas as pd
 
 RESULTS_FOLDER = Path("../results")
 
-SCALES = ["Single", "Small", "Medium", "Large", "Huge"]
-SCALES_DICT = {k: v for k, v in zip(SCALES, [1, 10, 100, 1000, 10000])}
+SCALES = [1, 10, 100, 1000, 10000]
+DENSITIES = ["BHLT", "Linear", "Multipeak", "Uniform"]
+ACTIONS = ["Iteration", "IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
+POLICY_GROUPS_FILES = {subpath.name:
+                           [param for param in subpath.iterdir() if param.is_dir()]
+                       for subpath in RESULTS_FOLDER.iterdir() if subpath.is_dir()}
 POLICY_GROUPS = {subpath.name:
-                     [param for param in subpath.iterdir() if param.is_dir()]
+                     [param.name for param in subpath.iterdir() if param.is_dir()]
                  for subpath in RESULTS_FOLDER.iterdir() if subpath.is_dir()}
 
+POLICY_GROUP_COMBINATIONS = [(group, param)
+                             for group, params in POLICY_GROUPS.items()
+                             for param in params]
+COLOR_SCHEME = "category10"
+COLOR_SCHEME_PAIRED = "tableau20"
+NUM_COLUMNS = 3
+DENSITIES_HELP = {"BHLT": "Big Head Long Tail, which is a scaled and shifted loguniform distribution with "
+                          "20 as its parameter.",
+                  "Linear": "A distribution where the later nodes are more densely distributed "
+                            "than the earlier nodes.",
+                  "Multipeak": ("A mixture of two normal distributions, one with a mean "
+                                "of 0 seconds and a standard deviation of 300 seconds, and "
+                                "the other with a mean of 1000 seconds and a standard deviation "
+                                "of 400 seconds.")}
 
-class BasicOpType(IntEnum):
+
+class Action(IntEnum):
+    ITERATION_NUMBER = 0
     IPNS_GET = 1
     IPNS_UPDATE = 2
     IPFS_STORE = 3
@@ -20,37 +41,60 @@ class BasicOpType(IntEnum):
     LINKS = 5
 
 
-def get_summary_data(policy_group_names: list[str],
+def get_summary_data(policies: pd.DataFrame,
                      listed_densities: list[str],
                      operation: str,
                      scales: list[str] | None = None,
-                     col_index: BasicOpType = BasicOpType.IPFS_RETRIEVE):
+                     actions: list[Action] | None = None,
+                     agg_func: Literal['mean', 'max', 'median', 'all'] = 'all') -> pd.Series | pd.DataFrame:
     """
     Gets the summary data conveniently located at the bottom of the CSV file.
 
-    :param policy_group_names: The name of every policy listed (defined as a folder in the 'Results' directory).
+    :param policies: The name of all listed densities (defined as a nx2 DataFrame whose columns are 'Group' and 'Param')
     :param listed_densities: The name of every listed density.
     :param operation: The operation, capitalized. This parameter is case-sensitive.
     :param scales: The scales to iterate through, defaults to SCALES.
-    :param col_index: The column index.
+    :param actions: The action indices, which defaults to [Action.IPFS_RETRIEVE]. Index 0 is automatically added.
+    :param agg_func: The aggregate function. Currently set to mean by default.
     """
-    if scales is None:
-        scales = SCALES
-
     partial_dfs = []
 
-    for policy_group in policy_group_names:
-        for policy_param in POLICY_GROUPS[policy_group]:
-            for scale in scales:
-                for density in listed_densities:
-                    # Get number of iterations based on operation
-                    n_iter = SCALES_DICT[scale] if operation == "Store" else 10
-                    filename = f"{policy_group}/{policy_param}/{scale}-{density}-{operation}.csv"
-                    partial_df = (pd.read_csv(filename,
-                                              skiprows=n_iter, usecols=[0, col_index], index_col=0).transpose()
-                                  .assign(Group=policy_group, Param=policy_param, Scale=scale, Density=density)
-                                  .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"})
-                                  .set_index(['Policy', 'Scale', 'Density'], drop=False))
+    if actions is None:
+        actions = [Action.IPFS_RETRIEVE]
+    actions.append(Action.ITERATION_NUMBER)
+    if scales is None:
+        scales = SCALES
+    for i, row in policies.iterrows():
+        policy_group = row['Group']
+        policy_param = row['Param']
+        for scale in scales:
+            for density in listed_densities:
+                # Get number of iterations based on operation
+                n_iter = scale if operation == "Store" else 10
+                filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
+                partial_df = (pd.read_csv(filename,
+                                          skiprows=n_iter, usecols=actions, index_col=0).transpose()
+                              .assign(Group=policy_group, Param=policy_param, Scale=scale, Density=density)
+                              .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"})
+                              .set_index(['Group', 'Param', 'Scale', 'Density'], drop=False))
+                if agg_func != 'all':
+                    partial_dfs.append(partial_df[agg_func])
+                else:
                     partial_dfs.append(partial_df)
     df = pd.concat(partial_dfs)
     return df
+
+
+def capitalize(x: str):
+    return x[0].upper() + x[1:].lower()
+
+
+def rank_and_sort_tradeoff(df: pd.DataFrame):
+    """
+    Post-processing step for ranking and sorting the space-time tradeoff dataframes.
+    """
+    ranked_df = df.copy()
+    ranked_df.set_index(["Policy", "Environment"])
+    ranked_df["Rank"] = ranked_df.groupby("Environment")["Tradeoff"].rank(method="dense").astype(int)
+    ranked_df.sort_values(["Environment", "Tradeoff"], inplace=True)
+    return ranked_df
