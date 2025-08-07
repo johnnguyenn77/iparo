@@ -2,7 +2,6 @@ import streamlit as st
 from streamlit import session_state as ss
 import altair as alt
 
-from components.CheckboxGroup import CheckboxGroup
 from components.utils import *
 
 
@@ -43,11 +42,13 @@ def spacetime_tradeoff():
     if 'selected_policies' not in st.session_state:
         st.switch_page('pages/2_Select_Policies.py')
 
+    st.title("Space-Time Tradeoff")
     with st.form('environment_form'):
-        st.header("Select Environment")
+        st.header("Choose Environment")
         statistic: Literal['mean', 'median', 'max'] = st.selectbox("Select Aggregation Function",
                                                                    ['mean', 'median', 'max'], format_func=capitalize)
         scale: int = st.selectbox("Select Scale", SCALES)
+        st.markdown("#### Graph Display Options")
         log_scale = st.checkbox("Logarithmic Scale", help="Displays the graphs with a symmetric log-scale x-axis and "
                                                           "y-axis.")
         submitted = st.form_submit_button()
@@ -60,7 +61,7 @@ def spacetime_tradeoff():
             scale_type: Literal['identity', 'symlog'] = 'symlog' if log_scale else 'identity'
             df1 = get_summary_data(policies_selected, DENSITIES, 'Store', [scale],
                                    [Action.LINKS], agg_func=statistic)
-            df1.name = "IPFS Links Per Node"
+            df1.name = "IPFS Links Per IPARO"
             df2 = get_summary_data(policies_selected, DENSITIES, 'Nth', [scale],
                                    [Action.IPFS_RETRIEVE], agg_func=statistic)
             df2.name = "IPFS Retrieves (Nth)"
@@ -69,11 +70,8 @@ def spacetime_tradeoff():
             df3.name = "IPFS Retrieves (Time)"
             df_combined = pd.concat([df1, df2, df3], axis=1)
             df = df_combined.reset_index()
-            df_long = (df.drop(columns='Scale').melt(['Group', 'Param', 'Density', 'IPFS Links Per Node']))
-            df_long.loc[df_long.Param == 'None', 'Policy'] = df_long.Group
-            df_long.loc[df_long.Param != 'None', 'Policy'] = df_long.Group + " - " + df_long.Param
-            df_long = (df_long.assign(Environment=lambda x: x.Density + " - " + x.variable)
-                       .drop(columns=["Group", "Param"]))
+            df_long = (df.drop(columns='Scale').melt(['Policy', 'Density', 'IPFS Links Per IPARO'])
+                       .assign(Environment=lambda x: x.Density + " - " + x.variable))
             st.header("Output")
             st.subheader("Space-Time Tradeoff")
             tabs = st.tabs(["Scatterplot Results 📈", "Scatterplot Data 🔢"])
@@ -82,7 +80,7 @@ def spacetime_tradeoff():
                                                                  f"Performance - {formatted_statistic}",
                                                                  align='center', anchor="middle",
                                                                  fontSize=20)).mark_point().encode(
-                    x=alt.X("IPFS Links Per Node:Q", title="IPFS Links Per Node").scale(type=scale_type),
+                    x=alt.X("IPFS Links Per IPARO:Q", title="IPFS Links Per IPARO").scale(type=scale_type),
                     color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
                                     scale=alt.Scale(scheme=COLOR_SCHEME)),
                     shape=alt.Shape("Environment:O", legend=alt.Legend(labelLimit=400)),
@@ -97,7 +95,7 @@ def spacetime_tradeoff():
                     "(in IPFS link traversals) and the mean amount of storage space.")
             st.markdown("#### Time Retrievals")
             tabs_ranked_time = st.tabs(["Ranked Results 🏆", "Ranking Data 🔢"])
-            df_ranked = df_long.assign(Tradeoff=lambda x: x['IPFS Links Per Node'] * x.value
+            df_ranked = df_long.assign(Tradeoff=lambda x: x['IPFS Links Per IPARO'] * x.value
                                        ).sort_values('Tradeoff')
             with tabs_ranked_time[0]:
                 df_ranked_time: pd.DataFrame = df_ranked.loc[df_ranked.variable == "IPFS Retrieves (Time)"]

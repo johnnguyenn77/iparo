@@ -2,13 +2,15 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Literal
 
+import numpy as np
 import pandas as pd
 
 RESULTS_FOLDER = Path("../results")
 
+OP_TYPES = ["First", "Latest", "List", "Nth", "Store", "Time"]
 SCALES = [1, 10, 100, 1000, 10000]
 DENSITIES = ["BHLT", "Linear", "Multipeak", "Uniform"]
-ACTIONS = ["Iteration", "IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
+ACTIONS = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
 POLICY_GROUPS_FILES = {subpath.name:
                            [param for param in subpath.iterdir() if param.is_dir()]
                        for subpath in RESULTS_FOLDER.iterdir() if subpath.is_dir()}
@@ -33,22 +35,26 @@ DENSITIES_HELP = {"BHLT": "Big Head Long Tail, which is a scaled and shifted log
 
 
 class Action(IntEnum):
-    ITERATION_NUMBER = 0
     IPNS_GET = 1
     IPNS_UPDATE = 2
     IPFS_STORE = 3
     IPFS_RETRIEVE = 4
     LINKS = 5
 
+ACTION_LIST = [ACTIONS[action - 1] for action in Action]
+
 
 def get_summary_data(policies: pd.DataFrame,
                      listed_densities: list[str],
                      operation: str,
                      scales: list[str] | None = None,
-                     actions: list[Action] | None = None,
-                     agg_func: Literal['mean', 'max', 'median', 'all'] = 'all') -> pd.Series | pd.DataFrame:
+                     actions: list[int | Action] | None = None,
+                     agg_func: Literal['mean', 'max', 'median', 'all'] = 'all',
+                     analyze_all_iterations: bool = False) -> pd.Series | pd.DataFrame:
     """
-    Gets the summary data conveniently located at the bottom of the CSV file.
+    Gets the summary data from the generated CSV files. The default setting is to analyze the summary
+    conveniently located at the bottom of the CSV file, but it can also analyze all iterations instead, and
+    in doing so, ignores the ``agg_func`` argument.
 
     :param policies: The name of all listed densities (defined as a nx2 DataFrame whose columns are 'Group' and 'Param')
     :param listed_densities: The name of every listed density.
@@ -56,12 +62,14 @@ def get_summary_data(policies: pd.DataFrame,
     :param scales: The scales to iterate through, defaults to SCALES.
     :param actions: The action indices, which defaults to [Action.IPFS_RETRIEVE]. Index 0 is automatically added.
     :param agg_func: The aggregate function. Currently set to mean by default.
+    :param analyze_all_iterations: Whether to analyze all iterations instead of just the summary.
     """
     partial_dfs = []
 
     if actions is None:
         actions = [Action.IPFS_RETRIEVE]
-    actions.append(Action.ITERATION_NUMBER)
+    actions.append(0)
+    index = ['Policy', 'Scale', 'Density']
     if scales is None:
         scales = SCALES
     for i, row in policies.iterrows():
@@ -72,16 +80,27 @@ def get_summary_data(policies: pd.DataFrame,
                 # Get number of iterations based on operation
                 n_iter = scale if operation == "Store" else 10
                 filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
-                partial_df = (pd.read_csv(filename,
-                                          skiprows=n_iter, usecols=actions, index_col=0).transpose()
-                              .assign(Group=policy_group, Param=policy_param, Scale=scale, Density=density)
-                              .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"})
-                              .set_index(['Group', 'Param', 'Scale', 'Density'], drop=False))
-                if agg_func != 'all':
-                    partial_dfs.append(partial_df[agg_func])
+                policy_name = policy_group + " - " + policy_param if policy_param != "None" else policy_group
+                if analyze_all_iterations:
+                    index.append('Iteration')
+                    partial_df = (pd.read_csv(filename, nrows=n_iter, usecols=actions)
+                                  .assign(Iteration=pd.Series(np.arange(1, n_iter + 1)), Policy=policy_name,
+                                          Scale=scale, Density=density))
                 else:
+                    partial_df = (pd.read_csv(filename, skiprows=n_iter, usecols=actions, index_col=0).transpose()
+                                  .assign(Policy=policy_name, Scale=scale, Density=density)
+                                  .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"}))
+                    if len(actions) > 2:
+                        index.append('Action')
+
+                partial_df = partial_df.set_index(index, drop=False)
+
+                if agg_func == 'all' or analyze_all_iterations:
                     partial_dfs.append(partial_df)
+                else:
+                    partial_dfs.append(partial_df[agg_func])
     df = pd.concat(partial_dfs)
+
     return df
 
 
