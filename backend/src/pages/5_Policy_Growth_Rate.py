@@ -29,34 +29,29 @@ def policy_growth_rate():
         store_df = get_summary_data(policies_selected, listed_densities,
                                     "Store", actions=[Action.LINKS])
         store_retrievals_df = get_summary_data(policies_selected, listed_densities, "Store")
-    
-        width = 35 * n_policies_selected
-    
+
         st.header("Store Operations")
         st.subheader("Link Storage Performance")
         plot_store_links = LayeredBoxPlot(store_df, "IPFS Storage Performance - Links", "Policy:N",
-                                          "Link Count Per Node", log_scale=log_scale)
-        plot_store_links.set_width(width)
+                                          "Link Count Per Node", log_scale=log_scale, n=n_policies_selected)
         plot_store_links.display()
     
         st.subheader("IPFS Retrieval Operations Requirements")
         plot_store_retrievals = LayeredBoxPlot(store_retrievals_df, "IPFS Storage Performance - Retrievals Per "
                                                                     "Store Operation", "Policy:N",
-                                               "IPFS Retrievals Per Store Operation", log_scale=log_scale)
-        plot_store_retrievals.set_width(width)
+                                               "IPFS Retrievals Per Store Operation",
+                                               log_scale=log_scale, n=n_policies_selected)
         plot_store_retrievals.display()
     
         st.header("IPFS Retrieval Performance")
         st.subheader("Time Retrieval")
         plot_retrieve_time = LayeredBoxPlot(time_retrieval_df, "IPFS Time Retrieval Performance",
                                             "Policy:N",
-                                            "IPFS Retrievals", log_scale=log_scale)
-        plot_retrieve_time.set_width(width)
+                                            "IPFS Retrievals", log_scale=log_scale, n=n_policies_selected)
         plot_retrieve_time.display()
         st.subheader("Nth Retrieval")
         plot_retrieve_nth = LayeredBoxPlot(nth_retrieval_df, "IPFS Nth Retrieval Performance", "Policy:N",
-                                           "IPFS Retrievals", log_scale=log_scale)
-        plot_retrieve_nth.set_width(width)
+                                           "IPFS Retrievals", log_scale=log_scale, n=n_policies_selected)
         plot_retrieve_nth.display()
 
 

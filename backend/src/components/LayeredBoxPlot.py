@@ -9,7 +9,7 @@ from components.utils import SCALES
 
 class LayeredBoxPlot:
 
-    def __init__(self, summary: pd.DataFrame, title: str, x: str, y_title: str, log_scale: bool):
+    def __init__(self, summary: pd.DataFrame, title: str, x: str, y_title: str, log_scale: bool, n: int):
         """
         The summary is the concatenation of DataFrames generated from the df.summary() method,
         transposed with a unique index.
@@ -17,6 +17,7 @@ class LayeredBoxPlot:
         :param x: The nominal variable to plot, using an Altair encoding.
         :param y_title: The title of the dependent variable to plot.
         :param log_scale: Whether to display the graph in the logarithmic scale.
+        :param n: The number of nominal variables to display.
         """
         if log_scale:
             y_title += " (Log)"
@@ -24,14 +25,14 @@ class LayeredBoxPlot:
         self.data = summary
         self.data.loc[self.data.Param == 'None', 'Policy'] = self.data.Group
         self.data.loc[self.data.Param != 'None', 'Policy'] = self.data.Group + " - " + self.data.Param
-        self.chart = alt.LayerChart(summary).encode(
-            x=x,
+
+        base = (alt.LayerChart(summary).encode(
             color=alt.Color(x, legend=alt.Legend(labelLimit=400)),
             tooltip=[x, alt.Tooltip("count:Q", format=","),
                      alt.Tooltip("mean:Q", format=",.2f"),
                      alt.Tooltip("min:Q", format=","), alt.Tooltip("q1:Q", format=",.2f"),
                      alt.Tooltip("median:Q", format=",.2f"), alt.Tooltip("q3:Q", format=",.2f"),
-                     alt.Tooltip("max:Q", format=",")],
+                     alt.Tooltip("max:Q", format=",")]
         ).add_layers(
             alt.Chart().mark_rule(size=2).encode(y="min:Q", y2="max:Q"),
             alt.Chart().mark_bar(width=20, opacity=0.5).encode(y="q1:Q", y2="q3:Q"),
@@ -40,10 +41,21 @@ class LayeredBoxPlot:
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        ).facet(column=alt.Column("Scale:N", sort=SCALES), row="Density:N",
-                title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20)
-                ).configure_axisX(labelLimit=400)
+        ))
+        if n > 1:
+            self.chart = base.encode(x=x).facet(column=alt.Column("Scale:N", sort=SCALES),
+                                                row="Density:N",
+                                                title=alt.TitleParams(title, align='center', anchor="middle",
+                                                                      fontSize=20)
+                                                ).configure_axisX(labelLimit=400)
 
+        else:
+            self.chart = (base.encode(x=alt.X("Scale:N", sort=SCALES))
+                          .facet(column="Density:N", title=alt.TitleParams(title, align='center',
+                                                                           anchor="middle", fontSize=20)
+                                 ).configure_axisX(labelLimit=400))
+        self.chart.spec.width = 35 * len(SCALES) * n
+        
         self.chart2 = alt.LayerChart(summary).encode(
             x="Scale:O",
             color=alt.Color(x, legend=alt.Legend(labelLimit=400)),
@@ -64,10 +76,6 @@ class LayeredBoxPlot:
                 title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20)
                 ).configure_axisX(labelLimit=400)
         self.chart2.spec.width = 200
-
-    def set_width(self, width: float):
-        self.chart.spec.width = width
-
 
     def display(self):
         tabs = st.tabs(["Results By Scale 📈", "Results by Policy 📈", "Summary Data 🔢"])
