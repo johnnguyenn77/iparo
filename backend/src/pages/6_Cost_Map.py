@@ -49,9 +49,9 @@ def cost_map():
         st.header("Time Requirements")
         tabs = st.tabs(["Heatmap", "Data"])
         with tabs[0]:
-            summary: pd.Series = get_summary_data(ss['selected_policies'], DENSITIES, OP_TYPES, [scale],
-                                                  RETRIEVE_ACTION_LIST.copy(), "mean"
-                                                  )
+            summary: pd.DataFrame = pd.concat([get_summary_data(ss['selected_policies'], DENSITIES, op, [scale],
+                                                                RETRIEVE_ACTION_LIST.copy(), "mean"
+                                                                ).reset_index().assign(Operation=op) for op in OP_TYPES])
             summary_df = summary.reset_index().rename(columns={"mean": "Mean"}).drop(columns=["Scale"])
             memory_max = summary_df["Mean"].max()
             helper_df = summary_df.assign(Proportion=summary_df["Mean"] / memory_max)
@@ -61,13 +61,14 @@ def cost_map():
                 y='Density:O',
                 color=alt.Color("Mean:Q", scale=alt.Scale(scheme="viridis", domainMin=0), sort='descending')
             )
+            title = alt.TitleParams("Mean Number of Actions", align='center', anchor="middle", fontSize=20)
             heatmap = (base_chart + base_chart.mark_text().encode(
                 text=alt.Text('Mean:Q', format=",.3"),
                 color=(alt.when(alt.datum.Proportion < 0.5)
                        .then(alt.value('black')).otherwise(alt.value('white'))),
                 size=alt.value(16),
             )).properties(width=200, height=100).facet(row='Policy:O', column='Operation:O', title=title
-                     ).configure_axisY(labelLimit=400)
+                                                       ).configure_axisY(labelLimit=400)
             st.altair_chart(heatmap)
         with tabs[1]:
             summary_df = pd.pivot_table(summary_df, columns=['Operation', 'Action'], index=['Policy', 'Density'])
