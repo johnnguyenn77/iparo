@@ -32,8 +32,8 @@ def cost_map():
         memory_max = summary_df[formatted_statistic].max()
         memory_min = summary_df[formatted_statistic].min()
         if log_scale:
-                proportion_col = (np.log((1 + summary_df[formatted_statistic]) / (1 + memory_min))
-                                  / np.log((1 + memory_max) / (1 + memory_min) + 1e-10))
+            proportion_col = (np.log((1 + summary_df[formatted_statistic]) / (1 + memory_min))
+                              / np.log((1 + memory_max) / (1 + memory_min) + 1e-10))
         else:
             proportion_col = summary_df[formatted_statistic] / memory_max
         helper_df1 = summary_df.assign(Proportion=proportion_col)
@@ -91,7 +91,7 @@ def cost_map():
                 color=(alt.when(alt.datum.Proportion < 0.5)
                        .then(alt.value('black')).otherwise(alt.value('white'))),
                 size=alt.value(16),
-            )).properties(width=200, height=100).facet(row='Policy:O', column='Operation:O', title=title
+            )).properties(width=200, height=200).facet(row='Policy:O', column='Operation:O', title=title
                                                        ).configure_axisY(labelLimit=400)
             st.altair_chart(heatmap)
         with tabs[1]:
