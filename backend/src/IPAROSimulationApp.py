@@ -7,9 +7,10 @@ if __name__ == '__main__':
     SUMMARY_REPORT = st.Page("pages/3_Summary_Report.py", icon=":material/summarize:")  # ":material/analytics:"
     SPACETIME_TRADEOFF = st.Page("pages/4_Space_Time_Tradeoff.py", icon=":material/access_time:")
     POLICY_GROWTH = st.Page("pages/5_Policy_Growth_Rate.py", icon=":material/trending_up:")
-    ITERATION_LEVEL = st.Page("pages/6_Iteration_Level_Analysis.py", icon=":material/analytics:")
+    COST_MAP = st.Page("pages/6_Cost_Map.py", icon=":material/paid:")
+    ITERATION_LEVEL = st.Page("pages/7_Iteration_Level_Analysis.py", icon=":material/analytics:")
 
     pg = st.navigation({"Home": [HOME],
                         "Reports": [SELECT_POLICIES, SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
-                                    ITERATION_LEVEL]}, expanded=True)
+                                    COST_MAP, ITERATION_LEVEL]}, expanded=True)
     pg.run()
