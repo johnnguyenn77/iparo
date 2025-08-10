@@ -184,19 +184,27 @@ class IPFS:
         self.store_count = 0
         self.retrieve_count = 0
 
-    def get_all_links(self, url: str) -> list[IPAROLink]:
+    def get_all_links(self, url: str) -> set[IPAROLink]:
         """
-        Retrieves the list of all links in the IPFS, corresponding to the given URL.
-        The links are sorted from latest to earliest. This will also include all the CIDs.
+         Retrieves the set of all links in the IPFS, corresponding to the given URL.
+         This will also include all the CIDs.
         """
-        links = []
+        links = {}
         try:
-            link, _ = self.get_link_to_latest_node(url)
-            while True:
-                links.append(link)
-                link = self.retrieve_nth_iparo(link.seq_num - 1, link)
+            curr_link, latest_iparo = self.get_link_to_latest_node(url)
+            links = {curr_link.seq_num: curr_link}
+            links.update({link.seq_num: link for link in latest_iparo.linked_iparos})
+            for curr_seq_num in range(latest_iparo.seq_num, 0, -1):
+                if curr_seq_num not in links:
+                    # Retrieve the link after the current sequence number, without using an IPFS lookup.
+                    curr_link = links[curr_seq_num + 1]
+                    # Now retrieve the IPARO from the link.
+                    curr_iparo = self.retrieve(curr_link.cid)
+
+                    # Add all links, then rinse and repeat.
+                    links.update({link.seq_num: link for link in curr_iparo.linked_iparos})
         finally:
-            return links
+            return set(links.values())
 
     def get_all_iparos(self, url: str) -> list[IPARO]:
         """

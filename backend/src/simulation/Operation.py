@@ -217,7 +217,7 @@ class ListAllOperation(IterableOperation):
     """
 
     def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env, 10)
+        super().__init__(env)
 
     def name(self) -> str:
         return "List"

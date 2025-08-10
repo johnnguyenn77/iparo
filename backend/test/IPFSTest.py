@@ -89,8 +89,8 @@ class IPFSTest(unittest.TestCase):
         iparo2.linked_iparos = {IPAROLinkFactory.from_cid_iparo(cid, iparo1)}
         cid2, _ = ipfs.store(iparo2)
         ipns.update(URL, cid2)
-        cids = {link.cid for link in ipfs.get_all_links(URL)}
-        self.assertSetEqual(cids, {cid, cid2})
+        links = ipfs.get_all_links(URL)
+        self.assertSetEqual({link.cid for link in links}, {cid, cid2})
 
     def test_ipfs_should_retrieve_by_url_and_number(self):
         iparos = add_nodes(3)
