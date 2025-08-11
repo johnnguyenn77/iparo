@@ -11,6 +11,7 @@ if __name__ == '__main__':
     ITERATION_LEVEL = st.Page("pages/7_Iteration_Level_Analysis.py", icon=":material/analytics:")
 
     pg = st.navigation({"Home": [HOME],
-                        "Reports": [SELECT_POLICIES, SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
+                        "Settings": [SELECT_POLICIES],
+                        "Reports": [SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
                                     COST_MAP, ITERATION_LEVEL]}, expanded=True)
     pg.run()
