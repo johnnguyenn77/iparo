@@ -8,7 +8,7 @@ class IPAROSimulationEnvironment:
     """
 
     def __init__(self, linking_strategy: LinkingStrategy, version_volume: int,
-                 version_density: VersionDensity, operations: list[str], output_dir: str,
+                 version_density: VersionDensity, operations: list[str], output_dir: str | None = None,
                  verbose: bool = False, iterations: int = 10, interval: int = 1000):
         self.linking_strategy = linking_strategy
         self.version_density = version_density

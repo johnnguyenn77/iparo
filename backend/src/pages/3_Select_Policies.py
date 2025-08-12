@@ -7,8 +7,10 @@ from streamlit import session_state as ss
 
 
 def select_policies():
+    if 'density' not in ss:
+        st.switch_page("pages/2_General_Settings.py")
     st.title("Select Policies")
-    st.text("Before accessing any other report page, please select the policies to use. You may "
+    st.text("Before accessing any report page, please select the policies to use. You may "
             "select 1 to 10 policies.")
     error_message = st.empty()
     groups = set(POLICY_GROUPS.keys())

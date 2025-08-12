@@ -46,7 +46,7 @@ class Operation:
 
 class IterableOperation(Operation):
 
-    def __init__(self, env: IPAROSimulationEnvironment, iterations: int = 0):
+    def __init__(self, env: IPAROSimulationEnvironment, iterations: int = 0, save_to_file: bool = True):
         """
         Iterable operation constructor. If number of iterations is not specified (or is 0),
         then the environment iteration number is used. Otherwise, the number of iterations overrides the
@@ -57,6 +57,7 @@ class IterableOperation(Operation):
         self.opcounts = None
         self.data = np.zeros((self.iterations, 4))
         self.output_path = f"{str(self.env)}-{self.name()}.csv"
+        self.save_to_file = save_to_file
 
     def execute(self):
         """
@@ -82,7 +83,8 @@ class IterableOperation(Operation):
                                          index=pd.RangeIndex(1, self.iterations + 1), dtype=np.uint64)
             self.opcounts.rename_axis(index="Iteration", inplace=True)
             self.postprocess_data()
-            self.record()
+            if self.save_to_file:
+                self.record()
         else:
             print(f"{self.output_path}: Record exists: Skipping")
 
@@ -122,8 +124,8 @@ class StoreOperation(IterableOperation):
     def name(self) -> str:
         return "Store"
 
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env, env.version_volume)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, env.version_volume, save_to_file)
         generator = VersionGenerator(env.version_density)
         self.__num_links = []
         self.__nodes = generator.generate(env.version_volume, URL)
@@ -152,11 +154,12 @@ class StoreOperation(IterableOperation):
         # Append Link counts to opcount data.
         self.opcounts = pd.concat((self.opcounts, pd.Series(self.__num_links, name="Links",
                                                             index=pd.RangeIndex(1, self.iterations + 1))), axis=1)
+        print(ipfs.data)
 
 
 class FirstOperation(IterableOperation):
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file)
 
     def name(self) -> str:
         return "First"
@@ -167,8 +170,8 @@ class FirstOperation(IterableOperation):
 
 
 class LatestOperation(IterableOperation):
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file)
 
     def name(self) -> str:
         return "Latest"
@@ -182,8 +185,8 @@ class GetNthOperation(IterableOperation):
     Get Nth IPARO
     """
 
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file)
 
     def name(self) -> str:
         return "Nth"
@@ -199,8 +202,8 @@ class GetAtTOperation(IterableOperation):
     Get at Time T
     """
 
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file)
 
     def name(self) -> str:
         return "Time"
@@ -216,8 +219,8 @@ class ListAllOperation(IterableOperation):
     List all nodes.
     """
 
-    def __init__(self, env: IPAROSimulationEnvironment):
-        super().__init__(env)
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file)
 
     def name(self) -> str:
         return "List"

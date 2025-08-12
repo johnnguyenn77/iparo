@@ -9,8 +9,6 @@ from simulation.IPFS import ipfs, Mode
 from simulation.TimeUnit import TimeUnit
 
 
-# Make package/renaming with __init__ file
-
 class LinkingStrategy(ABC):
     """
     The linking strategy determines how the new IPARO is to be linked. The IPARO

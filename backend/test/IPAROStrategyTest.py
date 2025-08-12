@@ -187,7 +187,7 @@ class IPAROStrategyTest(unittest.TestCase):
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
         timestamps = test_strategy_with_time_distribution(
-            TemporallyExponentialStrategy(2, 100 * TimeUnit.SECONDS), relative_times)
+            TemporallyExponentialStrategy(2, 100), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [0, 800, 1200, 1400, 1500, 1600]
 

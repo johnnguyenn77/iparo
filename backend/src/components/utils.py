@@ -5,9 +5,14 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
+from simulation.LinkingStrategy import *
+from simulation.VersionDensity import *
+
 RESULTS_FOLDER = Path("../results")
 
-OP_TYPES = ["First", "Latest", "List", "Nth", "Store", "Time"]
+OP_NAMES = {"First": "Retrieve First", "Latest": "Retrieve Latest", "Nth": "Retrieve by Sequence Number",
+            "Store": "Add Node", "Time": "Retrieve by Time"}
+OP_TYPES = list(OP_NAMES.keys())
 SCALES = [1, 10, 100, 1000, 10000]
 DENSITIES = ["BHLT", "Linear", "Multipeak", "Uniform"]
 ACTIONS = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
@@ -45,9 +50,9 @@ ACTION_LIST = [ACTIONS[action - 1] for action in Action]
 RETRIEVE_ACTION_LIST = [action for action in Action if action != Action.LINKS]
 
 def get_summary_data(policies: pd.DataFrame,
-                     listed_densities: list[str],
+                     density: str,
                      operation: str,
-                     scales: list[int] | None = None,
+                     scales: list[int] | int | None = None,
                      actions: list[int | Action] | None = None,
                      agg_func: Literal['mean', 'max', 'median', 'all'] = 'all',
                      analyze_all_iterations: bool = False) -> pd.Series | pd.DataFrame:
@@ -57,7 +62,7 @@ def get_summary_data(policies: pd.DataFrame,
     in doing so, ignores the ``agg_func`` argument.
 
     :param policies: The name of all listed densities (defined as a nx2 DataFrame whose columns are 'Group' and 'Param')
-    :param listed_densities: The name of every listed density.
+    :param density: The density to use.
     :param operation: The operation, capitalized. This parameter is case-sensitive.
     :param scales: The scales to iterate through, defaults to SCALES.
     :param actions: The action indices, which defaults to [Action.IPFS_RETRIEVE]. Index 0 is automatically added.
@@ -69,38 +74,40 @@ def get_summary_data(policies: pd.DataFrame,
     if actions is None:
         actions = [Action.IPFS_RETRIEVE]
     actions.append(0)
-    index = ['Policy', 'Scale', 'Density']
+    index = ['Policy', 'Scale']
     if scales is None:
         scales = SCALES
+    elif isinstance(scales, int):
+        scales = [scales]
+        index.remove('Scale')
     for i, row in policies.iterrows():
         policy_group = row['Group']
         policy_param = row['Param']
         for scale in scales:
-            for density in listed_densities:
-                # Get number of iterations based on operation
-                n_iter = scale if operation == "Store" else 10
-                filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
-                policy_name = policy_group + " - " + policy_param if policy_param != "None" else policy_group
-                if analyze_all_iterations:
-                    index.append('Iteration')
-                    partial_df = (pd.read_csv(filename, nrows=n_iter, usecols=actions)
-                                  .assign(Iteration=pd.Series(np.arange(1, n_iter + 1)), Policy=policy_name,
-                                          Scale=scale, Density=density))
-                else:
-                    partial_df = (pd.read_csv(filename, skiprows=n_iter, usecols=actions, index_col=0).transpose()
-                                  .assign(Policy=policy_name, Scale=scale, Density=density)
-                                  .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"}))
-                    if len(actions) > 2:
-                        action_names = [ACTIONS[action - 1] for action in actions[:-1]]
-                        partial_df = partial_df.assign(Action=action_names)
-                        index.append('Action')
+            # Get number of iterations based on operation
+            n_iter = scale if operation == "Store" else 10
+            filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
+            policy_name = policy_group + " - " + policy_param if policy_param != "None" else policy_group
+            if analyze_all_iterations:
+                index.append('Iteration')
+                partial_df = (pd.read_csv(filename, nrows=n_iter, usecols=actions)
+                              .assign(Iteration=pd.Series(np.arange(1, n_iter + 1)), Policy=policy_name,
+                                      Scale=scale, Density=density))
+            else:
+                partial_df = (pd.read_csv(filename, skiprows=n_iter, usecols=actions, index_col=0).transpose()
+                              .assign(Policy=policy_name, Scale=scale, Density=density)
+                              .rename(columns={"25%": "q1", "50%": "median", "75%": "q3"}))
+                if len(actions) > 2:
+                    action_names = [ACTIONS[action - 1] for action in actions[:-1]]
+                    partial_df = partial_df.assign(Action=action_names)
+                    index.append('Action')
 
-                partial_df = partial_df.set_index(index, drop=False)
+            partial_df = partial_df.set_index(index, drop=False)
 
-                if agg_func == 'all' or analyze_all_iterations:
-                    partial_dfs.append(partial_df)
-                else:
-                    partial_dfs.append(partial_df[agg_func])
+            if agg_func == 'all' or analyze_all_iterations:
+                partial_dfs.append(partial_df)
+            else:
+                partial_dfs.append(partial_df[agg_func])
     df = pd.concat(partial_dfs)
 
     return df
@@ -119,3 +126,40 @@ def rank_and_sort_tradeoff(df: pd.DataFrame):
     ranked_df["Rank"] = ranked_df.groupby("Environment")["Tradeoff"].rank(method="dense").astype(int)
     ranked_df.sort_values(["Environment", "Tradeoff"], inplace=True)
     return ranked_df
+
+
+def select_policy(strategy_type: str, param: str) -> LinkingStrategy:
+    match strategy_type.lower():
+        case 'single':
+            return SingleStrategy()
+        case 'comprehensive':
+            return ComprehensiveStrategy()
+        case 'previous':
+            return KPreviousStrategy(int(param))
+        case 'random':
+            return KRandomStrategy(int(param))
+        case 'sequential-uniform':
+            return SequentialUniformNPriorStrategy(int(param))
+        case 'sequential-max-gap':
+            return SequentialSMaxGapStrategy(int(param))
+        case 'sequential-exponential':
+            return SequentialExponentialStrategy(float(param))
+        case 'temporally-uniform':
+            return TemporallyUniformStrategy(int(param))
+        case 'temporally-min-gap':
+            return TemporallyMinGapStrategy(float(param))
+        case _:
+            base = float(param)
+            return TemporallyExponentialStrategy(base, 10)
+
+
+def select_version_density(version_density: str) -> VersionDensity:
+    match version_density.lower():
+        case 'bhlt':
+            return BigHeadLongTailVersionDensity(20)
+        case 'linear':
+            return LinearVersionDensity(2)
+        case 'multipeak':
+            return MultipeakVersionDensity(np.array([0.5, 0.5]), np.array([[0, 300], [1000, 400]]))
+        case _:
+            return UniformVersionDensity()
