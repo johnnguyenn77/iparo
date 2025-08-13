@@ -9,7 +9,7 @@ def policy_visualization_settings():
     st.text("Before accessing the visualization page, please select a policy.")
     groups = set(POLICY_GROUPS.keys())
     with st.form('policy_group_form'):
-        st.markdown("### Step 1: Select Policy Group")
+        st.subheader("Step 1: Select Policy Group")
         st.text("Please select a policy group for this step.")
         policy_group = st.selectbox("Select Policy Group", groups)
         policy_group_submitted = st.form_submit_button()
@@ -20,15 +20,15 @@ def policy_visualization_settings():
     if 'policy_group' in ss:
         with st.form('policy_form'):
             # Pass 1: Get all names of files
-            st.markdown("### Step 2: Select Policy")
+            st.subheader("Step 2: Select Policy")
             policy_group_param = st.selectbox("Select Policy Parameter", ss['policy_group_params'])
             policy_submitted = st.form_submit_button()
         if policy_submitted:
             ss['policy_group_param'] = policy_group_param
 
     if 'policy_group_param' in ss:
-        st.header("Step 3: Select Environment")
         with st.form('environment'):
+            st.subheader("Step 3: Select Environment")
             node_number = st.slider("Number of Nodes", 1, 20)
             density = st.selectbox("Density", DENSITIES, help="Version density to be displayed.")
             environment_submitted = st.form_submit_button()
