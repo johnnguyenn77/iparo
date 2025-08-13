@@ -24,8 +24,7 @@ def policy_visualization():
     node_number: int = ss['node_num']
     policy: LinkingStrategy = select_policy(policy_group, param)
     density: VersionDensity = select_version_density(ss['density'])
-    environment: IPAROSimulationEnvironment = IPAROSimulationEnvironment(policy, ss['node_num'], density,
-                                                                         [], verbose=True)
+    environment: IPAROSimulationEnvironment = IPAROSimulationEnvironment(policy, ss['node_num'], density, [])
     operation = StoreOperation(environment, save_to_file=False)
     operation.execute()
 
@@ -45,37 +44,31 @@ def policy_visualization():
     df.loc[df['Source'] > df['Destination'], 'Linked'] = "No"
     positions = {}
     timestamps = {}
-    edges = []
     relative_timestamps = {}
     for iparo in ipfs.get_all_iparos(URL):
         curr_num = iparo.seq_num
         nx_graph.add_node(curr_num)
         timestamp = (iparo.timestamp - first_link.timestamp) / TimeUnit.SECONDS
         relative_timestamp = (iparo.timestamp - first_link.timestamp) / (latest_link.timestamp - first_link.timestamp)
-        relative_timestamps[curr_num] = relative_timestamp
+        relative_timestamps[curr_num] = round(relative_timestamp * 20) / 20
         for link in iparo.linked_iparos:
             nx_graph.add_edge(curr_num, link.seq_num)
-            edges.append((curr_num, link.seq_num))
             df.loc[(df['Destination'] == link.seq_num) & (df['Source'] == curr_num), "Linked"] = "Yes"
             df.loc[df['Destination'] == link.seq_num, 'Destination Timestamp'] = \
                 (link.timestamp - first_link.timestamp) / TimeUnit.SECONDS
         df.loc[df['Source'] == curr_num, 'Source Timestamp'] = timestamp
         timestamps[curr_num] = timestamp
-
+    height = 0
     for iparo in ipfs.get_all_iparos(URL):
-        curr_num = iparo.seq_num
-        overlapping_nodes = 0
-        for link in iparo.linked_iparos:
-            # Get number of overlapping IPAROs
-            link_num = link.seq_num
-            distance = relative_timestamps[curr_num] - relative_timestamps[link_num]
-            if distance < 0.05:  # of the entire timeline
-                overlapping_nodes += 1
-
-        positions[curr_num] = (timestamps[curr_num], overlapping_nodes)
-
-
-
+        seq_num = iparo.seq_num
+        index = 0
+        curr_num = seq_num - 1
+        while curr_num >= 0 and relative_timestamps[curr_num] == relative_timestamps[seq_num]:
+            index += 1
+            curr_num -= 1
+        if height < index + 1:
+            height = index + 1
+        positions[seq_num] = (relative_timestamps[seq_num], index)
     df = df.assign(Relationship=np.where(np.ravel(xx == yy), "Self", "Link"))
     df.loc[(df['Linked'] != 'Yes') & (df['Relationship'] != 'Self'), 'Relationship'] = 'None'
     st.title("Graph Visualization")
@@ -85,18 +78,20 @@ def policy_visualization():
         fig, ax = plt.subplots()
         nx.draw_networkx_nodes(nx_graph, positions, ax=ax)
         nx.draw_networkx_labels(nx_graph, positions, ax=ax, font_color="white")
-        for i in range(0, node_number):
-            for j in range(i + 1, node_number):
-                if j == i + 1:
-                    nx.draw_networkx_edges(nx_graph, positions, edgelist=[(j, i)], ax=ax)
-                elif (j, i) in edges:
+        latest_seq_num = node_number - 1
+        for i in range(0, latest_seq_num):
+            if (latest_seq_num, i) in nx_graph.edges:
+                if latest_seq_num == i + 1 or positions[i][1] > 0:
                     nx.draw_networkx_edges(nx_graph, positions,
-                                           edgelist=[(j, i)],
-                                           connectionstyle=f"""arc3,rad={0.5 * (timestamps[j] - timestamps[i]) / 
-                                                                         (timestamps[node_number - 1] - timestamps[0])}""", ax=ax)
+                                           edgelist=[(node_number - 1, i)], ax=ax)
+                else:
+                    nx.draw_networkx_edges(nx_graph, positions,
+                                           edgelist=[(node_number - 1, i)],
+                                           connectionstyle=f"""arc3,rad=0.05""", ax=ax)
+
         plt.title(f"{str(policy)} - {node_number} nodes")
-        fig.set_size_inches(40, 40)
-        st.pyplot(fig=fig, clear_figure=True, use_container_width=False)
+        fig.set_size_inches(node_number, height + 1)
+        st.pyplot(fig=fig, clear_figure=True, use_container_width=True)
     with tabs[1]:
         st.header("Adjacency Matrix")
         df.loc[df['Relationship'] == 'Self', 'Destination Timestamp'] = df.loc[
@@ -119,11 +114,12 @@ def policy_visualization():
                                                          anchor='middle')
                                    ).mark_circle().encode(
                 x=alt.X("Destination Timestamp:Q", title="Destination Timestamp (Seconds)"),
-                y=alt.Y("Source Timestamp:Q", title="Source Timestamp (Seconds)"),
+                y=alt.Y("Source:O", title="Sequence Number of Source Node"),
                 color=alt.Color("Relationship:O",
                                 scale=alt.Scale(domain=["Self", "Link", "None"], range=["red", "blue", "gray"])),
                 size=alt.value(100),
-                opacity=alt.value(0.5)
+                opacity=alt.value(0.5),
+                tooltip=alt.Tooltip(["Source:Q", "Source Timestamp:Q", "Destination Timestamp:Q"])
             )
             st.altair_chart(chart_time)
         with tabs2[1]:
