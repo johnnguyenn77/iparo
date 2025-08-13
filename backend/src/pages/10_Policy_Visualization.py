@@ -45,13 +45,11 @@ def policy_visualization():
     df.loc[df['Source'] > df['Destination'], 'Linked'] = "No"
     positions = {}
     for iparo in ipfs.get_all_iparos(URL):
-        print(iparo.timestamp, iparo.seq_num)
         curr_num = iparo.seq_num
         nx_graph.add_node(curr_num)
         positions[curr_num] = ((iparo.timestamp - first_link.timestamp) /
                                (latest_link.timestamp - first_link.timestamp), curr_num * 50 * (-1) ** curr_num) \
             if first_link.seq_num != latest_link.seq_num else (0, 0)
-        print([link.seq_num for link in iparo.linked_iparos])
         for link in iparo.linked_iparos:
             nx_graph.add_edge(curr_num, link.seq_num)
             df.loc[(df['Destination'] == link.seq_num) & (df['Source'] == curr_num), "Linked"] = "Yes"
@@ -70,9 +68,8 @@ def policy_visualization():
         g = nx.draw_networkx(nx_graph, pos=positions, font_color="white")
         plt.title(f"{str(policy)} - {node_number} nodes")
         st.pyplot(fig=g, clear_figure=True)
-    with (tabs[1]):
+    with tabs[1]:
         st.header("Adjacency Matrix")
-        st.dataframe(df)
         df.loc[df['Relationship'] == 'Self', 'Destination Timestamp'] = df.loc[df['Relationship'] == 'Self', 'Source Timestamp']
         chart_seq_num = alt.Chart(df, title=alt.TitleParams(f'Adjacency Matrix - {policy} - {node_number} Nodes, {density}', anchor='middle')).mark_rect().encode(
             x=alt.X("Destination:O", title="Destination Node"),
