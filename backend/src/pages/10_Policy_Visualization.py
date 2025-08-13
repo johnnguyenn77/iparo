@@ -33,7 +33,7 @@ def policy_visualization():
     latest_link, _ = ipfs.get_link_to_latest_node(URL)
     first_link = ipfs.retrieve_nth_iparo(0, latest_link)
 
-    srcs = np.arange(1, node_number)
+    srcs = np.arange(node_number)
     dests = np.arange(node_number)
     xs, ys = np.meshgrid(srcs, dests)
     xx = np.ravel(xs)
@@ -78,17 +78,22 @@ def policy_visualization():
         )
         st.altair_chart(chart_seq_num)
         st.header("Time Graph")
-        chart_time = alt.Chart(df.loc[df['Source'] >= df['Destination']],
-                               title=alt.TitleParams(f'Time Plot - {policy} - {node_number} Nodes, {density}', anchor='middle')
-                               ).mark_circle().encode(
-            x=alt.X("Destination Timestamp:Q", title="Destination Timestamp (Seconds)"),
-            y=alt.Y("Source Timestamp:Q", title="Source Timestamp (Seconds)"),
-            color=alt.Color("Relationship:O", scale=alt.Scale(domain=["Self", "Link", "None"], range=["red", "blue", "gray"])),
-            size=alt.value(100),
-            opacity=alt.value(0.5)
-        )
-        st.altair_chart(chart_time)
-
+        st.text("Note that the source and destination timestamps are relative to the first node.")
+        tabs2 = st.tabs(['Graph', 'Data'])
+        df_display = df.loc[df['Source'] >= df['Destination']]
+        with tabs2[0]:
+            chart_time = alt.Chart(df_display,
+                                   title=alt.TitleParams(f'Time Plot - {policy} - {node_number} Nodes, {density}', anchor='middle')
+                                   ).mark_circle().encode(
+                x=alt.X("Destination Timestamp:Q", title="Destination Timestamp (Seconds)"),
+                y=alt.Y("Source Timestamp:Q", title="Source Timestamp (Seconds)"),
+                color=alt.Color("Relationship:O", scale=alt.Scale(domain=["Self", "Link", "None"], range=["red", "blue", "gray"])),
+                size=alt.value(100),
+                opacity=alt.value(0.5)
+            )
+            st.altair_chart(chart_time)
+        with tabs2[1]:
+            st.dataframe(df_display, hide_index=True)
 
 if __name__ == '__main__':
     policy_visualization()
