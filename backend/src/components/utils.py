@@ -11,7 +11,7 @@ from simulation.VersionDensity import *
 RESULTS_FOLDER = Path("../results")
 
 OP_NAMES = {"First": "Retrieve First", "Latest": "Retrieve Latest", "Nth": "Retrieve by Sequence Number",
-            "Store": "Add Node", "Time": "Retrieve by Time"}
+            "Store": "Add Node", "Time": "Retrieve by Time", "List": "List All"}
 OP_TYPES = list(OP_NAMES.keys())
 SCALES = [1, 10, 100, 1000, 10000]
 DENSITIES = ["BHLT", "Linear", "Multipeak", "Uniform"]
@@ -122,9 +122,9 @@ def rank_and_sort_tradeoff(df: pd.DataFrame):
     Post-processing step for ranking and sorting the space-time tradeoff dataframes.
     """
     ranked_df = df.copy()
-    ranked_df.set_index(["Policy", "Environment"])
-    ranked_df["Rank"] = ranked_df.groupby("Environment")["Tradeoff"].rank(method="dense").astype(int)
-    ranked_df.sort_values(["Environment", "Tradeoff"], inplace=True)
+    ranked_df.set_index(["Policy"])
+    ranked_df["Rank"] = ranked_df["Tradeoff"].rank(method="dense").astype(int)
+    ranked_df.sort_values(["Tradeoff"], inplace=True)
     return ranked_df
 
 

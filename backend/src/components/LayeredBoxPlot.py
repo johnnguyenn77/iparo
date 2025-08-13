@@ -16,10 +16,13 @@ class LayeredBoxPlot:
         :param y_title: The title of the dependent variable to plot.
         :param x: The nominal variable to plot, using an Altair encoding.
         :param log_scale: Whether to display the graph in the logarithmic scale.
+        :param column: The column variable.
+        :param color: The color variable.
         """
         if log_scale:
             y_title += " (Log)"
 
+        n = summary[x.split(":")[0]].nunique()
         self.chart = (alt.LayerChart(summary).encode(
             color=alt.Color(color, legend=alt.Legend(labelLimit=400), scale=alt.Scale(scheme=COLOR_SCHEME)),
             x=x, tooltip=[color, alt.Tooltip("count:Q", format=","),
@@ -35,7 +38,7 @@ class LayeredBoxPlot:
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        )).facet(column=column, title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20))
+        )).properties(width=35 * n).facet(column=column, title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20))
 
     def display(self):
         st.altair_chart(self.chart, use_container_width=True)
