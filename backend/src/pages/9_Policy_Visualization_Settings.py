@@ -1,13 +1,12 @@
 import streamlit as st
 from streamlit import session_state as ss
 
-from components.utils import POLICY_GROUPS, POLICY_GROUP_COMBINATIONS
+from components.utils import POLICY_GROUPS, POLICY_GROUP_COMBINATIONS, DENSITIES
 
 
 def policy_visualization_settings():
     st.title("Policy Visualization Settings")
-    st.text("Before accessing any report page, please select the policies to use. You may "
-            "select one policy.")
+    st.text("Before accessing the visualization page, please select a policy.")
     groups = set(POLICY_GROUPS.keys())
     with st.form('policy_group_form'):
         st.markdown("### Step 1: Select Policy Group")
@@ -23,12 +22,21 @@ def policy_visualization_settings():
             # Pass 1: Get all names of files
             st.markdown("### Step 2: Select Policy")
             policy_group_param = st.selectbox("Select Policy Parameter", ss['policy_group_params'])
-            node_number = st.slider("Number of Nodes", 1, 20)
             policy_submitted = st.form_submit_button()
         if policy_submitted:
             ss['policy_group_param'] = policy_group_param
+
+    if 'policy_group_param' in ss:
+        st.header("Step 3: Select Environment")
+        with st.form('environment'):
+            node_number = st.slider("Number of Nodes", 1, 20)
+            density = st.selectbox("Density", DENSITIES, help="Version density to be displayed.")
+            environment_submitted = st.form_submit_button()
+        if environment_submitted:
             ss['node_num'] = node_number
+            ss['visualization_density'] = density
             st.switch_page("pages/10_Policy_Visualization.py")
+
 
 
 if __name__ == '__main__':

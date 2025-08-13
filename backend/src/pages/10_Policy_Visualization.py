@@ -16,14 +16,14 @@ from simulation.VersionDensity import VersionDensity
 
 
 def policy_visualization():
-    if 'policy_group_param' not in ss or 'node_num' not in ss:
+    if 'visualization_density' not in ss or 'node_num' not in ss:
         st.switch_page("pages/9_Policy_Visualization_Settings.py")
     ipfs.reset_data()
     policy_group: str = ss['policy_group']
     param: str = ss['policy_group_param']
     node_number: int = ss['node_num']
     policy: LinkingStrategy = select_policy(policy_group, param)
-    density: VersionDensity = select_version_density(ss['density'])
+    density: VersionDensity = select_version_density(ss['visualization_density'])
     environment: IPAROSimulationEnvironment = IPAROSimulationEnvironment(policy, ss['node_num'], density, [])
     operation = StoreOperation(environment, save_to_file=False)
     operation.execute()
@@ -81,17 +81,18 @@ def policy_visualization():
         latest_seq_num = node_number - 1
         for i in range(0, latest_seq_num):
             if (latest_seq_num, i) in nx_graph.edges:
-                if latest_seq_num == i + 1 or positions[i][1] > 0:
+                if latest_seq_num == i + 1 or positions[i][1] != positions[latest_seq_num][1]:
                     nx.draw_networkx_edges(nx_graph, positions,
                                            edgelist=[(node_number - 1, i)], ax=ax)
                 else:
                     nx.draw_networkx_edges(nx_graph, positions,
                                            edgelist=[(node_number - 1, i)],
-                                           connectionstyle=f"""arc3,rad=0.05""", ax=ax)
+                                           connectionstyle=f"""arc3,rad=0.1""", ax=ax)
 
-        plt.title(f"{str(policy)} - {node_number} nodes")
-        fig.set_size_inches(node_number, height + 1)
-        st.pyplot(fig=fig, clear_figure=True, use_container_width=True)
+        plt.suptitle(f"Visualization of {str(policy)}", y=1.05, fontsize=16)
+        plt.title(f"{node_number} Nodes, {density}", fontsize=14)
+        fig.set_size_inches(node_number, height)
+        st.pyplot(fig=fig, clear_figure=True, use_container_width=False)
     with tabs[1]:
         st.header("Adjacency Matrix")
         df.loc[df['Relationship'] == 'Self', 'Destination Timestamp'] = df.loc[

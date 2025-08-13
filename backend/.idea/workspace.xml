@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scripts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/9_Policy_Visualization_Settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/9_Policy_Visualization_Settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
