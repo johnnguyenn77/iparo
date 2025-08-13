@@ -1,4 +1,5 @@
 import streamlit as st
+import altair as alt
 from streamlit import session_state as ss
 
 from components.LayeredBoxPlot import LayeredBoxPlot
@@ -11,20 +12,22 @@ def summary_report():
 
     st.title("Summary Report")
     st.header("Results")
+    log_scale = ss['log_scale']
     for operation in OP_TYPES:
         ctr = st.container()
         policies = ss['selected_policies']
-        n_policies = len(ss['policy_names'])
+        density = ss['density']
         actions = [action for action in Action if action != Action.LINKS]
+        scale = ss['scale']
         if operation == 'Store':
             actions.append(Action.LINKS)
 
-        df_summary = get_summary_data(policies, DENSITIES, operation, [scale], actions)
+        df_summary = get_summary_data(policies, density, operation, [scale], actions)
         with ctr:
             st.subheader(operation)
-            plot = LayeredBoxPlot(df_summary, f'Linking Policy Performance - {operation}',
-                                  "Number of Actions", "Policy:O", n_policies, len(actions),
-                                  "Action:O", "Density:O", "Policy:O", log_scale)
+            plot = LayeredBoxPlot(df_summary, f"Overall Requirements - {operation}",
+                                  "Number of Actions", "Policy:O", "Action:O", "Policy:O",
+                                  log_scale)
             plot.display()
 
 

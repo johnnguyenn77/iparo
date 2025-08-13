@@ -94,7 +94,7 @@ def cost_map():
             color=(alt.when(alt.datum.Proportion < 0.5)
                    .then(alt.value('black')).otherwise(alt.value('white'))),
             size=alt.value(36),
-        )).properties(width=200, height=75 * n_policies).configure_axisY(labelLimit=400)
+        )).properties(width=200, height=75 * (n_policies + 1)).configure_axisY(labelLimit=400)
         st.altair_chart(heatmap)
 
 

@@ -38,7 +38,7 @@ class LayeredBoxPlot:
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        )).properties(width=35 * n).facet(column=column, title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20))
+        )).properties(width=35 * n).facet(column=column, title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20)).configure_axisX(labelLimit=400)
 
     def display(self):
         st.altair_chart(self.chart, use_container_width=True)
