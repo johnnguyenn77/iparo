@@ -154,7 +154,6 @@ class StoreOperation(IterableOperation):
         # Append Link counts to opcount data.
         self.opcounts = pd.concat((self.opcounts, pd.Series(self.__num_links, name="Links",
                                                             index=pd.RangeIndex(1, self.iterations + 1))), axis=1)
-        print(ipfs.data)
 
 
 class FirstOperation(IterableOperation):
