@@ -18,12 +18,10 @@ from simulation.VersionDensity import VersionDensity
 def policy_visualization():
     if 'visualization_density' not in ss or 'node_num' not in ss:
         st.switch_page("pages/9_Policy_Visualization_Settings.py")
-    ipfs.reset_data()
-    policy_group: str = ss['policy_group']
-    param: str = ss['policy_group_param']
+    policy: LinkingStrategy = ss['policy']
     node_number: int = ss['node_num']
-    policy: LinkingStrategy = select_policy(policy_group, param)
-    density: VersionDensity = select_version_density(ss['visualization_density'])
+    density: VersionDensity = ss['visualization_density']
+    ipfs.reset_data()
     environment: IPAROSimulationEnvironment = IPAROSimulationEnvironment(policy, ss['node_num'], density, [])
     operation = StoreOperation(environment, save_to_file=False)
     operation.execute()

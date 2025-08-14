@@ -64,8 +64,12 @@ class VersionGenerator:
         self.start_time = int(time.time() * TimeUnit.SECONDS)
 
     def generate(self, n: int, url: str = "example.com") -> list[IPARO]:
+        """
+        Generates the IPAROs in sorted order from earliest to latest. The contents will
+        each contain 10 bytes.
+        """
         timestamps = np.sort(np.int64(self.start_time + self.density.sample(n)))
-        contents = [bytes([random.randint(32, 126) for _ in range(100)]) for _ in range(n)]
+        contents = [bytes([random.randint(32, 126) for _ in range(10)]) for _ in range(n)]
         iparo = [IPARO(url=url, timestamp=timestamp, linked_iparos=set(), seq_num=-1, content=iparo_content)
                  for (timestamp, iparo_content) in zip(timestamps, contents)]
         return iparo

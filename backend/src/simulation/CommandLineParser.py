@@ -14,7 +14,7 @@ class CommandLineParser:
         # so think of this as a JSON object.
         self.args = args
 
-    def parse_policy(self):
+    def parse_policy(self) -> LinkingStrategy:
         """
         Based on args provided, gets the policy.
         """
