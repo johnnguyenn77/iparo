@@ -12,9 +12,16 @@ if __name__ == '__main__':
     ITERATION_LEVEL = st.Page("pages/8_Iteration_Level_Analysis.py", icon=":material/analytics:")
     POLICY_VISUALIZATION_SETTINGS = st.Page("pages/9_Policy_Visualization_Settings.py", icon=":material/settings:")
     POLICY_VISUALIZATION = st.Page("pages/10_Policy_Visualization.py", icon=":material/image:")
+    ADD_POLICIES = st.Page("pages/11_Add_Policies.py", icon=":material/add:")
+    VIEW_ENVIRONMENTS = st.Page("pages/12_View_Environments.py", icon=":material/image:")
+    ADD_VERSION_DENSITIES = st.Page("pages/13_Add_Version_Densities.py", icon=":material/image:")
+    SIMULATION_WRITER_OUTPUT = st.Page("pages/14_Simulation_Writer_Output.py", icon=":material/image:")
     pg = st.navigation({"Home": [HOME],
                         "Settings": [GENERAL_SETTINGS, SELECT_POLICIES],
                         "Reports": [SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
                                     COST_MAP, ITERATION_LEVEL],
-                        "Visualization": [POLICY_VISUALIZATION_SETTINGS, POLICY_VISUALIZATION]}, expanded=True)
+                        "Visualization": [POLICY_VISUALIZATION_SETTINGS, POLICY_VISUALIZATION],
+                        "Simulation": [ADD_POLICIES, VIEW_ENVIRONMENTS, ADD_VERSION_DENSITIES, SIMULATION_WRITER_OUTPUT]
+
+                        }, expanded=True)
     pg.run()

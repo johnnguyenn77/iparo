@@ -5,7 +5,7 @@ import streamlit as st
 from streamlit import session_state as ss
 
 
-def display_chart(df: pd.DataFrame, title: str, y_title: str, n_policies_selected: int, log_scale: bool):
+def display_chart(df: pd.DataFrame, title: str, y_title: str, log_scale: bool):
     tabs = st.tabs(["Results By Scale 📈", "Results by Policy 📈", "Summary Data 🔢"])
     display_index = ['Policy', 'Scale', 'Density']
     with tabs[0]:
@@ -27,7 +27,6 @@ def policy_growth_rate():
     log_scale = ss['log_scale']
     policies_selected = ss['selected_policies']
     density = ss['density']
-    n_policies_selected = policies_selected.shape[0]
     time_retrieval_df: pd.DataFrame = get_summary_data(policies_selected, density, "Time")
     nth_retrieval_df: pd.DataFrame = get_summary_data(policies_selected, density, "Nth")
     store_df: pd.DataFrame = get_summary_data(policies_selected, density,
@@ -36,17 +35,17 @@ def policy_growth_rate():
     st.header("Storage")
     st.subheader("Link Storage Memory Performance")
     display_chart(store_df, "IPFS Storage Memory Performance", "Number of Links Per IPARO",
-                  n_policies_selected, log_scale)
+                  log_scale)
     st.subheader("IPFS Storage Time Performance")
     display_chart(store_retrievals_df, "IPFS Storage Time Performance", "Number of IPFS Retrieves",
-                  n_policies_selected, log_scale)
+                  log_scale)
     st.header("Retrieval")
     st.subheader("Retrieval by Time")
     display_chart(time_retrieval_df, "IPFS Time Retrieval Performance", "Number of IPFS Retrieves",
-                  n_policies_selected, log_scale)
+                  log_scale)
     st.subheader("Retrieval by Nth")
     display_chart(nth_retrieval_df, "IPFS Nth Retrieval Performance", "Number of IPFS Retrieves",
-                  n_policies_selected, log_scale)
+                  log_scale)
 
 
 if __name__ == '__main__':

@@ -14,5 +14,6 @@ class IPAROSimulationEnvironmentTest(unittest.TestCase):
                                          UniformVersionDensity())
         self.assertEqual(str(env), "Temporally Uniform (2 Nodes)-Medium-Uniform")
 
+
 if __name__ == '__main__':
     unittest.main()

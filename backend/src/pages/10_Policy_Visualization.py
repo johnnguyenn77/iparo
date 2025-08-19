@@ -67,7 +67,7 @@ def policy_visualization():
         if height < index + 1:
             height = index + 1
         positions[seq_num] = (relative_timestamps[seq_num], index)
-    df = df.assign(Relationship=np.where(np.ravel(xx == yy), "Self", "Link"))
+    df = df.assign(Relationship=np.where(np.ravel(xx == yy), "Self", "Linked"))
     df.loc[(df['Linked'] != 'Yes') & (df['Relationship'] != 'Self'), 'Relationship'] = 'None'
     st.title("Graph Visualization")
     tabs = st.tabs(["Graph Image", "Adjacency Matrix"])
@@ -87,7 +87,7 @@ def policy_visualization():
                                            edgelist=[(node_number - 1, i)],
                                            connectionstyle=f"""arc3,rad=0.1""", ax=ax)
 
-        plt.suptitle(f"Visualization of {str(policy)}", y=1.05, fontsize=16)
+        plt.suptitle(f"Visualization of {str(policy)}", y=1 + 0.2 / height, fontsize=16)
         plt.title(f"{node_number} Nodes, {density}", fontsize=14)
         fig.set_size_inches(node_number, height)
         st.pyplot(fig=fig, clear_figure=True, use_container_width=False)
@@ -114,8 +114,8 @@ def policy_visualization():
                                    ).mark_circle().encode(
                 x=alt.X("Destination Timestamp:Q", title="Destination Timestamp (Seconds)"),
                 y=alt.Y("Source:O", title="Sequence Number of Source Node"),
-                color=alt.Color("Relationship:O",
-                                scale=alt.Scale(domain=["Self", "Link", "None"], range=["red", "blue", "gray"])),
+                color=alt.Color("Relationship:O", title="Node Relationship",
+                                scale=alt.Scale(domain=["Self", "Linked", "None"], range=["red", "blue", "gray"])),
                 size=alt.value(100),
                 opacity=alt.value(0.5),
                 tooltip=alt.Tooltip(["Source:Q", "Source Timestamp:Q", "Destination Timestamp:Q"])

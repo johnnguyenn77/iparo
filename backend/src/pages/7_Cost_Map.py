@@ -1,7 +1,4 @@
-import itertools
-
 import altair as alt
-import streamlit as st
 from streamlit import session_state as ss
 
 from components.utils import *
@@ -94,7 +91,7 @@ def cost_map():
             color=(alt.when(alt.datum.Proportion < 0.5)
                    .then(alt.value('black')).otherwise(alt.value('white'))),
             size=alt.value(36),
-        )).properties(width=200, height=75 * (n_policies + 1)).configure_axisY(labelLimit=400)
+        )).properties(width=400, height=75 * n_policies + 160).configure_axisY(labelLimit=800)
         st.altair_chart(heatmap)
 
 

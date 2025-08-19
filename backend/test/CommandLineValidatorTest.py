@@ -226,32 +226,24 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid = validate(["-h"])
         self.assertTrue(is_valid)
 
-    def test_command_line_accepts_single_volume(self):
-        is_valid = validate(["-s", "-V", "single"])
+    def test_command_line_accepts_one_node(self):
+        is_valid = validate(["-s", "-V", "1"])
         self.assertTrue(is_valid)
 
-    def test_command_line_accepts_small_volume(self):
-        is_valid = validate(["-s", "-V", "small"])
+    def test_command_line_accepts_a_hundred_nodes(self):
+        is_valid = validate(["-s", "-V", "100"])
         self.assertTrue(is_valid)
 
-    def test_command_line_accepts_medium_volume(self):
-        is_valid = validate(["-s", "-V", "medium"])
-        self.assertTrue(is_valid)
-
-    def test_command_line_accepts_large_volume(self):
-        is_valid = validate(["-s", "-V", "large"])
-        self.assertTrue(is_valid)
-
-    def test_command_line_accepts_huge_volume(self):
-        is_valid = validate(["-s", "-V", "huge"])
-        self.assertTrue(is_valid)
-
-    def test_command_line_accepts_case_insensitive_volume_alias(self):
-        is_valid = validate(["-s", "-V", "HUGE"])
-        self.assertTrue(is_valid)
+    def test_command_line_does_not_accept_no_nodes(self):
+        is_valid = validate(["-s", "-V", "0"])
+        self.assertFalse(is_valid)
 
     def test_command_line_does_not_accept_unrecognized_input(self):
         is_valid = validate(["-s", "-V", "smell"])
+        self.assertFalse(is_valid)
+
+    def test_command_line_does_not_accept_negative_input(self):
+        is_valid = validate(["-s", "-V", "-1"])
         self.assertFalse(is_valid)
 
     def test_can_parse_linear_density_with_slope_minus_two(self):

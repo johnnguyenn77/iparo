@@ -46,9 +46,7 @@ class CommandLineParser:
         """
         Parses version volume
         """
-        args = self.args
-
-        return args.volume
+        return self.args.volume
 
     def parse_density(self) -> VersionDensity:
         """
@@ -56,15 +54,17 @@ class CommandLineParser:
         """
         args = self.args
         interval = args.interval
+        key = args.densitykey
+
         if slope := args.linear:
-            return LinearVersionDensity(slope, interval)
+            return LinearVersionDensity(slope, interval, key)
         elif slope := args.bigheadlongtail:
-            return BigHeadLongTailVersionDensity(slope, interval)
+            return BigHeadLongTailVersionDensity(slope, interval, key)
         elif params := args.multipeak:
             # First pass: get the sum of weights.
             mixture_params = np.array(params)
             return MultipeakVersionDensity(mixture_params[:, 0], mixture_params[:, 1:])
-        return UniformVersionDensity(interval)
+        return UniformVersionDensity(interval, key)
 
     def parse_operations(self):
         """

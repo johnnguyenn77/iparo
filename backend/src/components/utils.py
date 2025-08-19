@@ -1,7 +1,7 @@
 from enum import IntEnum
 from pathlib import Path
 from typing import Literal
-
+import streamlit as st
 import numpy as np
 import pandas as pd
 
@@ -13,8 +13,7 @@ RESULTS_FOLDER = Path("../results")
 OP_NAMES = {"First": "Retrieve First", "Latest": "Retrieve Latest", "Nth": "Retrieve by Sequence Number",
             "Store": "Add Node", "Time": "Retrieve by Time", "List": "List All"}
 OP_TYPES = list(OP_NAMES.keys())
-SCALES = [1, 10, 100, 1000, 10000]
-DENSITIES = ["BHLT", "Linear", "Multipeak", "Uniform"]
+DENSITY_NAMES = {"bhlt": "BHLT", "linear": "Linear", "multipeak": "Multipeak", "uniform": "Uniform"}
 ACTIONS = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
 POLICY_GROUPS_FILES = {subpath.name:
                            [param for param in subpath.iterdir() if param.is_dir()]
@@ -22,10 +21,23 @@ POLICY_GROUPS_FILES = {subpath.name:
 POLICY_GROUPS = {subpath.name:
                      [param.name for param in subpath.iterdir() if param.is_dir()]
                  for subpath in RESULTS_FOLDER.iterdir() if subpath.is_dir()}
+POLICY_GROUP_NAMES = {"single": "Single", "previous": "Previous", "comprehensive": "Comprehensive",
+                      "random": "Random", "sequniform": "Sequential Uniform",
+                      "seqmaxgap": "Sequential Max-Gap", "seqexp": "Sequential Exponential",
+                      "tempuniform": "Temporally Uniform", "tempmingap": "Temporally Min-Gap",
+                      "tempexp": "Temporally Exponential"}
 
 POLICY_GROUP_COMBINATIONS = [(group, param)
                              for group, params in POLICY_GROUPS.items()
                              for param in params]
+
+ENVIRONMENTS = [file.name[:file.name.find(".csv")].split("-")
+                for subpath in RESULTS_FOLDER.iterdir() if subpath.is_dir()
+                for param in subpath.iterdir() if param.is_dir()
+                for file in param.iterdir() if file.is_file()]
+
+SCALES = list(set([int(x[0]) for x in ENVIRONMENTS]))
+DENSITIES = list(set([x[1] for x in ENVIRONMENTS]))
 COLOR_SCHEME = "category10"
 COLOR_SCHEME_PAIRED = "tableau20"
 NUM_COLUMNS = 3
@@ -48,6 +60,15 @@ class Action(IntEnum):
 
 ACTION_LIST = [ACTIONS[action - 1] for action in Action]
 RETRIEVE_ACTION_LIST = [action for action in Action if action != Action.LINKS]
+
+
+def shorten_group_name(policy_group: str):
+    return policy_group.replace("Temporally", "Temp.").replace("Exponential", "Exp.")
+
+
+def shorten_parameter_name(policy_param: str):
+    return policy_param.replace("Seconds", "s")
+
 
 def get_summary_data(policies: pd.DataFrame,
                      density: str,
@@ -87,7 +108,8 @@ def get_summary_data(policies: pd.DataFrame,
             # Get number of iterations based on operation
             n_iter = scale if operation == "Store" else 10
             filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
-            policy_name = policy_group + " - " + policy_param if policy_param != "None" else policy_group
+            policy_name = (shorten_group_name(policy_group) + " - " +
+                           shorten_parameter_name(policy_param)) if policy_param != "None" else policy_group
             if analyze_all_iterations:
                 index.append('Iteration')
                 partial_df = (pd.read_csv(filename, nrows=n_iter, usecols=actions)

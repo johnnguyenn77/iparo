@@ -1,9 +1,8 @@
 import streamlit as st
-import altair as alt
 from streamlit import session_state as ss
 
 from components.LayeredBoxPlot import LayeredBoxPlot
-from components.utils import Action, get_summary_data, DENSITIES, OP_TYPES, SCALES
+from components.utils import Action, get_summary_data, OP_TYPES
 
 
 def summary_report():

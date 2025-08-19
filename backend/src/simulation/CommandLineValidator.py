@@ -144,7 +144,7 @@ policy_exclusive_group.add_argument("-G", "--tempmingap", help="""Temporally T-m
                                                                the immediate previous version. Also links 
                                                                with the first version. T is measured in 
                                                                seconds.""", metavar="T",
-                                    type=check_positive_int)
+                                    type=check_greater_than_zero)
 policy_exclusive_group.add_argument("-E", "--tempexp", help="Temporally exponential (with base "
                                                             "and time unit T). Links in such a way "
                                                             "that the maximum gap is a window of time T "
@@ -155,13 +155,11 @@ policy_exclusive_group.add_argument("-E", "--tempexp", help="Temporally exponent
                                     nargs=2, type=check_greater_than_zero, metavar=("base", "unit"))
 
 # Version Volume group - case-insensitive
-volume_group = validator.add_argument("-V", "--volume", help="The version volume (or scale) used for the "
-                                                             "testing environment. Default is 100. The single "
-                                                             "version volume is defined as 1 node, the small volume is"
-                                                             "defined as 10 nodes, the medium volume is 100 nodes, "
-                                                             "large is 1000 nodes, and huge is 10000 nodes.",
-                                      default="medium",
-                                      type=check_version_volume)
+volume_group = validator.add_argument("-V", "--volume", help="The version volume used for the "
+                                                             "testing environment, measured in number of nodes. "
+                                                             "Default is 100.",
+                                      default=100,
+                                      type=check_positive_int)
 # Version Density group
 version_density_group = validator.add_argument_group("Version Density", "The version density to use for "
                                                                         "the simulation. Default is uniformly "
@@ -204,14 +202,16 @@ validator.add_argument("-n", "--number-of-iterations", help="Number of iteration
                                                             "which means the number of iterations for the storage "
                                                             "depends on the version volume.",
                        default=10, type=check_positive_int, metavar="iterations", dest="iterations")
+validator.add_argument("-k", "--densitykey", help="""The density key, which partially determines the
+unique name of the file.""")
 validator.add_argument("-O", "--operations", help="""The operation to use. Options are 'first' for get 
                                                  first, 'latest' for get latest, 'time' for get at uniformly 
-                                                 distributed time T, 'nth' for get Nth node, and 'list' for list all. 
-                                                 By default, all operations are included in this simulation and default
-                                                 to the number of iterations (with the exception of 'list', which will
-                                                 always happen 10 times). Multiple operation choices are allowed. For 
-                                                 instance, '-O list nth' will simulate the nth and list operations.
-                                                 Repeated operations are not allowed.""",
+                                                 distributed time T, 'nth' for get Nth node, and 'list' for list all
+                                                 links.  By default, all operations are included in this simulation 
+                                                 and default to the number of iterations. Multiple operation choices 
+                                                 are allowed. For instance, '-O list nth' will simulate the retrieve 
+                                                 by sequence number and list all operations. Repeated operations are
+                                                 not allowed.""",
                        choices=operation_choices, nargs='*', action='extend')
 validator.add_argument("-v", "--verbose", help="Prints detailed output.", action="store_true")
 validator.add_argument("-i", "--interval", help="""The time interval for simulation.

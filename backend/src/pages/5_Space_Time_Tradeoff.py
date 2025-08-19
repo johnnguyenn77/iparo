@@ -8,21 +8,19 @@ from components.utils import *
 def display_chart(df_ranked: pd.DataFrame, n_policies_selected: int, title: str,
                   scale_type: Literal['symlog', 'identity'] = 'identity'):
     density = ss['density']
-    chart = alt.Chart(df_ranked).mark_bar().encode(
+    chart = (alt.Chart(df_ranked).mark_bar().encode(
+        x=alt.X("Policy:O",
+                sort=alt.EncodingSortField(field='Tradeoff',
+                                           order='ascending')),
         y=alt.Y("Tradeoff:Q").scale(type=scale_type),
         color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
                         scale=alt.Scale(scheme=COLOR_SCHEME))
-    )
+    ).resolve_scale(x='independent').configure_axisX(labelLimit=400)
+                          .properties(title=alt.TitleParams(f"Policy vs. Tradeoff ({title}) - Mean - {density}",
+                                                            align='center', anchor="middle")))
 
     if n_policies_selected >= 1:
-        rankings_chart = (chart.encode(x=alt.X("Policy:O",
-                                               sort=alt.EncodingSortField(field='Tradeoff',
-                                                                          order='ascending')))
-                          .resolve_scale(x='independent')
-                          .configure_axisX(labelLimit=400)
-                          .properties(title=alt.TitleParams(f"Policy vs. Tradeoff ({title}) - Mean - {density}",
-                                                            align='center', anchor="middle", fontSize=20)))
-        st.altair_chart(rankings_chart)
+        st.altair_chart(chart)
     else:
         st.error("Expected at least one policy selected, got none.")
 

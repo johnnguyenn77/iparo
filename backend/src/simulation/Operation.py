@@ -46,7 +46,7 @@ class Operation:
 
 class IterableOperation(Operation):
 
-    def __init__(self, env: IPAROSimulationEnvironment, iterations: int = 0, save_to_file: bool = True):
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True, iterations: int = 0):
         """
         Iterable operation constructor. If number of iterations is not specified (or is 0),
         then the environment iteration number is used. Otherwise, the number of iterations overrides the
@@ -115,8 +115,9 @@ class IterableOperation(Operation):
         """
         self.opcounts.rename_axis(index="Iteration", inplace=True)
         storage_summary = self.opcounts.describe()  # Transpose
-        self.opcounts.to_csv(self.output_path)
-        storage_summary.to_csv(self.output_path, mode="a", header=False)
+        path = os.path.join(self.env.output_dir, self.output_path)
+        self.opcounts.to_csv(path)
+        storage_summary.to_csv(path, mode="a", header=False)
 
 
 class StoreOperation(IterableOperation):
@@ -125,7 +126,7 @@ class StoreOperation(IterableOperation):
         return "Store"
 
     def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
-        super().__init__(env, env.version_volume, save_to_file)
+        super().__init__(env, save_to_file, env.version_volume)
         generator = VersionGenerator(env.version_density)
         self.__num_links = []
         self.__nodes = generator.generate(env.version_volume, URL)
