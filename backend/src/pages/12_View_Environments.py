@@ -31,7 +31,7 @@ def view_environments():
     if 'densities' not in ss:
         ss['densities'] = {}
     if 'success_message' in ss:
-        st.success(ss['success_message'])
+        st.toast(ss['success_message'])
         del ss['success_message']
     if 'stage' in ss:
         del ss['stage']
@@ -40,7 +40,7 @@ def view_environments():
                 "In fact, the file structure is `[Policy Group]/[Policy Param Key]/"
                 "[Volume]-[Density Key]-[Operation Shorthand].csv`")
     st.header("Policies")
-    policy_list = [[policy, POLICY_GROUP_NAMES[group], param_key, arg, False]
+    policy_list = [[policy, group, param_key, arg, False]
                    for arg, policy, group, param_key in ss['policies']]
 
     ss['policies_data'] = pd.DataFrame(policy_list, columns=["Name", "Policy Group", "Param Key", "Command-Line Args",
@@ -55,8 +55,9 @@ def view_environments():
     if delete_policy:
         policies = ss['policies_data']
         for i, row in policies.loc[policies['Selected']].iterrows():
-            ss['policies'].remove((row['Command-Line Args'], row['Name']))
-        ss['success_message'] = "Successfully deleted selected policies."
+            ss['policies'].remove((row['Command-Line Args'], row['Name'], row['Policy Group'], row['Param Key']))
+        if policies.shape[0] > 0:
+            ss['success_message'] = "Successfully deleted selected policies."
         st.rerun()
 
     st.header("Densities")
@@ -74,7 +75,8 @@ def view_environments():
         policies = ss['densities_data']
         for i, row in policies.loc[policies['Selected']].iterrows():
             del ss['densities'][row['Version Density Key']]
-        ss['success_message'] = "Successfully deleted selected densities."
+        if policies.shape[0] > 0:
+            ss['success_message'] = "Successfully deleted selected densities."
         st.rerun()
 
     st.header("Version Volumes")
@@ -86,11 +88,14 @@ def view_environments():
 
     st.header("Other Settings")
     st.text("For parallel execution, please refer to the command-line application and the bash script for it.")
-    st.number_input("Number of Iterations", min_value=1, value=10,
-                    help="Number of iterations for each operation besides the store operation. "
-                         "Number of iterations for the store operation are only affected by the "
-                         "version volume.", key="iterations")
-    st.checkbox("Verbose", help="Debugging output.", key="verbose")
+    ss['iterations'] = st.number_input("Number of Iterations", min_value=1, value=10,
+                                       help="Number of iterations for each operation besides the store operation. "
+                                            "Number of iterations for the store operation are only affected by the "
+                                            "version volume.")
+    ss["recompute_storage"] = st.checkbox("Recompute 'Add Node' Costs",
+                                          help="Recomputing 'Add Node' costs will make the average storage cost "
+                                               "more reliable but requires a lot more time.")
+    ss["verbose"] = st.checkbox("Verbose", help="Add debugging output to the console.")
     # ss['parallel'] = st.checkbox("Allow Parallel Computation", help="Allows a multiprocessing pool to expedite the "
     #                                                                 "simulation process. However, this may come with "
     #                                                                 "the risk of using up more memory.")

@@ -1,6 +1,6 @@
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.Operation import LatestOperation, StoreOperation, FirstOperation, GetAtTOperation, GetNthOperation, \
-    ListAllOperation
+    ListAllOperation, IteratedStoreOperation
 
 # URL doesn't matter much, but the fact that it exists is important.
 URL = "example.com"
@@ -14,11 +14,12 @@ class IPAROSimulation:
     def run(self):
         # Create some storage.
         env = self.env
-
-        # Link the IPAROs in the IPFS
-        store_op = StoreOperation(env)
+        if env.recompute_storage:
+            store_op = IteratedStoreOperation(env)
+        else:
+            # Link the IPAROs in the IPFS
+            store_op = StoreOperation(env)
         store_op.execute()
-
         for op in env.operations:
             self.dispatch(op)
 

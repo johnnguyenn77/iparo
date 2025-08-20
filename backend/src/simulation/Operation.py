@@ -55,7 +55,7 @@ class IterableOperation(Operation):
         self.env = env
         self.iterations = iterations or env.iterations
         self.opcounts = None
-        self.data = np.zeros((self.iterations, 4))
+        self.data = np.zeros((self.iterations, 4), dtype=np.float64)
         self.output_path = f"{str(self.env)}-{self.name()}.csv"
         self.save_to_file = save_to_file
 
@@ -229,3 +229,60 @@ class ListAllOperation(IterableOperation):
         if self.env.verbose:
             print(f"{str(self.env)}: List All: Iteration {i + 1}")
         ipfs.get_all_links(URL)
+
+
+class IteratedStoreOperation(IterableOperation):
+
+    def name(self) -> str:
+        return "Store"
+
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file=True):
+        super().__init__(env, save_to_file)
+        self.__num_links = []
+        self.df = np.zeros((self.iterations * self.env.version_volume, 4))
+        self.__generator = VersionGenerator(self.env.version_density)
+
+    def step(self, i: int):
+        """
+        Gets the first operation.
+        """
+        if self.env.verbose:
+            print(f"{str(self.env.linking_strategy)}-{str(self.env)}: Iteration {i}.")
+
+        volume = self.env.version_volume
+        nodes = self.__generator.generate(volume, URL)
+        reset()
+        for j in range(volume):
+            if j % 100 == 99:
+                print(f"{str(self.env.linking_strategy)}-{str(self.env)}: Storing {j + 1}th node.")
+            try:
+                nodes[j].seq_num = j
+                first_link, latest_link, latest_node = ipfs.get_links_to_first_and_latest_nodes(URL)
+                nodes[j].linked_iparos = self.env.linking_strategy.get_candidate_nodes(latest_link, latest_node,
+                                                                                       first_link)
+            except IPARONotFoundException:
+                nodes[j].linked_iparos = set()
+
+            num_links = len(nodes[j].linked_iparos)
+            self.__num_links.append(float(num_links))
+
+            cid, _ = ipfs.store(nodes[j])
+            ipns.update(URL, cid)
+
+            # Record iteration here.
+            ipfs_counts = ipfs.get_counts()
+            ipns_counts = ipns.get_counts()
+            # First four elements
+            self.df[volume * i + j, :] = [float(ipns_counts["get"]), float(ipns_counts["update"]),
+                                          float(ipfs_counts["store"]), float(ipfs_counts["retrieve"])]
+        if i != self.env.iterations - 1:
+            reset(reset_data=True)
+
+    def postprocess_data(self):
+        volume = self.env.version_volume
+        df = pd.DataFrame({"Iteration Number": [1 + i for _ in range(self.env.iterations) for i in range(volume)],
+                           "Links": self.__num_links})
+        self.opcounts = (pd.concat((pd.DataFrame(self.df, columns=["IPNS Get", "IPNS Update",
+                                                                   "IPFS Store", "IPFS Retrieve"]), df), axis=1)
+                         .groupby(by=["Iteration Number"]).mean())
+        self.opcounts.index = pd.RangeIndex(1, volume + 1)
