@@ -3,7 +3,7 @@ pythoncmd="python src/SimulationWriter.py -S -v -V"
 while read -r line
 do
   # Run all scripts on all densities and version volumes (besides huge)
-  for vol in 1 10 100 1000 1000
+  for vol in 1 10 100 1000 10000
   do
     $pythoncmd $vol $line &
     $pythoncmd $vol -l 2 $line &
