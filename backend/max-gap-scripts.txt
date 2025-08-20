@@ -1,4 +1,4 @@
--c -o results/Sequential-Max-Gap/Comprehensive
+-c -o results/Comprehensive/None
 -g 2 -o results/Sequential-Max-Gap/2
 -g 4 -o results/Sequential-Max-Gap/4
 -g 8 -o results/Sequential-Max-Gap/8

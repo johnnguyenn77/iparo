@@ -14,7 +14,7 @@
 -e 2 -o results/Sequential-Exponential/2
 -e 3 -o results/Sequential-Exponential/3
 -e 4 -o results/Sequential-Exponential/4
--c -o results/Sequential-Max-Gap/Comprehensive
+-c -o results/Comprehensive/None
 -g 2 -o results/Sequential-Max-Gap/2
 -g 4 -o results/Sequential-Max-Gap/4
 -g 8 -o results/Sequential-Max-Gap/8
@@ -24,11 +24,11 @@
 -u 8 -o results/Sequential-Uniform/8
 -u 16 -o results/Sequential-Uniform/16
 -u 32 -o results/Sequential-Uniform/32
--E 1.25 1 -o results/Temporally-Exponential/1.25
--E 1.5 1 -o results/Temporally-Exponential/1.5
--E 2 1 -o results/Temporally-Exponential/2
--E 3 1 -o results/Temporally-Exponential/3
--E 4 1 -o results/Temporally-Exponential/4
+-E 1.25 10 -o results/Temporally-Exponential/1.25
+-E 1.5 10 -o results/Temporally-Exponential/1.5
+-E 2 10 -o results/Temporally-Exponential/2
+-E 3 10 -o results/Temporally-Exponential/3
+-E 4 10 -o results/Temporally-Exponential/4
 -G 10 -o results/Temporally-Min-Gap/10
 -G 20 -o results/Temporally-Min-Gap/20
 -G 40 -o results/Temporally-Min-Gap/40

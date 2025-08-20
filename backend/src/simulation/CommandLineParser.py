@@ -84,5 +84,14 @@ class CommandLineParser:
         """
         return self.args.verbose
 
+    def parse_recompute_storage(self):
+        """
+        Parses whether the storage operations is averaged among all iterations.
+        """
+        return self.args.store_average
+
     def parse_output_directory(self):
+        """
+        Parses the output directory.
+        """
         return self.args.output

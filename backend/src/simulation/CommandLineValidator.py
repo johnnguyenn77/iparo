@@ -53,7 +53,7 @@ def check_version_volume(x: str) -> int:
     if x.isdecimal():
         return int(x)
     elif x.lower() in ['single', 'small', 'medium', 'large', 'huge']:
-        return VersionVolume[x.upper()]
+        return VersionVolume[x.upper()]  # backwards compatibility
     raise ArgumentTypeError(str(x))
 
 
@@ -204,6 +204,13 @@ validator.add_argument("-n", "--number-of-iterations", help="Number of iteration
                        default=10, type=check_positive_int, metavar="iterations", dest="iterations")
 validator.add_argument("-k", "--densitykey", help="""The density key, which partially determines the
 unique name of the file.""")
+
+
+validator.add_argument("-S", "--store-average", help="Adds an option to average the store operation. Note "
+                                                     "that the store operations are computed together before each "
+                                                     "other operation, where the results of the last store operation "
+                                                     "are used to calculate the retrieval costs.",
+                       action="store_true", dest="store_average")
 validator.add_argument("-O", "--operations", help="""The operation to use. Options are 'first' for get 
                                                  first, 'latest' for get latest, 'time' for get at uniformly 
                                                  distributed time T, 'nth' for get Nth node, and 'list' for list all

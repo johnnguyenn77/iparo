@@ -3,7 +3,7 @@
 comprehensive="-c -o Results/Comprehensive/None"
 maxgap2="-g 2 -o Results/Sequential-Max-Gap/2"
 maxgap4="-g 4 -o Results/Sequential-Max-Gap/4"
-pythoncmd="python src/SimulationWriter.py -v -V huge"
+pythoncmd="python src/SimulationWriter.py -v -V 10000"
 
 IFS=$'\n' read -d '' -ra arr <<< $(grep -F -v -f memory-intensive-scripts.txt max-gap-scripts.txt)
 for line in "${arr[@]}"

@@ -22,7 +22,9 @@ if __name__ == '__main__':
     density = parser.parse_density()
     iterations = parser.parse_iterations()
     verbose = parser.parse_verbosity()
+    recompute_storage = parser.parse_recompute_storage()
     output_dir = parser.parse_output_directory().strip()
-    env = IPAROSimulationEnvironment(policy, volume, density, operations, output_dir, verbose, iterations)
+    env = IPAROSimulationEnvironment(policy, volume, density, operations, output_dir, verbose,
+                                     recompute_storage, iterations)
     sim = IPAROSimulation(env)
     sim.run()
