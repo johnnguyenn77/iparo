@@ -1,6 +1,5 @@
-import streamlit as st
-from streamlit import session_state as ss
 import altair as alt
+from streamlit import session_state as ss
 
 from components.utils import *
 
@@ -27,7 +26,7 @@ def display_chart(df_ranked: pd.DataFrame, n_policies_selected: int, title: str,
 
 def spacetime_tradeoff():
     if 'selected_policies' not in st.session_state:
-        st.switch_page('pages/2_Select_Policies.py')
+        st.switch_page('pages/3_Select_Policies.py')
 
     st.title("Space-Time Tradeoff")
 

@@ -12,6 +12,8 @@ RESULTS_FOLDER = Path("../results")
 
 OP_NAMES = {"First": "Retrieve First", "Latest": "Retrieve Latest", "Nth": "Retrieve by Sequence Number",
             "Store": "Add Node", "Time": "Retrieve by Time", "List": "List All"}
+OP_NAMES_ABBREVIATED = OP_NAMES.copy()
+OP_NAMES_ABBREVIATED['Nth'] = "Retrieve at Nth"
 OP_TYPES = list(OP_NAMES.keys())
 DENSITY_NAMES = {"bhlt": "BHLT", "linear": "Linear", "multipeak": "Multipeak", "uniform": "Uniform"}
 ACTIONS = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]
@@ -111,7 +113,8 @@ def get_summary_data(policies: pd.DataFrame,
             policy_name = (shorten_group_name(policy_group) + " - " +
                            shorten_parameter_name(policy_param)) if policy_param != "None" else policy_group
             if analyze_all_iterations:
-                index.append('Iteration')
+                if 'Iteration' not in index:
+                    index.append('Iteration')
                 partial_df = (pd.read_csv(filename, nrows=n_iter, usecols=actions)
                               .assign(Iteration=pd.Series(np.arange(1, n_iter + 1)), Policy=policy_name,
                                       Scale=scale, Density=density))
@@ -122,7 +125,8 @@ def get_summary_data(policies: pd.DataFrame,
                 if len(actions) > 2:
                     action_names = [ACTIONS[action - 1] for action in actions[:-1]]
                     partial_df = partial_df.assign(Action=action_names)
-                    index.append('Action')
+                    if 'Action' not in index:
+                        index.append('Action')
 
             partial_df = partial_df.set_index(index, drop=False)
 

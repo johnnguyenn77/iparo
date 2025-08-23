@@ -80,7 +80,47 @@ def iteration_level_analysis():
         with tabs[2]:
             st.dataframe(summary_long)
             bar.progress((5 * i + 4) / 30, text=f"Rendering data. Please wait... ({5 * i + 4} / 30)")
-        bar.empty()
+    summary1: pd.DataFrame = get_summary_data(ss['selected_policies'], density=density,
+                                              scales=scale,
+                                              operation='Store', actions=[Action.IPFS_RETRIEVE],
+                                              analyze_all_iterations=True)
+    summary2: pd.DataFrame = get_summary_data(ss['selected_policies'], density=density,
+                                              scales=scale,
+                                              operation='Store', actions=[Action.LINKS],
+                                              analyze_all_iterations=True)
+
+    st.header("Individual Chart for Add Node")
+    tabs = st.tabs(["Storage Retrieve Costs", "Link Costs"])
+    with (tabs[0]):
+        chart3 = alt.Chart(summary1, title=alt.TitleParams("IPFS Retrieve Counts for Add Node", align='center',
+                                                           anchor="middle", fontSize=20)
+                           ).mark_line(point=True, opacity=0.2).encode(
+            x=alt.X("Iteration:Q", title="Iteration Number"),
+            y=alt.Y(f"IPFS Retrieve:Q", title="Operation Count", scale=alt.Scale(type=scale_type)),
+            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
+                            scale=alt.Scale(scheme=COLOR_SCHEME)),
+            opacity=alt.value(0.5),
+            tooltip=["Policy:O", alt.Tooltip("Iteration:Q", format=","),
+                     alt.Tooltip("IPFS Retrieve:Q", format=",")]
+        )
+
+        st.altair_chart(chart3)
+    with tabs[1]:
+        chart4 = alt.Chart(summary2, title=alt.TitleParams("Number of Links for Add Node",
+                                                           align='center', anchor="middle", fontSize=20)).mark_line(point=True, opacity=0.2).encode(
+            x=alt.X("Iteration:Q", title="Iteration Number"),
+            y=alt.Y(f"Links:Q", title="Number of Links", scale=alt.Scale(type=scale_type)),
+            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
+                            scale=alt.Scale(scheme=COLOR_SCHEME)),
+            opacity=alt.value(0.5),
+            tooltip=["Policy:O", alt.Tooltip("Iteration:Q", format=","),
+                     alt.Tooltip("Links:Q", format=",")]
+        )
+
+        st.altair_chart(chart4)
+
+    bar.empty()
+
 
 if __name__ == '__main__':
     iteration_level_analysis()

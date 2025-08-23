@@ -16,12 +16,14 @@ if __name__ == '__main__':
     VIEW_ENVIRONMENTS = st.Page("pages/12_View_Environments.py", icon=":material/image:")
     ADD_VERSION_DENSITIES = st.Page("pages/13_Add_Version_Densities.py", icon=":material/image:")
     SIMULATION_WRITER_OUTPUT = st.Page("pages/14_Simulation_Writer_Output.py", icon=":material/image:")
+    COST_DENSITY_MAP = st.Page("pages/15_Cost_Density_Map.py", icon=":material/image:")
+    COST_CALCULATOR = st.Page("pages/16_Cost_Calculator.py", icon=":material/image:")
     pg = st.navigation({"Home": [HOME],
                         "Settings": [GENERAL_SETTINGS, SELECT_POLICIES],
                         "Reports": [SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
-                                    COST_MAP, ITERATION_LEVEL],
+                                    COST_MAP, ITERATION_LEVEL, COST_DENSITY_MAP, COST_CALCULATOR],
                         "Visualization": [POLICY_VISUALIZATION_SETTINGS, POLICY_VISUALIZATION],
-                        "Simulation": [ADD_POLICIES, VIEW_ENVIRONMENTS, ADD_VERSION_DENSITIES, SIMULATION_WRITER_OUTPUT]
+                        "Simulation (WIP)": [ADD_POLICIES, VIEW_ENVIRONMENTS, ADD_VERSION_DENSITIES, SIMULATION_WRITER_OUTPUT]
 
                         }, expanded=True)
     pg.run()
