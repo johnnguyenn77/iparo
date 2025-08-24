@@ -59,11 +59,11 @@ def cost_calculator():
         # The columns are sorted by action name
         operation_costs = np.dot(table, np.array([ipfs_retrieve_time, ipfs_store_time, ipns_get_time, ipns_update_time]))
         operation_costs_long = (pd.DataFrame(operation_costs, index=table.index,
-                                             columns=['Time Per Operation (Microseconds)']) / 1000).reset_index()
+                                             columns=['Time Per Operation (μs)']) / 1000).reset_index()
         operation_costs_long['Operation'] = operation_costs_long['Operation'].replace(OP_NAMES_ABBREVIATED)
         operation_costs_table = (operation_costs_long.pivot_table(index=['Policy'], columns=['Operation'],
-                                                                  values=['Time Per Operation (Microseconds)']))
-        map = Heatmap(operation_costs_long, "Operation:O", "Policy:O", "Time Per Operation (Microseconds):Q",
+                                                                  values=['Time Per Operation (μs)']))
+        map = Heatmap(operation_costs_long, "Operation:O", "Policy:O", "Time Per Operation (μs):Q",
                       title="Time Cost Per Operation", subtitle=f"{density} - Chain Length {scale}", log_scale=True,
                       show_labels=False)
         map.display()

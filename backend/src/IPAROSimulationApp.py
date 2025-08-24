@@ -18,10 +18,12 @@ if __name__ == '__main__':
     SIMULATION_WRITER_OUTPUT = st.Page("pages/14_Simulation_Writer_Output.py", icon=":material/image:")
     COST_DENSITY_MAP = st.Page("pages/15_Cost_Density_Map.py", icon=":material/image:")
     COST_CALCULATOR = st.Page("pages/16_Cost_Calculator.py", icon=":material/image:")
+    POLICY_GROWTH_HEATMAP = st.Page("pages/18_Policy_Growth_Rate_Heatmap.py", icon=":material/trending_up:")
     pg = st.navigation({"Home": [HOME],
                         "Settings": [GENERAL_SETTINGS, SELECT_POLICIES],
                         "Reports": [SUMMARY_REPORT, SPACETIME_TRADEOFF, POLICY_GROWTH,
-                                    COST_MAP, ITERATION_LEVEL, COST_DENSITY_MAP, COST_CALCULATOR],
+                                    COST_MAP, ITERATION_LEVEL, COST_DENSITY_MAP, COST_CALCULATOR,
+                                    POLICY_GROWTH_HEATMAP],
                         "Visualization": [POLICY_VISUALIZATION_SETTINGS, POLICY_VISUALIZATION],
                         "Simulation (WIP)": [ADD_POLICIES, VIEW_ENVIRONMENTS, ADD_VERSION_DENSITIES, SIMULATION_WRITER_OUTPUT]
 

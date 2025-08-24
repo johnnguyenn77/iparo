@@ -1,7 +1,10 @@
 import gc
 import hashlib
 import pickle
+import random
 from enum import Enum
+
+import numpy as np
 
 from simulation.IPAROException import IPARONotFoundException
 from simulation.IPARO import IPARO
@@ -43,6 +46,28 @@ class IPFS:
         self.store_count += 1
         self.data[cid] = iparo_bytes
         return cid, iparo_bytes
+
+    def remove_nodes(self, url: str, nodes: int) -> dict[str, bytes]:
+        """
+        Adds the option to remove some nodes with probability 1-p
+        for testing resilience. This will simulate some chaos by 'deleting'
+        missing nodes.
+
+        :param url: The URL from which the links are removed
+        :param nodes: The exact number of nodes to remove.
+        :returns: The dictionary of deleted items
+        """
+        latest_link, latest_iparo = self.get_link_to_latest_node(url)
+        to_remove = np.random.choice(latest_link.seq_num, size=nodes, replace=False)
+
+        # Keep a copy of deleted nodes...
+        deleted_nodes = {link.cid: self.data[link.cid] for link in self.get_all_links(url) if link.seq_num in to_remove}
+
+        # Then delete all nodes.
+        for cid in deleted_nodes:
+            del self.data[cid]
+
+        return deleted_nodes
 
     def reset_data(self):
         del self.data
@@ -196,13 +221,18 @@ class IPFS:
             links.update({link.seq_num: link for link in latest_iparo.linked_iparos})
             for curr_seq_num in range(latest_iparo.seq_num, 0, -1):
                 if curr_seq_num not in links:
-                    # Retrieve the link after the current sequence number, without using an IPFS lookup.
-                    curr_link = links[curr_seq_num + 1]
-                    # Now retrieve the IPARO from the link.
-                    curr_iparo = self.retrieve(curr_link.cid)
+                    try:
+                        # Retrieve the link after the current sequence number, without using an IPFS lookup.
+                        curr_link = links[curr_seq_num + 1]
+                        # Now try to retrieve the IPARO from the links.
+                        curr_iparo = self.retrieve(curr_link.cid)
 
-                    # Add all links, then rinse and repeat.
-                    links.update({link.seq_num: link for link in curr_iparo.linked_iparos})
+                        # Add all links, then rinse and repeat.
+                        links.update({link.seq_num: link for link in curr_iparo.linked_iparos})
+                    except KeyError:
+                        pass
+                    except IPARONotFoundException:
+                        pass
         finally:
             return set(links.values())
 

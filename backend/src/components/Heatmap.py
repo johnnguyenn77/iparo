@@ -23,10 +23,12 @@ class Heatmap:
     def display(self):
         value_col = self.value_col
         value_col_name = value_col[:-2]
+        x_col = self.x[:-2]
         y_col = self.y[:-2]
         scale_type: Literal['symlog', 'identity'] = "symlog" if self.log_scale else 'identity'
         df = self.df.copy()
-        n_vals = df[y_col].nunique()
+        n_vals_x = df[x_col].nunique()
+        n_vals_y = df[y_col].nunique()
         time_max = df[value_col_name].max()
         time_min = df[value_col_name].min()
         if self.log_scale:
@@ -34,7 +36,7 @@ class Heatmap:
                               / np.log((1 + time_max) / (1 + time_min) + 1e-10))
         else:
             proportion_col = (df[value_col_name] - time_min) / (time_max - max(time_min, 1)) \
-                if time_min >= 1 else 0.5
+                if time_max >= max(time_min, 1) else 0.5
 
         helper_df = df.assign(Proportion=proportion_col)
         title = alt.TitleParams(self.title, align='center', anchor="middle",
@@ -52,8 +54,9 @@ class Heatmap:
                 color=(alt.when(alt.datum.Proportion < 0.5)
                        .then(alt.value('black')).otherwise(alt.value('white'))),
                 size=alt.value(36),
-            )).properties(height=75 * n_vals + 160).configure_axisY(labelLimit=800)
+            )).properties(height=70 * n_vals_y + 160, width=200 * n_vals_x).configure_axisY(labelLimit=800)
         else:
             heatmap = (base_chart.configure_axisX(labelLimit=800).configure_axisY(labelLimit=800)
-                       .configure_legend(labelLimit=800))
-        st.altair_chart(heatmap)
+                       .configure_legend(labelLimit=1600))
+
+        st.altair_chart(heatmap, use_container_width=False)
