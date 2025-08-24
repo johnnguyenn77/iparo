@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/18_Policy_Growth_Rate_Heatmap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IPAROSimulationApp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/IPAROSimulationApp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Heatmap.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Heatmap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/15_Cost_Density_Map.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/15_Cost_Density_Map.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/16_Cost_Calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/16_Cost_Calculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPFS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/simulation/Operation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/Operation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

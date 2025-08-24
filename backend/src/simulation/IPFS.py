@@ -69,6 +69,12 @@ class IPFS:
 
         return deleted_nodes
 
+    def restore_nodes(self, missing_data: dict[str, bytes]):
+        """
+        Restores the missing data for future reference.
+        """
+        self.data.update(missing_data)
+
     def reset_data(self):
         del self.data
         gc.collect()

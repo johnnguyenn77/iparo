@@ -231,6 +231,28 @@ class ListAllOperation(IterableOperation):
         ipfs.get_all_links(URL)
 
 
+class UnsafeListAllOperation(IterableOperation):
+    """
+    List all nodes for resilience testing.
+    """
+
+    def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
+        super().__init__(env, save_to_file, iterations=env.version_volume)
+        self.__links_found = []
+
+    def name(self) -> str:
+        return "List-Unsafe"
+
+    def step(self, i):
+        if self.env.verbose:
+            print(f"{str(self.env)}: Unsafe List All: Iteration {i + 1}")
+
+        missing_nodes = ipfs.remove_nodes(i)
+        links_found = ipfs.get_all_links(URL)
+        self.__links_found.append(len(links_found) / (self.env.version_volume - i))
+        ipfs.restore(missing_nodes)
+
+
 class IteratedStoreOperation(IterableOperation):
 
     def name(self) -> str:
