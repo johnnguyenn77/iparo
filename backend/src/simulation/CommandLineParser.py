@@ -1,5 +1,6 @@
 from sys import stderr
 
+from simulation.CommandLineValidator import operation_choices
 from simulation.LinkingStrategy import *
 from simulation.VersionDensity import *
 
@@ -70,7 +71,7 @@ class CommandLineParser:
         """
         Parses the type of operations.
         """
-        return self.args.operations if self.args.operations else ["first", "latest", "time", "nth", "list"]
+        return self.args.operations if self.args.operations else operation_choices.copy()
 
     def parse_iterations(self):
         """

@@ -1,6 +1,6 @@
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.Operation import LatestOperation, StoreOperation, FirstOperation, GetAtTOperation, GetNthOperation, \
-    ListAllOperation, IteratedStoreOperation
+    ListAllOperation, IteratedStoreOperation, UnsafeListAllOperation
 
 # URL doesn't matter much, but the fact that it exists is important.
 URL = "example.com"
@@ -42,5 +42,7 @@ class IPAROSimulation:
                 op = LatestOperation(self.env)
             case "list":
                 op = ListAllOperation(self.env)
+            case "unsafe-list":
+                op = UnsafeListAllOperation(self.env)
         if op is not None:
             op.execute()

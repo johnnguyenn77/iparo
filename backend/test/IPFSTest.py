@@ -186,6 +186,10 @@ class IPAROLinkFactoryTest(unittest.TestCase):
 
     def setUp(self):
         # Will produce 100 nodes, each uniformly distributed with interval = 1 second.
+        ipfs.reset_data()
+        ipfs.reset_counts()
+        ipns.reset_data()
+        ipns.reset_counts()
         test_strategy(SingleStrategy())
 
     def test_can_throw_when_iparo_seq_num_is_less_than_input_seq_num(self):
@@ -287,6 +291,19 @@ class IPAROLinkFactoryTest(unittest.TestCase):
         link, iparo = ipfs.get_link_to_latest_node(URL)
         ipfs.retrieve_nth_iparo(0, link)
         self.assertLessEqual(ipfs.get_counts()["retrieve"], 100)
+
+    def test_missing_nodes_contains_exact_length(self):
+        missing_nodes = ipfs.remove_nodes(URL, 99)
+        self.assertEqual(99, len(missing_nodes))
+        self.assertEqual(1, len(ipfs.data))
+        ipfs.restore_nodes(missing_nodes)
+
+    def test_can_restore_nodes_completely(self):
+        original_data = ipfs.data.copy()
+        for i in range(10):
+            missing_nodes = ipfs.remove_nodes(URL, 99)
+            ipfs.restore_nodes(missing_nodes)
+        self.assertDictEqual(original_data, ipfs.data)
 
 
 if __name__ == '__main__':

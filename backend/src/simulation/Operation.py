@@ -98,7 +98,6 @@ class IterableOperation(Operation):
     def record_iteration(self, i: int):
         ipfs_counts = ipfs.get_counts()
         ipns_counts = ipns.get_counts()
-        # First four elements
         self.data[i, :] = [ipns_counts["get"], ipns_counts["update"],
                            ipfs_counts["store"], ipfs_counts["retrieve"]]
         reset()
@@ -237,20 +236,38 @@ class UnsafeListAllOperation(IterableOperation):
     """
 
     def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
-        super().__init__(env, save_to_file, iterations=env.version_volume)
-        self.__links_found = []
+        super().__init__(env, save_to_file, iterations=env.version_volume - 1)
+        self.__resilience_scores = []
 
     def name(self) -> str:
-        return "List-Unsafe"
+        return "Unsafe-List"
 
     def step(self, i):
+        total_nodes_found = 0
         if self.env.verbose:
-            print(f"{str(self.env)}: Unsafe List All: Iteration {i + 1}")
+            print(f"{str(self.env)}: Unsafe List All: {i} Nodes Missing")
+        for j in range(self.env.iterations):
+            missing_nodes = ipfs.remove_nodes(URL, i)
+            reset()
+            links_found = ipfs.get_all_links(URL)
 
-        missing_nodes = ipfs.remove_nodes(i)
-        links_found = ipfs.get_all_links(URL)
-        self.__links_found.append(len(links_found) / (self.env.version_volume - i))
-        ipfs.restore(missing_nodes)
+            for link in links_found:
+                try:
+                    ipfs.retrieve(link.cid)
+                    total_nodes_found += 1
+                except IPARONotFoundException:
+                    pass
+            ipfs.restore_nodes(missing_nodes)
+
+        # To be divided later
+        resilience_score = total_nodes_found / (self.env.version_volume - i)
+        self.__resilience_scores.append(resilience_score)
+        ipfs.reset_counts()
+
+    def postprocess_data(self):
+        self.opcounts = pd.concat((self.opcounts, pd.Series(self.__resilience_scores, name="Resilience",
+                                                            index=pd.RangeIndex(1, self.iterations + 1))), axis=1)
+        self.opcounts /= self.env.iterations
 
 
 class IteratedStoreOperation(IterableOperation):

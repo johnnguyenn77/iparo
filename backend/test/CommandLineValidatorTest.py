@@ -174,7 +174,7 @@ class CommandLineValidatorTest(unittest.TestCase):
         self.assertFalse(is_valid)
 
     def test_command_line_accepts_temporally_min_gap(self):
-        is_valid = validate(["-G", "3"])
+        is_valid = validate(["-G", "3.5"])
         self.assertTrue(is_valid)
 
     def test_temporally_min_gap_requires_that_the_argument_be_positive(self):
@@ -182,10 +182,9 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid_negative = validate(["-G", "-1"])
         self.assertFalse(is_valid_zero or is_valid_negative)
 
-    def test_temporally_min_gap_requires_that_the_argument_be_an_integer(self):
-        is_valid_noninteger = validate(["-G", "3.5"])
+    def test_temporally_min_gap_requires_that_the_argument_be_numeric(self):
         is_valid_alphabetic = validate(["-G", "x"])
-        self.assertFalse(is_valid_noninteger or is_valid_alphabetic)
+        self.assertFalse(is_valid_alphabetic)
 
     def test_temporally_exponential_requires_two_arguments(self):
         is_valid = validate(["-E", "5"])
@@ -299,6 +298,10 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid = validate("-s -O latest".split())
         self.assertTrue(is_valid)
 
+    def test_command_line_accepts_get_unsafe_list_all_operation(self):
+        is_valid = validate("-s -O unsafe-list".split())
+        self.assertTrue(is_valid)
+
     def test_command_line_accepts_get_time_operation(self):
         is_valid = validate("-s -O time".split())
         self.assertTrue(is_valid)
@@ -312,7 +315,7 @@ class CommandLineValidatorTest(unittest.TestCase):
         self.assertTrue(is_valid)
 
     def test_command_line_accepts_multiple_operations(self):
-        is_valid = validate("-s -O list nth".split())
+        is_valid = validate("-s -O list unsafe-list".split())
         self.assertTrue(is_valid)
 
     def test_command_line_does_not_accept_same_operations(self):

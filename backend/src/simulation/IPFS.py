@@ -49,24 +49,23 @@ class IPFS:
 
     def remove_nodes(self, url: str, nodes: int) -> dict[str, bytes]:
         """
-        Adds the option to remove some nodes with probability 1-p
-        for testing resilience. This will simulate some chaos by 'deleting'
-        missing nodes.
+        Adds the option to remove some nodes for testing resilience.
+        This will simulate some chaos by 'deleting' missing nodes.
 
         :param url: The URL from which the links are removed
         :param nodes: The exact number of nodes to remove.
         :returns: The dictionary of deleted items
         """
         latest_link, latest_iparo = self.get_link_to_latest_node(url)
-        to_remove = np.random.choice(latest_link.seq_num, size=nodes, replace=False)
-
+        to_remove = np.random.choice(latest_link.seq_num, size=nodes, replace=False)\
+            if latest_link.seq_num > 0 else set()
         # Keep a copy of deleted nodes...
-        deleted_nodes = {link.cid: self.data[link.cid] for link in self.get_all_links(url) if link.seq_num in to_remove}
-
+        links = self.get_all_links(url)
+        deleted_nodes = {link.cid: self.data[link.cid] for link in links if link.seq_num in to_remove}
         # Then delete all nodes.
         for cid in deleted_nodes:
             del self.data[cid]
-
+        # Update the latest node pointer.
         return deleted_nodes
 
     def restore_nodes(self, missing_data: dict[str, bytes]):
@@ -74,6 +73,7 @@ class IPFS:
         Restores the missing data for future reference.
         """
         self.data.update(missing_data)
+
 
     def reset_data(self):
         del self.data
@@ -225,7 +225,7 @@ class IPFS:
             curr_link, latest_iparo = self.get_link_to_latest_node(url)
             links = {curr_link.seq_num: curr_link}
             links.update({link.seq_num: link for link in latest_iparo.linked_iparos})
-            for curr_seq_num in range(latest_iparo.seq_num, 0, -1):
+            for curr_seq_num in reversed(range(latest_iparo.seq_num + 1)):
                 if curr_seq_num not in links:
                     try:
                         # Retrieve the link after the current sequence number, without using an IPFS lookup.

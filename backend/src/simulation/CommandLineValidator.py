@@ -4,7 +4,7 @@ from argparse import ArgumentParser, ArgumentTypeError
 
 from simulation.VersionDensity import VersionVolume
 
-operation_choices = ["first", "latest", "time", "nth", "list"]
+operation_choices = ["first", "latest", "time", "nth", "list", "unsafe-list"]
 
 
 # Utility methods used to check validity of command-line args.
