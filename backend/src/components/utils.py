@@ -62,7 +62,7 @@ class Action(IntEnum):
 
 ACTION_LIST = [ACTIONS[action - 1] for action in Action]
 RETRIEVE_ACTION_LIST = [action for action in Action if action != Action.LINKS]
-
+UNSAFE_LIST_ALL_ACTIONS = [5]
 
 def shorten_group_name(policy_group: str):
     return policy_group.replace("Temporally", "Temp.").replace("Exponential", "Exp.")
@@ -108,7 +108,12 @@ def get_summary_data(policies: pd.DataFrame,
         policy_param = row['Param']
         for scale in scales:
             # Get number of iterations based on operation
-            n_iter = scale if operation == "Store" else 10
+            if operation == "Store":
+                n_iter = scale
+            elif operation == "Unsafe-List":
+                n_iter = scale - 1
+            else:
+                n_iter = 10
             filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
             policy_name = (shorten_group_name(policy_group) + " - " +
                            shorten_parameter_name(policy_param)) if policy_param != "None" else policy_group
