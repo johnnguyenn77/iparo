@@ -13,7 +13,6 @@ def resilience_report():
                           [1000], UNSAFE_LIST_ALL_ACTIONS.copy(), analyze_all_iterations=True)
     df['Resilience'] *= 100
     df['Missing Nodes'] = df['Iteration'] - 1
-    st.dataframe(df)
     for name in ss['policy_names']:
         st.header(name)
         title = alt.TitleParams("Resilience Chart", align='center', anchor="middle",
