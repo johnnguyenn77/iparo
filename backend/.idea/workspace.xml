@@ -7,15 +7,7 @@
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scripts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/CommandLineParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/CommandLineParser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/CommandLineValidator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/CommandLineValidator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPAROSimulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/IPFS.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/IPFS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulation/Operation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation/Operation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temporal-scripts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temporal-scripts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/CommandLineValidatorTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/CommandLineValidatorTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPFSTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPFSTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/17_Resilience_Report.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/17_Resilience_Report.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,31 +40,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.executor": "Run",
-    "Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.test_command_line_accepts_single.executor": "Run",
-    "Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest.executor": "Run",
-    "Python tests.Python tests for CommandLineVerifierTest.CommandLineParserTest.executor": "Run",
-    "Python tests.Python tests for CommandLineVerifierTest.CommandLineValidatorTest.executor": "Run",
-    "Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest.executor": "Run",
-    "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor": "Run",
-    "Python tests.Python tests in IPFSTest.py.executor": "Run",
-    "Python.IPAROSimulationApp.executor": "Run",
-    "Python.IPAROSimulationAppV2.executor": "Run",
-    "Python.SimulationWriter.executor": "Run",
-    "Python.SimulationWriterV2.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "ptl46",
-    "last_opened_file_path": "C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.test_command_line_accepts_single.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPFSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulationApp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulationAppV2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.SimulationWriter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.SimulationWriterV2.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ptl46&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend" />
