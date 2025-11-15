@@ -30,6 +30,9 @@ class VersionDensity(ABC):
         """
         return self._key
 
+    def has_finite_domain(self):
+        return False
+
     @abstractmethod
     def sample(self, n: int) -> np.ndarray:
         """
@@ -54,7 +57,8 @@ class IntervalVersionDensity(VersionDensity, ABC):
         super().__init__(key)
         self._interval = interval * TimeUnit.SECONDS
 
-
+    def has_finite_domain(self):
+        return True
 
 class VersionGenerator:
     """

@@ -126,9 +126,14 @@ class StoreOperation(IterableOperation):
 
     def __init__(self, env: IPAROSimulationEnvironment, save_to_file: bool = True):
         super().__init__(env, save_to_file, env.version_volume)
-        generator = VersionGenerator(env.version_density)
+        self.__generator = VersionGenerator(env.version_density)
         self.__num_links = []
-        self.__nodes = generator.generate(env.version_volume, URL)
+        self.__nodes = self.__generator.generate(env.version_volume, URL)
+
+    def get_start_time(self):
+        if self.env.version_density.has_finite_domain():
+            return self.__generator.start_time
+        return None
 
     def step(self, i: int):
         """
@@ -314,11 +319,15 @@ class IteratedStoreOperation(IterableOperation):
             # First four elements
             self.df[volume * i + j, :] = [float(ipns_counts["get"]), float(ipns_counts["update"]),
                                           float(ipfs_counts["store"]), float(ipfs_counts["retrieve"])]
+            reset()
+
         if i != self.env.iterations - 1:
             reset(reset_data=True)
 
     def postprocess_data(self):
         volume = self.env.version_volume
+        print("Data:")
+        print(self.df)
         df = pd.DataFrame({"Iteration Number": [1 + i for _ in range(self.env.iterations) for i in range(volume)],
                            "Links": self.__num_links})
         self.opcounts = (pd.concat((pd.DataFrame(self.df, columns=["IPNS Get", "IPNS Update",
