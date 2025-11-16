@@ -13,6 +13,8 @@ def resilience_report():
     scale = ss['scale']
     if scale > 1000:
         st.error("Data not available for volumes bigger than 1000. Please check back soon.")
+    elif scale == 1:
+        st.error("There are too few points to analyze for a volume of 1.")
     else:
         partial_dfs = []
         for density in DENSITIES:
