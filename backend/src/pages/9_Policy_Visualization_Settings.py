@@ -50,8 +50,8 @@ def policy_visualization_settings():
                 ss['visualization_density'] = LinearVersionDensity(density_parameters, interval)
             elif density_group == 'bhlt':
                 interval = st.number_input("Interval (Seconds)", min_value=0.01, value=1000.0)
-                is_reversed = st.selectbox("Choose Direction of Head", [True, False],
-                                           format_func=lambda x: "Left" if x else "Right")
+                is_reversed = st.selectbox("Choose Direction of Head", [False, True],
+                                           format_func=lambda x: "Right" if x else "Left")
                 density_parameter = st.number_input("Choose Shape Parameter", min_value=1.001, step=0.001, value=20.0,
                                                     format="%.3f",
                                                     help="The shape parameter of the scaled and shifted "

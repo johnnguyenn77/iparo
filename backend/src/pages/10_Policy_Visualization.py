@@ -127,7 +127,8 @@ def policy_visualization():
                 tooltip=alt.Tooltip(["Source:Q", "Source Timestamp:Q", "Destination Timestamp:Q"])
             )
             st.altair_chart(chart_time)
-            st.button("Save Time Plot", on_click=save_chart, args=(chart_time,))
+            chart_saved = chart_time.properties(width=450, height=200)
+            st.button("Save Time Plot", on_click=save_chart, args=(chart_saved,))
         with tabs2[1]:
             st.dataframe(df_display, hide_index=True)
 
