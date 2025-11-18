@@ -1,9 +1,8 @@
-import pandas as pd
+import streamlit as st
+from streamlit import session_state as ss
 
 from components.CheckboxGroup import CheckboxGroup
 from components.utils import *
-import streamlit as st
-from streamlit import session_state as ss
 
 
 def select_policies():

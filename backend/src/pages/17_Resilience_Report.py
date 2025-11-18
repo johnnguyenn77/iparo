@@ -1,5 +1,5 @@
 import altair as alt
-import pandas as pd
+import streamlit as st
 from streamlit import session_state as ss
 
 from components.utils import *
