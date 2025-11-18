@@ -6,28 +6,105 @@
   <component name="ChangeListManager">
     <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROSimulationTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/IPAROStrategyTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/IPAROStrategyTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/VersionDensityTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/VersionDensityTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run-temporal-scripts.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run-temporal-scripts.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/8_Iteration_Level_Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/8_Iteration_Level_Analysis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor": "Run",
-    "Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor": "Run",
-    "Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor": "Run",
-    "git-widget-placeholder": "main"
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2z4UjJK2KEGuFQMMYolZWdQYfdC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineParserTest.CommandLineParserTest.test_command_line_accepts_single.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineParserTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for CommandLineVerifierTest.CommandLineValidatorTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROSimulationEnvironmentTest.IPAROSimulationEnvironmentTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in IPFSTest.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulationApp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.IPAROSimulationAppV2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.SimulationWriter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.SimulationWriterV2.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ptl46&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/patri/OneDrive/Documents/GitHub/iparo/backend&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail">
-    <configuration name="Python tests for IPAROSimulationTest.IPAROSimulationTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\results" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\Results" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src\components" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src\pages" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src\reports" />
+      <recent name="C:\Users\patri\OneDrive\Documents\GitHub\iparo\backend\src\pages\utils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Python tests in IPFSTest.py">
+    <configuration name="IPAROSimulationApp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/IPAROSimulationApp.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for CommandLineParserTest.CommandLineParserTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -38,7 +115,22 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;IPAROSimulationTest.IPAROSimulationTest&quot;" />
+      <option name="_new_target" value="&quot;CommandLineParserTest.CommandLineParserTest&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests for CommandLineValidatorTest.CommandLineValidatorTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;CommandLineValidatorTest.CommandLineValidatorTest&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -57,7 +149,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for VersionDensityTest.VersionDensityTestCase" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests in IPFSTest.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -68,51 +160,42 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;VersionDensityTest.VersionDensityTestCase&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/IPFSTest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="backend" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
+    <list>
+      <item itemvalue="Python.IPAROSimulationApp" />
+      <item itemvalue="Python tests.Python tests in IPFSTest.py" />
+      <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
+      <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
+      <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_big_head_long_tail_has_big_head_and_long_tail" />
-        <item itemvalue="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase.test_multipeak_can_have_two_peaks" />
-        <item itemvalue="Python tests.Python tests for VersionDensityTest.VersionDensityTestCase" />
+        <item itemvalue="Python tests.Python tests in IPFSTest.py" />
+        <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
         <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
-        <item itemvalue="Python tests.Python tests for IPAROSimulationTest.IPAROSimulationTest" />
+        <item itemvalue="Python.IPAROSimulationApp" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="" />
+      <created>1750989973110</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750989973110</updated>
+    </task>
     <servers />
   </component>
 </project>

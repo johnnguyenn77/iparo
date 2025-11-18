@@ -1,0 +1,3 @@
+-c -o results/Sequential-Max-Gap/Comprehensive
+-g 2 -o results/Sequential-Max-Gap/2
+-g 4 -o results/Sequential-Max-Gap/4

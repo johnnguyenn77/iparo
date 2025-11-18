@@ -9,8 +9,6 @@ from simulation.IPFS import ipfs, Mode
 from simulation.TimeUnit import TimeUnit
 
 
-# Make package/renaming with __init__ file
-
 class LinkingStrategy(ABC):
     """
     The linking strategy determines how the new IPARO is to be linked. The IPARO
@@ -95,11 +93,10 @@ class KRandomStrategy(LinkingStrategy):
         if num_nodes <= self.k:
             latest_node_links.add(latest_link)
             return latest_node_links
-        else:
-            # K random sequence numbers from 1 to n-1, n = latest sequence number
-            candidate_seq_nums = set(random.sample(range(1, num_nodes), min(self.k, num_nodes - 1)))
-            candidate_seq_nums.add(0)
-            links = IPAROLinkFactory.from_indices(latest_link, set(candidate_seq_nums))
+        # K random sequence numbers from 1 to n-1, n = latest sequence number
+        candidate_seq_nums = set(random.sample(range(1, num_nodes), min(self.k, num_nodes - 1)))
+        candidate_seq_nums.add(0)
+        links = IPAROLinkFactory.from_indices(latest_link, set(candidate_seq_nums))
         links.add(latest_link)
         return links
 
@@ -217,6 +214,7 @@ class TemporallyMinGapStrategy(LinkingStrategy):
                                                                           current_time, Mode.LATEST_BEFORE)
             links.add(candidate_link)
             curr_link = candidate_link
+            current_time = candidate_link.timestamp  # We want the new timestamp to be the current timestamp
 
         links.add(first_link)
         links.add(latest_link)
@@ -227,13 +225,17 @@ class TemporallyMinGapStrategy(LinkingStrategy):
 
 
 class TemporallyExponentialStrategy(LinkingStrategy):
-    def __init__(self, base: float, time_unit: int):
+    def __init__(self, base: float, time_unit: float):
+        """
+        :param base: the base (greater than 1).
+        :param time_unit: the minimum time unit in terms of seconds.
+        """
         self.base = base
         self.time_unit = time_unit
 
     def get_candidate_nodes(self, latest_link: IPAROLink, latest_iparo: IPARO, first_link: IPAROLink) -> set[IPAROLink]:
         # Exponential time gaps - assume number of nodes >= 1
-        gap = self.time_unit
+        gap = self.time_unit * TimeUnit.SECONDS
         time_window = latest_iparo.timestamp - first_link.timestamp
         gaps = []
         while gap < time_window:
@@ -241,7 +243,7 @@ class TemporallyExponentialStrategy(LinkingStrategy):
             gap *= self.base
         gaps.reverse()
 
-        timestamps = {latest_iparo.timestamp + gap for gap in gaps}
+        timestamps = {int(latest_iparo.timestamp + gap) for gap in gaps}
         links, _ = IPAROLinkFactory.from_timestamps(timestamps, {first_link, latest_link})
         links.add(first_link)
         links.add(latest_link)

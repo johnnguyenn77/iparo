@@ -1,7 +1,10 @@
 import gc
 import hashlib
 import pickle
+import random
 from enum import Enum
+
+import numpy as np
 
 from simulation.IPAROException import IPARONotFoundException
 from simulation.IPARO import IPARO
@@ -43,6 +46,34 @@ class IPFS:
         self.store_count += 1
         self.data[cid] = iparo_bytes
         return cid, iparo_bytes
+
+    def remove_nodes(self, url: str, nodes: int) -> dict[str, bytes]:
+        """
+        Adds the option to remove some nodes for testing resilience.
+        This will simulate some chaos by 'deleting' missing nodes.
+
+        :param url: The URL from which the links are removed
+        :param nodes: The exact number of nodes to remove.
+        :returns: The dictionary of deleted items
+        """
+        latest_link, latest_iparo = self.get_link_to_latest_node(url)
+        to_remove = np.random.choice(latest_link.seq_num, size=nodes, replace=False)\
+            if latest_link.seq_num > 0 else set()
+        # Keep a copy of deleted nodes...
+        links = self.get_all_links(url)
+        deleted_nodes = {link.cid: self.data[link.cid] for link in links if link.seq_num in to_remove}
+        # Then delete all nodes.
+        for cid in deleted_nodes:
+            del self.data[cid]
+        # Update the latest node pointer.
+        return deleted_nodes
+
+    def restore_nodes(self, missing_data: dict[str, bytes]):
+        """
+        Restores the missing data for future reference.
+        """
+        self.data.update(missing_data)
+
 
     def reset_data(self):
         del self.data
@@ -184,19 +215,32 @@ class IPFS:
         self.store_count = 0
         self.retrieve_count = 0
 
-    def get_all_links(self, url: str) -> list[IPAROLink]:
+    def get_all_links(self, url: str) -> set[IPAROLink]:
         """
-        Retrieves the list of all links in the IPFS, corresponding to the given URL.
-        The links are sorted from latest to earliest. This will also include all the CIDs.
+         Retrieves the set of all links in the IPFS, corresponding to the given URL.
+         This will also include all the CIDs.
         """
-        links = []
+        links = {}
         try:
-            link, _ = self.get_link_to_latest_node(url)
-            while True:
-                links.append(link)
-                link = self.retrieve_nth_iparo(link.seq_num - 1, link)
+            curr_link, latest_iparo = self.get_link_to_latest_node(url)
+            links = {curr_link.seq_num: curr_link}
+            links.update({link.seq_num: link for link in latest_iparo.linked_iparos})
+            for curr_seq_num in reversed(range(latest_iparo.seq_num + 1)):
+                if curr_seq_num not in links:
+                    try:
+                        # Retrieve the link after the current sequence number, without using an IPFS lookup.
+                        curr_link = links[curr_seq_num + 1]
+                        # Now try to retrieve the IPARO from the links.
+                        curr_iparo = self.retrieve(curr_link.cid)
+
+                        # Add all links, then rinse and repeat.
+                        links.update({link.seq_num: link for link in curr_iparo.linked_iparos})
+                    except KeyError:
+                        pass
+                    except IPARONotFoundException:
+                        pass
         finally:
-            return links
+            return set(links.values())
 
     def get_all_iparos(self, url: str) -> list[IPARO]:
         """
