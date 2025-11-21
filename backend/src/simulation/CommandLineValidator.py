@@ -1,8 +1,6 @@
 import os
-from sys import stderr
 from argparse import ArgumentParser, ArgumentTypeError
-
-from simulation.VersionDensity import VersionVolume
+from sys import stderr
 
 operation_choices = ["first", "latest", "time", "nth", "list", "unsafe-list"]
 
@@ -47,15 +45,6 @@ def check_predicate(val, pred):
 
 
 # Helper predicates
-
-
-def check_version_volume(x: str) -> int:
-    if x.isdecimal():
-        return int(x)
-    elif x.lower() in ['single', 'small', 'medium', 'large', 'huge']:
-        return VersionVolume[x.upper()]  # backwards compatibility
-    raise ArgumentTypeError(str(x))
-
 
 def check_greater_than_zero(x):
     return check_predicate(x, lambda x: x > 0)
@@ -178,22 +167,14 @@ version_density_exclusive_group.add_argument("-b", "--bigheadlongtail", help="Bi
                                                                              "f(x, a) = 1/[(1 + (a-1)*x) ln(a)], "
                                                                              "where 'a' is the shape parameter.",
                                              type=check_valid_bhlt_slope, metavar="shape_param")
-version_density_exclusive_group.add_argument("-m", "--multipeak", help="""Multipeak is a weighted mixture of normal 
-                                                                       distributions. Each normal distribution will 
-                                                                       be marked by weight, mean, and standard 
-                                                                       deviation. Weights don't need to add to one, 
-                                                                       though they will be scaled down in proportion 
-                                                                       to the weight. The params will be parsed by 
-                                                                       weight, mean, then standard deviation. So for 
-                                                                       example, if you want a mixture distribution 
-                                                                       with 50%% chance of coming from a normal 
-                                                                       distribution with mean 0 and standard deviation 
-                                                                       20, and 50%% chance of coming from a normal 
-                                                                       distribution with mean 100 and standard 
-                                                                       deviation 30, then you would enter 
-                                                                       '-m 0.5 0 20 -m 0.5 100 30' or
-                                                                       '--multipeak 0.5 0 20 --multipeak 0.5 100 30'.
-                                                                       """,
+version_density_exclusive_group.add_argument("-m", "--multipeak", help="""Multipeak is a weighted mixture of 
+truncated normal distributions. Each truncated normal distribution will be marked by weight, mean, and standard 
+deviation. Weights don't need to add to one, though they will be scaled down in proportion to the weight. Each weight 
+must be positive and each mean must be nonnegative. The params will be parsed by weight, mean, then standard 
+deviation. So for example, if you want a mixture distribution with 50%% chance of coming from a normal distribution 
+with mean 0 and standard deviation 20, and 50%% chance of coming from a normal distribution with mean 100 and 
+standard deviation 30, then you would enter '-m 0.5 0 20 -m 0.5 100 30' or '--multipeak 0.5 0 20 --multipeak 0.5 100 
+30'.""",
                                              metavar=("weight", "mean", "sd"), nargs=3, action="append",
                                              type=check_float)
 
@@ -235,8 +216,11 @@ def post_validate(args):
         exit(2)
     elif params := args.multipeak:
         for param in params:
-            if param[0] < 0:
+            if param[0] <= 0:
                 print("All weights must be positive.", file=stderr)
+                exit(3)
+            elif param[1] < 0:
+                print("All means must be nonnegative.", file=stderr)
                 exit(3)
     if ops := args.operations:
         if len(ops) != len(set(ops)):

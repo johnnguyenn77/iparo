@@ -290,6 +290,10 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid = validate("-s -m 0.5 0 20 -m -0.5 100 30".split())
         self.assertFalse(is_valid)
 
+    def test_multipeak_density_should_have_positive_means(self):
+        is_valid = validate("-s -m 0.5 0 20 -m -0.5 -100 30".split())
+        self.assertFalse(is_valid)
+
     def test_command_line_accepts_get_first_operation(self):
         is_valid = validate("-s -O first".split())
         self.assertTrue(is_valid)
