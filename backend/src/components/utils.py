@@ -26,6 +26,14 @@ POLICY_GROUP_NAMES = {"single": "Single", "previous": "Previous", "comprehensive
                       "seqmaxgap": "Sequential Max-Gap", "seqexp": "Sequential Exponential",
                       "tempuniform": "Temporal Uniform", "tempmingap": "Temporal Min-Gap",
                       "tempexp": "Temporal Exponential"}
+POLICY_PARAM_NAMES = {"Previous": "K",
+                      "Random": "K",
+                      "Sequential-Uniform": "K",
+                      "Sequential-Max-Gap": "S",
+                      "Sequential-Exponential": "B",
+                      "Temporal-Uniform": "K",
+                      "Temporal-Min-Gap": "T",
+                      "Temporal-Exponential": "B"}
 
 POLICY_GROUP_COMBINATIONS = [(group, param)
                              for group, params in POLICY_GROUPS.items()
@@ -69,6 +77,12 @@ def shorten_group_name(policy_group: str):
 def shorten_parameter_name(policy_param: str):
     return policy_param.replace("Seconds", "s")
 
+def format_policy_params(group: str, param):
+    name= f"{group} ({POLICY_PARAM_NAMES[group]} = {param}"
+    if group == "Temporal-Min-Gap":
+        name += "s"
+    name += ")"
+    return name
 
 def get_summary_data(policies: pd.DataFrame,
                      density: str,
@@ -113,8 +127,7 @@ def get_summary_data(policies: pd.DataFrame,
             else:
                 n_iter = 10
             filename = RESULTS_FOLDER / policy_group / policy_param / f"{scale}-{density}-{operation}.csv"
-            policy_name = (shorten_group_name(policy_group) + " - " +
-                           shorten_parameter_name(policy_param)) if policy_param != "None" else policy_group
+            policy_name = format_policy_params(policy_group, policy_param) if policy_group in POLICY_PARAM_NAMES else policy_group
             if analyze_all_iterations:
                 if 'Iteration' not in index:
                     index.append('Iteration')
