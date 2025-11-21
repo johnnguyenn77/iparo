@@ -1,9 +1,11 @@
+from math import inf
 import random
 import time
 from abc import abstractmethod, ABC
 from enum import IntEnum
 
 import numpy as np
+from scipy.stats import truncnorm
 from simulation.IPARO import IPARO
 from simulation.TimeUnit import TimeUnit
 
@@ -180,7 +182,8 @@ class MultipeakVersionDensity(VersionDensity):
         arr = np.zeros((n_distributions, n))
         for i in range(n_distributions):
             mu, sigma = self.distributions[i, :]
-            arr[i, :] = np.random.normal(loc=mu, scale=sigma, size=n)
+            lower = -mu/sigma if sigma != 0 else 0
+            arr[i, :] = truncnorm.rvs(lower, inf, loc=mu, scale=sigma, size=n)
 
         # Normalize
         self.weights /= np.sum(self.weights)

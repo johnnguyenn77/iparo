@@ -12,7 +12,7 @@ class VersionDensityTestCase(unittest.TestCase):
         ts = [iparo.timestamp for iparo in iparos]
 
         self.assertEqual(len(ts), 10000)
-        self.assertLessEqual(max(ts) - min(ts), 999999)
+        self.assertLessEqual((max(ts) - min(ts)) / TimeUnit.SECONDS, 999999)
 
     def test_linear_is_linearly_distributed(self):
         """T3.2.5.2 - Sampling from a Linear Version Density"""

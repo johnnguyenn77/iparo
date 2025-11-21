@@ -63,7 +63,7 @@ The simulation allows researchers to compare linking strategies and version dens
 To run the simulation, first ensure the proper pre-requisites are installed: 
 
 ```
-pip install streamlit altair
+pip install streamlit altair numpy scipy
 ```
 
 To prepare the simulation, you must run `IPAROSimulationWriter.py`.

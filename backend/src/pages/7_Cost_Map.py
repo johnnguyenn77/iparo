@@ -40,18 +40,16 @@ def cost_map():
             else:
                 power += 1
         chart_memory = (alt.Chart(summary_df, title=title).mark_bar().encode(
-            x=alt.X('Policy:O', sort="y"),
-            y=alt.Y('Mean:Q', title="Mean Storage Link Count", subtitle=f"{density} - Chain Length {scale}", scale=alt.Scale(type="symlog"),
-                    axis=alt.Axis(values=y_axis_values)),
-            color=alt.Color('Policy:O', scale=alt.Scale(scheme=COLOR_SCHEME)))
+            x=alt.X('Mean:Q'),
+            y=alt.Y('Policy:O', title="Mean Storage Link Count",
+                    scale=alt.Scale(type="symlog"),
+                    axis=alt.Axis(values=y_axis_values)))
                         .configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)
                         .configure_legend(labelLimit=400).properties(height=500))
     else:
         chart_memory = (alt.Chart(summary_df, title=title).mark_bar().encode(
-            x=alt.X('Policy:O', sort="y"),
-            y=alt.Y('Mean:Q', title="Mean Storage Link Count", scale=alt.Scale(type="identity")),
-            color=alt.Color('Policy:O', scale=alt.Scale(scheme=COLOR_SCHEME)))
-                        .configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)).properties(height=500)
+            x=alt.X('Mean:Q', title="Mean Storage Link Count"),
+            y=alt.Y('Policy:O')).configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)).properties(height=500)
 
     tabs = st.tabs(["Chart", "Data"])
     with tabs[0]:

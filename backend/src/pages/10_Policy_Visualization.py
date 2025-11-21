@@ -1,12 +1,11 @@
+import altair as alt
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
 import streamlit as st
 from streamlit import session_state as ss
-import altair as alt
 
-from components.utils import select_policy, select_version_density
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.IPFS import ipfs
 from simulation.LinkingStrategy import LinkingStrategy
