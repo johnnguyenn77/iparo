@@ -12,7 +12,7 @@ def get_policy(policy: LinkingStrategy, policy_args: list[str]):
     if len(policy_args) == 2:
         ss['policies'].add((" ".join(policy_args), str(policy), policy_group, policy_args[1]))
     elif len(policy_args) == 3:
-        # Temporally exponential
+        # Temporal exponential
         ss['policies'].add((" ".join(policy_args), str(policy), policy_group,
                             "Base-" + policy_args[1] + ", " + policy_args[2] + " Seconds"))
     else:  # No policy arguments

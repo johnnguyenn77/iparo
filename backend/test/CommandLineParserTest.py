@@ -86,17 +86,17 @@ class CommandLineParserTest(unittest.TestCase):
 
     def test_can_parse_temp_uniform(self):
         strategy = get_relevant_output(["-U", "5"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyUniformStrategy)
+        self.assertIsInstance(strategy, TemporalUniformStrategy)
         self.assertEqual(strategy.n, 5)
 
     def test_can_parse_temp_max_gap(self):
         strategy = get_relevant_output(["-G", "5"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyMinGapStrategy)
+        self.assertIsInstance(strategy, TemporalMinGapStrategy)
         self.assertEqual(strategy.min_gap, 5)
 
     def test_can_parse_temp_exponential(self):
         strategy = get_relevant_output(["-E", "2.2", "5.3"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyExponentialStrategy)
+        self.assertIsInstance(strategy, TemporalExponentialStrategy)
         self.assertEqual(strategy.base, 2.2)
         self.assertEqual(strategy.time_unit, 5.3)
 

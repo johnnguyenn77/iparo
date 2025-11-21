@@ -163,7 +163,7 @@ class SequentialSMaxGapStrategy(LinkingStrategy):
         return f"Sequential {self.s}-Max-Gap"
 
 
-class TemporallyUniformStrategy(LinkingStrategy):
+class TemporalUniformStrategy(LinkingStrategy):
     def __init__(self, n: int):
         self.n = n  # Number of uniformly distributed links to create
 
@@ -182,10 +182,10 @@ class TemporallyUniformStrategy(LinkingStrategy):
         return links
 
     def __str__(self):
-        return f"Temporally Uniform ({self.n} Nodes)"
+        return f"Temporal Uniform ({self.n} Nodes)"
 
 
-class TemporallyMinGapStrategy(LinkingStrategy):
+class TemporalMinGapStrategy(LinkingStrategy):
     def __init__(self, min_gap: float):
         """
         :param min_gap: the minimum gap in terms of seconds.
@@ -221,10 +221,10 @@ class TemporallyMinGapStrategy(LinkingStrategy):
         return links
 
     def __str__(self):
-        return f"Temporally Min Gap ({self.min_gap} Seconds)"
+        return f"Temporal Min Gap ({self.min_gap} Seconds)"
 
 
-class TemporallyExponentialStrategy(LinkingStrategy):
+class TemporalExponentialStrategy(LinkingStrategy):
     def __init__(self, base: float, time_unit: float):
         """
         :param base: the base (greater than 1).
@@ -251,4 +251,4 @@ class TemporallyExponentialStrategy(LinkingStrategy):
         return links
 
     def __str__(self):
-        return f"Temporally Exponential ({self.time_unit} Second(s), Base {self.base})"
+        return f"Temporal Exponential ({self.time_unit} Second(s), Base {self.base})"

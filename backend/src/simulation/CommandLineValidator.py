@@ -133,19 +133,19 @@ policy_exclusive_group.add_argument("-e", "--seqexp", help="Sequential Exponenti
                                                            "the nodes that are 1, 2, 6, and 15 versions prior "
                                                            "would be linked, as well as subsequent nodes.",
                                     type=check_greater_than_one, metavar="base")
-policy_exclusive_group.add_argument("-U", "--tempuniform", help="""Temporally N-Uniform Prior. Links to N prior 
+policy_exclusive_group.add_argument("-U", "--tempuniform", help="""Temporal N-Uniform Prior. Links to N prior 
                                                                 versions (distributed uniformly across the 
                                                                 window of time), the immediate previous 
                                                                 version, and the first version.""", metavar="N",
                                     type=check_positive_int)
-policy_exclusive_group.add_argument("-G", "--tempmingap", help="""Temporally T-min-gap.  Links in such a way 
+policy_exclusive_group.add_argument("-G", "--tempmingap", help="""Temporal T-min-gap.  Links in such a way 
                                                                that the maximum gap is a window of time T 
                                                                between captures (if present), starting with 
                                                                the immediate previous version. Also links 
                                                                with the first version. T is measured in 
                                                                seconds.""", metavar="T",
                                     type=check_greater_than_zero)
-policy_exclusive_group.add_argument("-E", "--tempexp", help="Temporally exponential (with base "
+policy_exclusive_group.add_argument("-E", "--tempexp", help="Temporal exponential (with base "
                                                             "and time unit T). Links in such a way "
                                                             "that the maximum gap is a window of time T "
                                                             "between captures (if present), starting with "
