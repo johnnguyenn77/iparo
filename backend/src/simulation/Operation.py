@@ -131,9 +131,7 @@ class StoreOperation(IterableOperation):
         self.__nodes = self.__generator.generate(env.version_volume, URL)
 
     def get_start_time(self):
-        if self.env.version_density.has_finite_domain():
-            return self.__generator.start_time
-        return None
+        return self.__generator.start_time
 
     def step(self, i: int):
         """

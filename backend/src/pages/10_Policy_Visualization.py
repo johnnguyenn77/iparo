@@ -43,7 +43,7 @@ def policy_visualization():
 
     nx_graph = nx.DiGraph()
     first_link, latest_link, _ = ipfs.get_links_to_first_and_latest_nodes(URL)
-    start_time: int = operation.get_start_time() or first_link.timestamp
+    start_time: int = operation.get_start_time()
 
     srcs = np.arange(node_number)
     dests = np.arange(node_number)
