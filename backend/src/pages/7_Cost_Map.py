@@ -10,7 +10,7 @@ def cost_map():
     if 'selected_policies' not in ss:
         st.switch_page("pages/3_Select_Policies.py")
     st.title("Cost Map")
-    st.header("Memory Requirements")
+    st.header("Storage Requirements")
     scale = ss['scale']
     log_scale = ss['log_scale']
     density = ss['density']
@@ -21,9 +21,9 @@ def cost_map():
     summary_df = summary.reset_index().rename(columns={'mean': 'Mean'})
 
     max_value = summary_df['Mean'].max()
-    title = alt.TitleParams("Mean Storage Link Count", subtitle=f"{density} - Chain Length {scale}",
-                            subtitleFontSize=16, align='center', anchor="middle", fontSize=20)
-
+    # title = alt.TitleParams("Mean Storage Link Count", subtitle=f"{density} - Chain Length {scale}",
+    #                         subtitleFontSize=16, align='center', anchor="middle", fontSize=20)
+    title = alt.TitleParams(" ", subtitleFontSize=16, align='center', anchor="middle", fontSize=20)
     if log_scale:
         n_values_greater = 0
         mantissas = [1, 2, 5]
@@ -39,21 +39,24 @@ def cost_map():
                 y_axis_values.append(value)
             else:
                 power += 1
-        chart_memory = (alt.Chart(summary_df, title=title).mark_bar().encode(
+        chart_storage = (alt.Chart(summary_df, title=title).mark_bar().encode(
             x=alt.X('Mean:Q'),
             y=alt.Y('Policy:O', title="Mean Storage Link Count",
                     scale=alt.Scale(type="symlog"),
                     axis=alt.Axis(values=y_axis_values)))
-                        .configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)
-                        .configure_legend(labelLimit=400).properties(height=500))
+                         .configure_axis(labelFontSize=16, labelColor='black', titleColor='black', titleFontSize=16)
+                         .configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)
+                         .configure_legend(labelLimit=400).properties(height=500))
     else:
-        chart_memory = (alt.Chart(summary_df, title=title).mark_bar().encode(
+        chart_storage = (alt.Chart(summary_df, title=title).mark_bar().encode(
             x=alt.X('Mean:Q', title="Mean Storage Link Count"),
-            y=alt.Y('Policy:O')).configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)).properties(height=500)
+            y=alt.Y('Policy:O')).configure_axisX(labelLimit=400).configure_axisY(labelLimit=400)
+                         .configure_axis(labelFontSize=16, labelColor='black', titleColor='black',
+                                         titleFontSize=16)).properties(height=500)
 
     tabs = st.tabs(["Chart", "Data"])
     with tabs[0]:
-        st.altair_chart(chart_memory)
+        st.altair_chart(chart_storage)
     with tabs[1]:
         st.dataframe(summary_df.rename(columns={"Mean": "Mean Link Count"}), hide_index=True)
 

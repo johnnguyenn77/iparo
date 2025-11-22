@@ -39,24 +39,29 @@ class Heatmap:
                 if time_max >= max(time_min, 1) else 0.5
 
         helper_df = df.assign(Proportion=proportion_col)
-        title = alt.TitleParams(self.title, align='center', anchor="middle",
-                                fontSize=20, subtitle=self.subtitle,
-                                subtitleFontSize=18)
+        title = alt.TitleParams(" ", align='center', anchor="middle",
+                                fontSize=20, subtitleFontSize=18)
         base_chart = alt.Chart(helper_df, title=title).mark_rect().encode(
             x=self.x, y=self.y, color=alt.Color(value_col, scale=alt.Scale(scheme="viridis",
                                                                            domainMin=time_min,
                                                                            domainMax=max(1, time_max),
-                                                                           type=scale_type), sort='descending'),
+                                                                           type=scale_type), sort='descending',
+                                                legend=alt.Legend(titleColor='black', labelColor='black',
+                                                                  titleFontSize=16)),
         )
         if self.show_labels:
-            heatmap = (base_chart + base_chart.mark_text().encode(
+            heatmap = ((base_chart + base_chart.mark_text().encode(
                 text=alt.Text(value_col, format=",.3"),
                 color=(alt.when(alt.datum.Proportion < 0.5)
                        .then(alt.value('black')).otherwise(alt.value('white'))),
                 size=alt.value(36),
-            )).properties(height=70 * n_vals_y + 160, width=200 * n_vals_x).configure_axisY(labelLimit=800)
+            )).configure_axis(labelFontSize=16, labelColor='black', titleColor='black', titleFontSize=16)
+                       .properties(height=70 * n_vals_y + 160, width=200 * n_vals_x)
+                       .configure_axisX(labelLimit=800)
+                       .configure_axisY(labelLimit=800, titlePadding=30))
         else:
             heatmap = (base_chart.configure_axisX(labelLimit=800).configure_axisY(labelLimit=800)
+                       .configure_axis(labelFontSize=16, labelColor='black', titleColor='black', titleFontSize=16)
                        .configure_legend(labelLimit=1600))
 
         st.altair_chart(heatmap, use_container_width=False)

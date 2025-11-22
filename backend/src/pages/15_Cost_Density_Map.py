@@ -9,7 +9,7 @@ def cost_density_map():
     if 'selected_policies' not in ss:
         st.switch_page("pages/3_Select_Policies.py")
     st.title("Cost Map")
-    st.header("Memory Requirements")
+    st.header("Storage Requirements")
     scale = ss['scale']
     log_scale = ss['log_scale']
     partial_summaries = []
