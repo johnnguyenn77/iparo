@@ -12,7 +12,7 @@ def select_policies():
     st.text("Before accessing any report page, please select the policies to use. You may "
             "select 1 to 10 policies.")
     error_message = st.empty()
-    groups = set(POLICY_GROUPS.keys())
+    groups = POLICY_GROUPS.keys()
     lists = pd.DataFrame([[policy, param, False] for policy, param in POLICY_GROUP_COMBINATIONS],
                          columns=["Group", "Param", "Used"])
     with st.form('policy_group_form'):
@@ -53,7 +53,7 @@ def select_policies():
                     for row in policies_selected.itertuples(index=False):
                         name = row[0]  # 0 corresponds to Group
                         if row[1] != 'None':  # 1 corresponds to Param
-                            name += " - " + row[1]
+                            name = format_policy_params(name, row[1])
                         ss['policy_names'].append(name)
 
                     st.success("Success! Now you may enter any other page. Policies selected: " + ', '.join(ss['policy_names']))

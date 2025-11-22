@@ -159,35 +159,35 @@ class IPAROStrategyTest(unittest.TestCase):
         self.assertLessEqual(max(bfs_values.values()), 5)
 
     def test_temporal_uniform_strategy_should_split_into_roughly_equal_time_intervals(self):
-        """T3.2.4.8 - Temporally Uniform N-prior + Previous + First"""
+        """T3.2.4.8 - Temporal Uniform N-prior + Previous + First"""
         # 0, 10, 11, ..., 44, 50
         relative_times = [(i * 10 + j) for i in range(5) for j in range(i+1)]
         relative_times.append(50)
-        timestamps = test_strategy_with_time_distribution(TemporallyUniformStrategy(5), relative_times)
+        timestamps = test_strategy_with_time_distribution(TemporalUniformStrategy(5), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [10*i for i in range(6)]
 
         self.assertListEqual(timestamps, expected_timestamps)
 
     def test_temporal_max_gap_strategy_should_pick_correct_datetimes(self):
-        """T3.2.4.9 - Temporally Uniform T-max-gap + Previous + First"""
+        """T3.2.4.9 - Temporal Uniform T-max-gap + Previous + First"""
         # 0, 800, 801, ..., 1600
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
         timestamps = test_strategy_with_time_distribution(
-            TemporallyMinGapStrategy(500), relative_times)
+            TemporalMinGapStrategy(500), relative_times)
 
         expected_timestamps = [0, 800, 1200, 1600]
 
         self.assertListEqual(timestamps, expected_timestamps)
 
     def test_temporal_exponential_strategy_should_get_correct_timestamps(self):
-        """T3.2.4.10 - Temporally Exponential + Previous + First"""
+        """T3.2.4.10 - Temporal Exponential + Previous + First"""
         # 0, 10, 11, ..., 44, 50
         relative_times = [100 * int(16 - math.exp2(4 - i)) + j for i in range(5) for j in range(i + 1)]
         relative_times.append(1600)
         timestamps = test_strategy_with_time_distribution(
-            TemporallyExponentialStrategy(2, 100), relative_times)
+            TemporalExponentialStrategy(2, 100), relative_times)
         # 0, 10, 20, 30, 40
         expected_timestamps = [0, 800, 1200, 1400, 1500, 1600]
 

@@ -35,12 +35,12 @@ class CommandLineParser:
         elif base := args.seqexp:
             return SequentialExponentialStrategy(base)
         elif n := args.tempuniform:
-            return TemporallyUniformStrategy(n)
+            return TemporalUniformStrategy(n)
         elif t := args.tempmingap:
-            return TemporallyMinGapStrategy(t)
+            return TemporalMinGapStrategy(t)
         elif t := tuple(args.tempexp):
             base, time_unit = t
-            return TemporallyExponentialStrategy(base, time_unit)
+            return TemporalExponentialStrategy(base, time_unit)
         raise AssertionError("The policy cannot be parsed.")
 
     def parse_volume(self):

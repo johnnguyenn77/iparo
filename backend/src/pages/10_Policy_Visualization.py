@@ -1,12 +1,11 @@
+import altair as alt
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import pandas as pd
 import streamlit as st
 from streamlit import session_state as ss
-import altair as alt
 
-from components.utils import select_policy, select_version_density
 from simulation.IPAROSimulationEnvironment import IPAROSimulationEnvironment
 from simulation.IPFS import ipfs
 from simulation.LinkingStrategy import LinkingStrategy
@@ -44,7 +43,7 @@ def policy_visualization():
 
     nx_graph = nx.DiGraph()
     first_link, latest_link, _ = ipfs.get_links_to_first_and_latest_nodes(URL)
-    start_time: int = operation.get_start_time() or first_link.timestamp
+    start_time: int = operation.get_start_time()
 
     srcs = np.arange(node_number)
     dests = np.arange(node_number)

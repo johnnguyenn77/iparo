@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-temporal-scripts.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run-temporal-scripts.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/10_Policy_Visualization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/8_Iteration_Level_Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/8_Iteration_Level_Analysis.py" afterDir="false" />
-    </list>
+    <list default="true" id="5c6e0310-a35f-47ac-8613-5640c8313e51" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,10 +160,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.IPAROSimulationApp" />
-      <item itemvalue="Python tests.Python tests in IPFSTest.py" />
-      <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
       <item itemvalue="Python tests.Python tests for CommandLineParserTest.CommandLineParserTest" />
+      <item itemvalue="Python tests.Python tests for CommandLineValidatorTest.CommandLineValidatorTest" />
       <item itemvalue="Python tests.Python tests for IPAROStrategyTest.IPAROStrategyTest" />
+      <item itemvalue="Python tests.Python tests in IPFSTest.py" />
     </list>
     <recent_temporary>
       <list>

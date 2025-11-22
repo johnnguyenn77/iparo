@@ -24,18 +24,18 @@
 -u 8 -o results/Sequential-Uniform/8
 -u 16 -o results/Sequential-Uniform/16
 -u 32 -o results/Sequential-Uniform/32
--E 1.25 10 -o results/Temporally-Exponential/1.25
--E 1.5 10 -o results/Temporally-Exponential/1.5
--E 2 10 -o results/Temporally-Exponential/2
--E 3 10 -o results/Temporally-Exponential/3
--E 4 10 -o results/Temporally-Exponential/4
--G 10 -o results/Temporally-Min-Gap/10
--G 20 -o results/Temporally-Min-Gap/20
--G 40 -o results/Temporally-Min-Gap/40
--G 80 -o results/Temporally-Min-Gap/80
--G 160 -o results/Temporally-Min-Gap/160
--U 2 -o results/Temporally-Uniform/2
--U 4 -o results/Temporally-Uniform/4
--U 8 -o results/Temporally-Uniform/8
--U 16 -o results/Temporally-Uniform/16
--U 32 -o results/Temporally-Uniform/32
+-E 1.25 10 -o results/Temporal-Exponential/1.25
+-E 1.5 10 -o results/Temporal-Exponential/1.5
+-E 2 10 -o results/Temporal-Exponential/2
+-E 3 10 -o results/Temporal-Exponential/3
+-E 4 10 -o results/Temporal-Exponential/4
+-G 10 -o results/Temporal-Min-Gap/10
+-G 20 -o results/Temporal-Min-Gap/20
+-G 40 -o results/Temporal-Min-Gap/40
+-G 80 -o results/Temporal-Min-Gap/80
+-G 160 -o results/Temporal-Min-Gap/160
+-U 2 -o results/Temporal-Uniform/2
+-U 4 -o results/Temporal-Uniform/4
+-U 8 -o results/Temporal-Uniform/8
+-U 16 -o results/Temporal-Uniform/16
+-U 32 -o results/Temporal-Uniform/32

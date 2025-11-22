@@ -143,81 +143,81 @@ class CommandLineValidatorTest(unittest.TestCase):
         is_valid_zero = validate(["-e", "0"])
         self.assertFalse(is_valid_negative or is_valid_zero)
 
-    def test_temporally_uniform_requires_one_argument(self):
+    def test_temporal_uniform_requires_one_argument(self):
         is_valid = validate(["-U"])
         self.assertFalse(is_valid)
 
-    def test_temporally_uniform_requires_no_more_than_one_argument(self):
+    def test_temporal_uniform_requires_no_more_than_one_argument(self):
         is_valid = validate(["-U", "5", "2"])
         self.assertFalse(is_valid)
 
-    def test_command_line_accepts_temporally_uniform(self):
+    def test_command_line_accepts_temporal_uniform(self):
         is_valid = validate(["-U", "3"])
         self.assertTrue(is_valid)
 
-    def test_temporally_uniform_requires_that_the_argument_be_positive(self):
+    def test_temporal_uniform_requires_that_the_argument_be_positive(self):
         is_valid_zero = validate(["-U", "0"])
         is_valid_negative = validate(["-U", "-1"])
         self.assertFalse(is_valid_zero or is_valid_negative)
 
-    def test_temporally_uniform_requires_that_the_argument_be_an_integer(self):
+    def test_temporal_uniform_requires_that_the_argument_be_an_integer(self):
         is_valid_noninteger = validate(["-U", "3.5"])
         is_valid_alphabetic = validate(["-U", "2-3"])
         self.assertFalse(is_valid_noninteger or is_valid_alphabetic)
 
-    def test_temporally_min_gap_requires_one_argument(self):
+    def test_temporal_min_gap_requires_one_argument(self):
         is_valid = validate(["-G"])
         self.assertFalse(is_valid)
 
-    def test_temporally_min_gap_requires_no_more_than_one_argument(self):
+    def test_temporal_min_gap_requires_no_more_than_one_argument(self):
         is_valid = validate(["-G", "5", "2"])
         self.assertFalse(is_valid)
 
-    def test_command_line_accepts_temporally_min_gap(self):
+    def test_command_line_accepts_temporal_min_gap(self):
         is_valid = validate(["-G", "3.5"])
         self.assertTrue(is_valid)
 
-    def test_temporally_min_gap_requires_that_the_argument_be_positive(self):
+    def test_temporal_min_gap_requires_that_the_argument_be_positive(self):
         is_valid_zero = validate(["-G", "0"])
         is_valid_negative = validate(["-G", "-1"])
         self.assertFalse(is_valid_zero or is_valid_negative)
 
-    def test_temporally_min_gap_requires_that_the_argument_be_numeric(self):
+    def test_temporal_min_gap_requires_that_the_argument_be_numeric(self):
         is_valid_alphabetic = validate(["-G", "x"])
         self.assertFalse(is_valid_alphabetic)
 
-    def test_temporally_exponential_requires_two_arguments(self):
+    def test_temporal_exponential_requires_two_arguments(self):
         is_valid = validate(["-E", "5"])
         self.assertFalse(is_valid)
 
-    def test_temporally_exponential_requires_no_more_than_two_arguments(self):
+    def test_temporal_exponential_requires_no_more_than_two_arguments(self):
         is_valid = validate(["-E", "5", "2", "3"])
         self.assertFalse(is_valid)
 
-    def test_command_line_accepts_temporally_exponential(self):
+    def test_command_line_accepts_temporal_exponential(self):
         is_valid = validate(["-E", "3", "5"])
         self.assertTrue(is_valid)
 
-    def test_temporally_exponential_requires_that_both_arguments_are_numeric(self):
+    def test_temporal_exponential_requires_that_both_arguments_are_numeric(self):
         is_valid_noninteger_first_arg = validate(["-E", "3.5", "y"])
         is_valid_noninteger_second_arg = validate(["-E", "hello", "5.2"])
         self.assertFalse(is_valid_noninteger_first_arg or is_valid_noninteger_second_arg)
 
-    def test_temporally_exponential_requires_that_the_first_argument_be_positive(self):
+    def test_temporal_exponential_requires_that_the_first_argument_be_positive(self):
         is_valid_zero = validate(["-E", "0", "5.3"])
         is_valid_negative = validate(["-E", "-1", "5.7"])
         self.assertFalse(is_valid_zero or is_valid_negative)
 
-    def test_temporally_exponential_requires_that_the_second_argument_be_positive(self):
+    def test_temporal_exponential_requires_that_the_second_argument_be_positive(self):
         is_valid_zero = validate(["-E", "5.3", "0"])
         is_valid_negative = validate(["-E", "5.7", "-1"])
         self.assertFalse(is_valid_zero or is_valid_negative)
 
-    def test_temporally_exponential_requires_that_the_first_argument_be_greater_than_one(self):
+    def test_temporal_exponential_requires_that_the_first_argument_be_greater_than_one(self):
         is_valid = validate(["-E", "0.5", "0.5"])
         self.assertFalse(is_valid)
 
-    def test_temporally_exponential_accepts_second_argument_of_less_than_one(self):
+    def test_temporal_exponential_accepts_second_argument_of_less_than_one(self):
         is_valid = validate(["-E", "2", "0.5"])
         self.assertTrue(is_valid)
 
@@ -288,6 +288,10 @@ class CommandLineValidatorTest(unittest.TestCase):
 
     def test_multipeak_density_should_have_positive_weights(self):
         is_valid = validate("-s -m 0.5 0 20 -m -0.5 100 30".split())
+        self.assertFalse(is_valid)
+
+    def test_multipeak_density_should_have_positive_means(self):
+        is_valid = validate("-s -m 0.5 0 20 -m -0.5 -100 30".split())
         self.assertFalse(is_valid)
 
     def test_command_line_accepts_get_first_operation(self):

@@ -86,17 +86,17 @@ class CommandLineParserTest(unittest.TestCase):
 
     def test_can_parse_temp_uniform(self):
         strategy = get_relevant_output(["-U", "5"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyUniformStrategy)
+        self.assertIsInstance(strategy, TemporalUniformStrategy)
         self.assertEqual(strategy.n, 5)
 
     def test_can_parse_temp_max_gap(self):
         strategy = get_relevant_output(["-G", "5"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyMinGapStrategy)
+        self.assertIsInstance(strategy, TemporalMinGapStrategy)
         self.assertEqual(strategy.min_gap, 5)
 
     def test_can_parse_temp_exponential(self):
         strategy = get_relevant_output(["-E", "2.2", "5.3"], action=get_policy)
-        self.assertIsInstance(strategy, TemporallyExponentialStrategy)
+        self.assertIsInstance(strategy, TemporalExponentialStrategy)
         self.assertEqual(strategy.base, 2.2)
         self.assertEqual(strategy.time_unit, 5.3)
 
@@ -104,25 +104,9 @@ class CommandLineParserTest(unittest.TestCase):
         volume = get_relevant_output(["-s"], action=get_volume)
         self.assertEqual(volume, VersionVolume.MEDIUM)
 
-    def test_can_parse_single_volume(self):
-        volume = get_relevant_output(["-s", "-V", "single"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.SINGLE)
-
-    def test_can_parse_small_volume(self):
-        volume = get_relevant_output(["-s", "-V", "small"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.SMALL)
-
-    def test_can_parse_medium_volume(self):
-        volume = get_relevant_output(["-s", "-V", "medium"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.MEDIUM)
-
-    def test_can_parse_large_volume(self):
-        volume = get_relevant_output(["-s", "-V", "large"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.LARGE)
-
-    def test_can_parse_hyper_large_volume(self):
-        volume = get_relevant_output(["-s", "-V", "huge"], action=get_volume)
-        self.assertEqual(volume, VersionVolume.HUGE)
+    def test_can_parse_numeric_volumes(self):
+        volume = get_relevant_output(["-s", "-V", "100"], action=get_volume)
+        self.assertEqual(volume, 100)
 
     def test_can_parse_linear_version_density(self):
         density = get_relevant_output(["-s", "-l", "2"], action=get_density)
@@ -152,7 +136,7 @@ class CommandLineParserTest(unittest.TestCase):
         operations = get_relevant_output(["-s"], action=get_operation)
 
         # Misleading naming by unittest (should be something like "assertEqualsUnordered")
-        self.assertCountEqual(operations, ["first", "latest", "nth", "time", "list"])
+        self.assertCountEqual(operations, ["first", "latest", "nth", "time", "list", "unsafe-list"])
 
     def test_can_parse_one_operation(self):
         operations = get_relevant_output(["-s", "-O", "latest"], action=get_operation)
@@ -171,10 +155,10 @@ class CommandLineParserTest(unittest.TestCase):
 
         self.assertTrue(verbose)
 
-    def test_iterations_should_be_100_by_default(self):
+    def test_iterations_should_be_10_by_default(self):
         iterations = get_relevant_output(["-s"], action=get_iterations)
 
-        self.assertEqual(iterations, 100)
+        self.assertEqual(iterations, 10)
 
     def test_iterations_can_be_set(self):
         iterations = get_relevant_output(["-s", "-n", "10"], action=get_iterations)

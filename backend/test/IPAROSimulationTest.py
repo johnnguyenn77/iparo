@@ -14,7 +14,7 @@ from simulation.VersionDensity import *
 
 class IPAROSimulationTest(unittest.TestCase):
     pass
-    #     linking_strategy = TemporallyUniformStrategy(2)
+    #     linking_strategy = TemporalUniformStrategy(2)
     #     self.simulation = IPAROSimulationWriter(linking_strategy=linking_strategy,
     #                                             version_volume=VersionVolume.MEDIUM,
     #                                             version_density=UniformVersionDensity())

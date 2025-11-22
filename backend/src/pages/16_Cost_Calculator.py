@@ -15,12 +15,12 @@ def cost_calculator():
 
     density = ss['density']
     scale = ss['scale']
-    df_memory = (pd.DataFrame(get_summary_data(policies, density=density, operation='Store', scales=[scale],
+    df_storage = (pd.DataFrame(get_summary_data(policies, density=density, operation='Store', scales=[scale],
                                                actions=[Action.LINKS], agg_func='mean')).droplevel(['Scale'])
                  .rename(columns={'mean': 'Mean Links Per Node'}))
     st.header("Settings")
     with st.expander('Advanced Settings'):
-        st.subheader("Constraints on Memory")
+        st.subheader("Constraints on Storage")
         st.text("Please enter the upper limit on the mean number of links (leave at zero for no limit):")
         memory_limit = st.number_input("Maximum Mean Number of Links")
         st.text("Please enter the upper limit on the amount of time (leave at zero for no limit):")
@@ -48,7 +48,7 @@ def cost_calculator():
     st.header("Results")
     data = pd.concat(partial_dfs)
     if not np.isclose(memory_limit, 0, atol=1e-7):
-        data_joined = data.join(df_memory, on=['Policy'])
+        data_joined = data.join(df_storage, on=['Policy'])
         data = data.where(data_joined['Mean Links Per Node'] < memory_limit)
     table = data.pivot_table(values=['Mean Time'], index=['Policy', 'Operation'], columns=['Action'])
 
@@ -81,7 +81,7 @@ def cost_calculator():
                                         columns=['Total Time Cost (Seconds)'])
         if not np.isclose(time_limit, 0, atol=1e-7):
             time_costs_table = time_costs_table[time_costs_table['Total Time Cost (Seconds)'] < time_limit / 1e6]
-        sorted_table = time_costs_table.join(df_memory, how='inner').sort_values(by=['Total Time Cost (Seconds)'])
+        sorted_table = time_costs_table.join(df_storage, how='inner').sort_values(by=['Total Time Cost (Seconds)'])
         ranked_table = sorted_table.head(10)
         excluded = ' - Excluding Store Retrieve Costs' if exclude_storage_retrieve_costs else ''
         title = alt.TitleParams("Time Cost", align='center', anchor="middle",
