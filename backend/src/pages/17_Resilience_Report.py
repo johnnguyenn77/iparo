@@ -33,14 +33,12 @@ def resilience_report():
             title = alt.TitleParams("Resilience Chart", align='center', anchor="middle",
                                     fontSize=20, subtitle=f"Chain Length {scale} - {name}",
                                     subtitleFontSize=16)
-            data = df[df['Policy'] == shorten_parameter_name(shorten_group_name(name))]
+            data = df[df['Policy'] == name]
+            st.dataframe(data)
             rolling_average = (data.groupby('Density')['Percent Reachable']
                                .transform(lambda x: x.rolling(n_points, center=True).mean()))
-            # data_populated = np.concat((ones, data.loc[:, 'Percent Reachable'], zeros))
-            # rolling_average = pd.Series(data_populated).rolling(n_points, center=True).mean().dropna().to_numpy()
             data['Percent Reachable (Moving Average)'] = rolling_average
-            df.loc[df['Policy'] == shorten_parameter_name(shorten_group_name(name)),
-            'Percent Reachable (Moving Average)'] = rolling_average
+            df.loc[df['Policy'] == name, 'Percent Reachable (Moving Average)'] = rolling_average
             tabs = st.tabs(['Chart', 'Data'])
             with tabs[0]:
                 base = alt.Chart(data.loc[data['Missing Nodes'] <= max_x, :]

@@ -41,9 +41,12 @@ def iteration_level_analysis():
         title = alt.TitleParams(f'Linking Policy Performance - {density} - {op_type}', anchor='middle')
         with tabs[0]:
             chart1 = alt.Chart(summary_long).mark_line(point=True, opacity=0.2).encode(
-                x=alt.X("Iteration:Q", title="Iteration Number"),
-                y=alt.Y(f"Action Count:Q", title="Operation Count", scale=alt.Scale(type=scale_type)),
-                color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
+                x=alt.X("Iteration:Q", title="Iteration Number",
+                        axis=alt.Axis(labelColor='black', titleColor='black')),
+                y=alt.Y(f"Action Count:Q", title="Operation Count", scale=alt.Scale(type=scale_type),
+                        axis=alt.Axis(labelColor='black', titleColor='black')),
+                color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400,
+                                                              labelColor='black', titleColor='black'),
                                 scale=alt.Scale(scheme=COLOR_SCHEME)),
                 opacity=alt.value(0.5),
                 tooltip=["Policy:O", alt.Tooltip("Iteration:Q", format=","),
@@ -53,16 +56,19 @@ def iteration_level_analysis():
                 height=200
             ).facet(
                 column=alt.Column("Action:O", title="Type of Operation", sort=ACTION_LIST,
-                                  header=alt.Header(orient="bottom")),
+                                  header=alt.Header(orient="bottom", labelColor='black', titleColor='black')),
                 title=title
             ).resolve_scale(y='independent')
             st.altair_chart(chart1)
             bar.progress((5 * i + 2) / 30, text=f"Rendering charts. Please wait... ({5 * i + 2} / 30)")
         with tabs[1]:
             chart2 = alt.Chart(summary_long).mark_line(point=True, opacity=0.2).encode(
-                x=alt.X("Iteration:Q", title="Iteration Number"),
-                y=alt.Y(f"Action Count:Q", title="Operation Count", scale=alt.Scale(type=scale_type)),
-                color=alt.Color("Action:O", legend=alt.Legend(labelLimit=400),
+                x=alt.X("Iteration:Q", title="Iteration Number",
+                        axis=alt.Axis(labelColor='black', titleColor='black')),
+                y=alt.Y(f"Action Count:Q", title="Operation Count", scale=alt.Scale(type=scale_type),
+                        axis=alt.Axis(labelColor='black', titleColor='black')),
+                color=alt.Color("Action:O", legend=alt.Legend(labelLimit=400,
+                                                              labelColor='black', titleColor='black'),
                                 scale=alt.Scale(scheme=COLOR_SCHEME)),
                 opacity=alt.value(0.5),
                 tooltip=["Action:O", alt.Tooltip("Iteration:Q", format=","),
@@ -72,7 +78,7 @@ def iteration_level_analysis():
                 height=200
             ).facet(
                 column=alt.Column("Policy:O", title="Policy",
-                                  header=alt.Header(orient="bottom")),
+                                  header=alt.Header(orient="bottom", labelColor='black', titleColor='black')),
                 title=title
             ).resolve_scale(y='independent')
             st.altair_chart(chart2)
@@ -95,9 +101,12 @@ def iteration_level_analysis():
         chart3 = alt.Chart(summary1, title=alt.TitleParams("IPFS Retrieve Counts for Add Node", align='center',
                                                            anchor="middle", fontSize=20)
                            ).mark_line(point=True, opacity=0.2).encode(
-            x=alt.X("Iteration:Q", title="Iteration Number"),
-            y=alt.Y(f"IPFS Retrieve:Q", title="Operation Count", scale=alt.Scale(type=scale_type)),
-            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
+            x=alt.X("Iteration:Q", title="Iteration Number",
+                    axis=alt.Axis(labelColor='black', titleColor='black')),
+            y=alt.Y(f"IPFS Retrieve:Q", title="Operation Count", scale=alt.Scale(type=scale_type),
+                    axis=alt.Axis(labelColor='black', titleColor='black')),
+            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400,
+                                                          labelColor='black', titleColor='black'),
                             scale=alt.Scale(scheme=COLOR_SCHEME)),
             opacity=alt.value(0.5),
             tooltip=["Policy:O", alt.Tooltip("Iteration:Q", format=","),
@@ -105,12 +114,16 @@ def iteration_level_analysis():
         )
 
         st.altair_chart(chart3)
-    with tabs[1]:
+    with (tabs[1]):
         chart4 = alt.Chart(summary2, title=alt.TitleParams("Number of Links for Add Node",
-                                                           align='center', anchor="middle", fontSize=20)).mark_line(point=True, opacity=0.2).encode(
-            x=alt.X("Iteration:Q", title="Iteration Number"),
-            y=alt.Y(f"Links:Q", title="Number of Links", scale=alt.Scale(type=scale_type)),
-            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400),
+                                                           align='center', anchor="middle", fontSize=20)
+                           ).mark_line(point=True, opacity=0.2).encode(
+            x=alt.X("Iteration:Q", title="Iteration Number",
+                    axis=alt.Axis(labelColor='black', titleColor='black')),
+            y=alt.Y(f"Links:Q", title="Number of Links", scale=alt.Scale(type=scale_type),
+                    axis=alt.Axis(labelColor='black', titleColor='black')),
+            color=alt.Color("Policy:O", legend=alt.Legend(labelLimit=400,
+                                                          labelColor='black', titleColor='black'),
                             scale=alt.Scale(scheme=COLOR_SCHEME)),
             opacity=alt.value(0.5),
             tooltip=["Policy:O", alt.Tooltip("Iteration:Q", format=","),

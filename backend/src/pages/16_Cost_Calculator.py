@@ -16,8 +16,8 @@ def cost_calculator():
     density = ss['density']
     scale = ss['scale']
     df_storage = (pd.DataFrame(get_summary_data(policies, density=density, operation='Store', scales=[scale],
-                                               actions=[Action.LINKS], agg_func='mean')).droplevel(['Scale'])
-                 .rename(columns={'mean': 'Mean Links Per Node'}))
+                                                actions=[Action.LINKS], agg_func='mean')).droplevel(['Scale'])
+                  .rename(columns={'mean': 'Mean Links Per Node'}))
     st.header("Settings")
     with st.expander('Advanced Settings'):
         st.subheader("Constraints on Storage")
@@ -58,7 +58,8 @@ def cost_calculator():
     tabs = st.tabs(['Time Cost Per Operation', 'Time Cost Per Operation Data'])
     with tabs[0]:
         # The columns are sorted by action name
-        operation_costs = np.dot(table, np.array([ipfs_retrieve_time, ipfs_store_time, ipns_get_time, ipns_update_time]))
+        operation_costs = np.dot(table,
+                                 np.array([ipfs_retrieve_time, ipfs_store_time, ipns_get_time, ipns_update_time]))
         operation_costs_long = (pd.DataFrame(operation_costs, index=table.index,
                                              columns=['Time Per Operation (μs)']) / 1000).reset_index()
         operation_costs_long['Operation'] = operation_costs_long['Operation'].replace(OP_NAMES_ABBREVIATED)
@@ -73,7 +74,7 @@ def cost_calculator():
 
     st.subheader("Minimize Costs")
     tabs = st.tabs(['Total Time Cost (Ranked)', 'Memory Cost Per Node (Ranked)', 'Cost Data'])
-    with tabs[0]:
+    with (((tabs[0]))):
         time_costs = np.dot(operation_costs_table, np.array([0 if exclude_storage_retrieve_costs else ss['scale'],
                                                              list_all, retrieve_first, retrieve_latest,
                                                              retrieve_nth, retrieve_time])) / 1e6
@@ -88,10 +89,10 @@ def cost_calculator():
                                 fontSize=20, subtitle=f"Chain Length {str(ss['scale']) + excluded}",
                                 subtitleFontSize=18)
         chart = alt.Chart(ranked_table.reset_index(), title=title).mark_bar().encode(
-            x=alt.X('Policy:O', sort="y"),
-            y='Total Time Cost (Seconds):Q',
-            color=alt.Color('Policy:O', scale=alt.Scale(scheme=COLOR_SCHEME))
-        ).configure_axisX(labelLimit=400).configure_legend(labelLimit=400).properties(height=600)
+            y=alt.Y('Policy:O', sort="x"),
+            x='Total Time Cost (Seconds):Q',
+            color=alt.Color('Policy:O', legend=None, scale=alt.Scale(scheme=COLOR_SCHEME))
+        ).configure_axisY(labelLimit=800).configure_axis(labelColor='black', titleColor='black').properties(height=600)
         st.altair_chart(chart)
     with tabs[1]:
         sorted_table = sorted_table.sort_values(by=['Mean Links Per Node'])
@@ -102,7 +103,7 @@ def cost_calculator():
         chart = alt.Chart(ranked_table.reset_index(), title=title).mark_bar().encode(
             x=alt.X("Policy:O", sort='y'),
             y="Mean Links Per Node:Q",
-            color=alt.Color('Policy:O',scale=alt.Scale(scheme=COLOR_SCHEME))
+            color=alt.Color('Policy:O', scale=alt.Scale(scheme=COLOR_SCHEME))
         ).configure_axisX(labelLimit=400).configure_legend(labelLimit=400).properties(height=600)
         st.altair_chart(chart)
     with tabs[2]:

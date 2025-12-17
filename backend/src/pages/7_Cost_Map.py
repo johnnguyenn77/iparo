@@ -1,4 +1,5 @@
 import altair as alt
+import pandas as pd
 import streamlit as st
 from streamlit import session_state as ss
 
@@ -72,6 +73,32 @@ def cost_map():
                       title=f"Mean Action Counts for {OP_NAMES[op]}", subtitle=f"{density} - Chain Length {scale}",
                       log_scale=log_scale)
         map.display()
+
+    heatmap_dfs = []
+    for op in OP_TYPES:
+        summary: pd.DataFrame = get_summary_data(ss['selected_policies'], density, op, [scale], agg_func='mean'
+                                                 ).reset_index()
+        summary_df = summary.reset_index().drop(columns=["index"]
+                                                ).rename(columns={'mean': 'Mean'})
+        summary_df['Operation'] = OP_NAMES[op]
+        heatmap_dfs.append(summary_df)
+    summary: pd.DataFrame = get_summary_data(ss['selected_policies'], density, "Store", [scale],
+                                             actions=[Action.LINKS], agg_func='mean').reset_index()
+    summary_df = summary.reset_index().drop(columns=["index"]
+                                            ).rename(columns={'mean': 'Mean'})
+    summary_df['Operation'] = "Links Per Node"
+    heatmap_dfs.append(summary_df)
+    heatmap = pd.concat(heatmap_dfs)
+    st.dataframe(heatmap)
+
+    st.subheader("Summary")
+
+    map = Heatmap(heatmap, "Policy:N", "Operation:O", "Mean:Q",
+                  title=f"Mean IPFS Retrieve Counts", subtitle=f"{density} - Chain Length {scale}",
+                  log_scale=log_scale)
+    map.set_y_sort(['Retrieve First', 'Retrieve Latest', 'Retrieve by Sequence Number', 'Retrieve by Time',
+                    'Add New', 'List All', 'Links Per Node'])
+    map.display()
 
 
 if __name__ == '__main__':
