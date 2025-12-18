@@ -9,9 +9,8 @@ from simulation.VersionDensity import *
 RESULTS_FOLDER = Path("../results")
 
 OP_NAMES = {"First": "Retrieve First", "Latest": "Retrieve Latest", "Nth": "Retrieve by Sequence Number",
-            "Store": "Add Node", "Time": "Retrieve by Time", "List": "List All"}
+            "Store": "Add New", "Time": "Retrieve by Time", "List": "List All"}
 OP_NAMES_ABBREVIATED = OP_NAMES.copy()
-OP_NAMES_ABBREVIATED['Nth'] = "Retrieve at Nth"
 OP_TYPES = list(OP_NAMES.keys())
 DENSITY_NAMES = {"bhlt": "BHLT", "linear": "Linear", "multipeak": "Multipeak", "uniform": "Uniform"}
 ACTIONS = ["IPNS Get", "IPNS Update", "IPFS Store", "IPFS Retrieve", "Links"]

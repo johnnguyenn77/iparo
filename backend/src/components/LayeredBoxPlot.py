@@ -24,7 +24,7 @@ class LayeredBoxPlot:
 
         n = summary[x.split(":")[0]].nunique()
         self.chart = ((alt.LayerChart(summary).encode(
-            color=alt.Color(color, legend=alt.Legend(labelLimit=600), scale=alt.Scale(scheme=COLOR_SCHEME)),
+            color=alt.Color(color, legend=alt.Legend(labelLimit=600, labelColor='black', titleColor='black'), scale=alt.Scale(scheme=COLOR_SCHEME)),
             x=x, tooltip=[color, alt.Tooltip("count:Q", format=","),
                           alt.Tooltip("mean:Q", format=",.2f"),
                           alt.Tooltip("min:Q", format=","), alt.Tooltip("q1:Q", format=",.2f"),
@@ -38,9 +38,10 @@ class LayeredBoxPlot:
                 y=alt.Y("mean:Q", axis=alt.Axis(format="~s"),
                         scale=alt.Scale(type="symlog" if log_scale else 'identity'),
                         title=y_title))
-        )).properties(width=45 * n).facet(column=column, title=alt.TitleParams(title, align='center',
-                                                                               anchor="middle", fontSize=20))
-                      .configure_axisX(labelLimit=400))
+        )).properties(width=45 * n).facet(column=alt.Column(column, header=alt.Header(labelColor='black',
+                                                                                      titleColor='black')),
+                                          title=alt.TitleParams(title, align='center', anchor="middle", fontSize=20))
+                      .configure_axisX(labelLimit=400).configure_axis(titleColor='black', labelColor='black'))
 
     def display(self):
         st.altair_chart(self.chart, use_container_width=True)

@@ -16,16 +16,14 @@ def policy_growth_rate():
     log_scale = ss['log_scale']
     partial_dfs = []
     for op in OP_NAMES_ABBREVIATED:
-        partial_df = pd.DataFrame({'Mean':
-                                       get_summary_data(policies_selected, 'Uniform', op,
-                                                        SCALES.copy(), agg_func='mean'),
+        partial_df = pd.DataFrame({'Mean': get_summary_data(policies_selected, 'Uniform', op,
+                                                            SCALES.copy(), agg_func='mean'),
                                    'Operation': op})
         partial_df['Operation'] = partial_df['Operation'].replace(OP_NAMES_ABBREVIATED) + ' - IPFS Retrieves'
         partial_dfs.append(partial_df)
 
-    partial_df = pd.DataFrame({'Mean':
-                                   get_summary_data(policies_selected, 'Uniform', 'Store',
-                                                    SCALES.copy(), actions=[Action.LINKS], agg_func='mean'),
+    partial_df = pd.DataFrame({'Mean': get_summary_data(policies_selected, 'Uniform', 'Store',
+                                                        SCALES.copy(), actions=[Action.LINKS], agg_func='mean'),
                                'Operation': 'Add Node - Links'})
     partial_dfs.append(partial_df)
     df = pd.concat(partial_dfs).reset_index()
