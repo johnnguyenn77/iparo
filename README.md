@@ -28,17 +28,19 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
 ### Backend Setup
 
 To run the backend, install [Kubo IPFS](docs.ipfs.tech/install/command-line/#install-official-binary-distributions) and then use
-    ```
-    ipfs daemon
-    ```
-    for setting up IPFS.
 
-   Then, run `app.py` in `src` to get the server running:
+``` bash
+ipfs daemon
+```
 
-   ```
-   cd backend
-   python src/app.py
-   ```
+for setting up IPFS.
+
+Then, run `app.py` in `src` to get the server running:
+
+``` bash
+cd backend
+python src/app.py
+```
 
 **NOTE:** First time setup may take up to 15-20 minutes. This is to be expected and is normal, as the backend must cache all of the archived sites and each snapshot, cached locally.
 
