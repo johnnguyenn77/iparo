@@ -1,18 +1,23 @@
 # IPARO Implementation with IPFS
 
-This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS based on a [proposal](https://github.com/johnnguyenn77/iparo/blob/main/proposal.pdf) by Dr. Sawood Alam. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs with different linking strategies.
+This repository contains a basic implementation of InterPlanetary Archival Record Objects (IPAROs) using IPFS based on a [proposal](https://www.digipres.org/publications/ipres/ipres-2023/papers/iparo-interplanetary-archival-record-object-for-decentralized-we/) by Dr. Sawood Alam. The implementation demonstrates the creation, storage, linking, and retrieval of IPAROs with different linking strategies.
 
 ## Prerequisites
 
 1. **Python**: Ensure Python is installed on your system. This repository uses Python 3. For best results with testing, Python 3.11 or newer is recommended.
-2. **Virtual Environment**: Create a virtual environment and activate it
+2. **Clone the Repository and Install Requirements**
 
     ```bash
-    python -m venv venv
-    ./venv/Scripts/activate
+    git clone https://github.com/johnnguyenn77/iparo.git
+    cd iparo
     ```
+3. **Virtual Environment**: Create a virtual environment and activate it
 
-3. **Prerequisites**: Install the prerequisites listed in the `requirements.txt` file.
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+    Ensure that all prerequisites as listed in the `requirements.txt` file are installed.
 
    ```bash
    pip install -r requirements.txt
@@ -22,22 +27,7 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
 
 ### Backend Setup
 
-1. **Clone the Repository and Install Requirements**
-
-    ```bash
-    git clone https://github.com/johnnguyenn77/iparo.git
-    cd iparo
-    ```
-
-    Ensure that all prerequisites as listed in the `requirements.txt` file are installed.
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Running the Backend**
-
-   To run the backend, install [Kubo IPFS](docs.ipfs.tech/install/command-line/#install-official-binary-distributions) and then use
+To run the backend, install [Kubo IPFS](docs.ipfs.tech/install/command-line/#install-official-binary-distributions) and then use
     ```
     ipfs daemon
     ```
@@ -50,7 +40,7 @@ This repository contains a basic implementation of InterPlanetary Archival Recor
    python src/app.py
    ```
 
-    **NOTE:** First time setup may take up to 15-20 minutes. This is to be expected and is normal, as the backend must cache all of the archived sites and each snapshot, cached locally.
+**NOTE:** First time setup may take up to 15-20 minutes. This is to be expected and is normal, as the backend must cache all of the archived sites and each snapshot, cached locally.
 
 ### Frontend Setup
 
@@ -94,22 +84,6 @@ To start the simulation:
 ```
 cd backend/src && streamlit run IPAROSimulation.py
 ```
-
-## Jupyter Notebook
-
-Ensure you have Jupyter Notebook installed. If not, you can install it using:
-
-```bash
-pip install notebook
-```
-
-**Launch the Jupyter Notebook**
-
-```bash
-jupyter notebook
-```
-
-Open the `iparo.ipynb` notebook and follow the instructions to run the cells.
 
 ## Testing
 For all the tests besides `SysIPFSDateTest` and `IPAROStrategyTest`, you can
