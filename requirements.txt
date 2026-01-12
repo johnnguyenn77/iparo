@@ -39,7 +39,7 @@ Pygments==2.19.1
 pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 pytz==2025.1
-pywin32==309
+pywin32==309; platform_system == "Windows"
 pyzmq==26.2.1
 requests==2.32.3
 setuptools==76.0.0
